@@ -1,12 +1,14 @@
 
 import { getRandomWords, randomWords, getExpectedLetter } from '@/gamelogic/engine';
 import '../app/globals.css';
+import { Button } from "@/components/ui/button"
 import { Test } from '../app/api/data/firstapi';
 
 
 
 //Tror det är såhär man ska exporta, först funktion sen export i separata statements
 export default function Home() {
+
   const words: string[] = getRandomWords(); // Call getRandomWords to get an array of random words
 
   return (

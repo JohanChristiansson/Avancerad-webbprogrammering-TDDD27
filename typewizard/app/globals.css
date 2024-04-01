@@ -3,34 +3,38 @@
 @tailwind utilities;
 
 
-body
-{
-    background-color: #323437;
-    color: #646669;
-    
+body {
+  background-color: #323437;
+  color: #646669;
+
 }
 
 .wordBox {
-    /*POSITIONING*/
-    width: 50vw; /* Set width to 50% of the viewport width */
-    height: 25vh; /* Set height to 25% of the viewport height */
-    position: absolute; /* Center the div horizontally and vertically */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  /*POSITIONING*/
+  width: 50vw;
+  /* Set width to 50% of the viewport width */
+  height: 25vh;
+  /* Set height to 25% of the viewport height */
+  position: absolute;
+  /* Center the div horizontally and vertically */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-    /* STYLING*/
-    display: flex;
-    flex-wrap: wrap;
-    font-family: 'Roboto Mono', monospace; 
-    font-size: xx-large;
-    line-height: 1.2; /* Adjust line height as per your design */
-    max-height: calc(1.7 * 2.25em); /* Calculate max height based on line height and larger font size */
-    overflow: hidden;
-    
+  /* STYLING*/
+  display: flex;
+  flex-wrap: wrap;
+  font-family: 'Roboto Mono', monospace;
+  font-size: xx-large;
+  line-height: 1.2;
+  /* Adjust line height as per your design */
+  max-height: calc(1.7 * 2.25em);
+  /* Calculate max height based on line height and larger font size */
+  overflow: hidden;
+
 }
 
 .word {
-  margin-right: 10px; /* Add space between words */
+  margin-right: 10px;
+  /* Add space between words */
 }
-
