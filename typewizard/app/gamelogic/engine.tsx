@@ -1,6 +1,11 @@
+'use client'
 import internal from "stream";
+import React, { useState } from 'react';
+import seedrandom from 'seedrandom';
 
-export function getRandomWords() {
+
+export function getRandomWords(nrOfWords: number, seed: string) {
+    seedrandom(seed, { global: true });
     const words: string[] = [
         "time",
         "year",
@@ -107,7 +112,8 @@ export function getRandomWords() {
     const randomWords: string[] = [];
     const wordsLength: number = words.length;
 
-    while (randomWords.length < 40) {
+    while (randomWords.length < nrOfWords) {
+        // Generate a random index using the seeded random number generator
         const randomIndex: number = Math.floor(Math.random() * wordsLength);
         const randomWord: string = words[randomIndex];
 
@@ -120,7 +126,6 @@ export function getRandomWords() {
     return randomWords;
     
 }
-export let randomWords = getRandomWords();
 
 export function getExpectedLetter(words: string[], word: number, pos: number) {
     return words[word][pos]

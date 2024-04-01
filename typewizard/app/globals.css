@@ -12,7 +12,7 @@ body
 
 .wordBox {
     /*POSITIONING*/
-    width: 50vw; /* Set width to 50% of the viewport width */
+    width: 60vw; /* Set width to 50% of the viewport width */
     height: 25vh; /* Set height to 25% of the viewport height */
     position: absolute; /* Center the div horizontally and vertically */
     top: 50%;
@@ -32,5 +32,20 @@ body
 
 .word {
   margin-right: 10px; /* Add space between words */
+}
+
+
+.correct {
+  color: white !important;
+}
+
+.completedWord {
+  color: white !important;
+}
+
+.cursor {
+  transition: left 0.15s ease;
+  
+  
 }
 
