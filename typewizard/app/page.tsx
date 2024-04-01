@@ -1,22 +1,38 @@
-import { getRandomWords, randomWords } from '@/gamelogic/engine';
+
+import { getRandomWords, randomWords, getExpectedLetter } from '@/gamelogic/engine';
 import '../app/globals.css';
 
 
 
+
+
 export default function Home() {
-  const words: string[] = randomWords; // Call getRandomWords to get an array of random words
+  const words: string[] = getRandomWords(); // Call getRandomWords to get an array of random words
 
   return (
     <main>
       <div className="wordBox">
       {words.map((word, index) => (
-          // Wrap each word in a span to apply styles individually
-          <span key={index} className="word">{word}</span>
+          <span key={index} className="word">{word}</span> // Wrap each word in a span to apply styles individually
         ))}
 
       </div>
-
     </main>
   );
 }
 
+
+
+
+
+/* 
+
+getWords
+
+update how many words completed 3 times/sec
+
+get how many words opponenent has completed 3 times/sec
+
+end of game, post results, save stats
+
+*/

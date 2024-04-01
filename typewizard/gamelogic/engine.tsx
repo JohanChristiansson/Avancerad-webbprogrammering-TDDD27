@@ -1,3 +1,4 @@
+import internal from "stream";
 
 export function getRandomWords() {
     const words: string[] = [
@@ -119,6 +120,11 @@ export function getRandomWords() {
     return randomWords;
     
 }
-
 export let randomWords = getRandomWords();
+
+export function getExpectedLetter(words: string[], word: number, pos: number) {
+    return words[word][pos]
+}
+
+
 
