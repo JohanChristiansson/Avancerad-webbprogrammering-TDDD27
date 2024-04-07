@@ -1,85 +1,122 @@
 'use client'
 import { getRandomWords, getExpectedLetter} from '../app/gamelogic/engine'
 import '../app/globals.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 
 export default function Home() {
-  const words: string[] = getRandomWords(40, "1338");
-  const [typedLetters, setTypedLetters] = useState<string[]>([]);
-  const [currentLetterIndex, setCurrentLetterIndex] = useState<number>(0);
-  const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
-  const [completedWords, setCompletedWords] = useState<string[]>([]);
-  const[charactersTyped, setCharactersTyped] = useState<number>(0);
 
+  const [words, setWords] = useState<string[]>([]);               //The random words
+  const [typedLetters, setTypedLetters] = useState<{ letter: string; correct: boolean; wordIndex: number; position: number }[]>([]); //List of all input characters, if they are correct, and their position
+
+  //STYLING VARIABLES
+  const [nrOfChars, setNrOfChars] = useState<number>(0);
+  const [nrOfSpaces, setNrOfSpaces] = useState<number>(0);
   
+  let letterIndex = 0;
+  let wordIndex = 0;
 
   useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const { key } = event;
-      const currentWord = words[currentWordIndex];
-      const currentLetter = currentWord[currentLetterIndex];
+    setWords(getRandomWords(40,"1338"));
+  },[]);
 
-      if (/^[a-zA-Z]$/.test(key)) {
-        setCharactersTyped(prevCharactersTyped => prevCharactersTyped + 1)
+
+  useEffect(() => {
+
+    
+    const handleKeyDown = (event: KeyboardEvent) => {
+
+      const { key, code } = event;
+      const currentWord = words[wordIndex];
+      const currentLetter = currentWord[letterIndex];
+      const letterIndexState = letterIndex;
+  
+      if (/^[a-zA-Z]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
+        setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
+        letterIndex = letterIndex + 1;
+        const position = letterIndex - 1; // Position of the letter within the word
+        if(key == currentLetter) {
+          setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: true, wordIndex, position }]);
+        } else {
+          setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
+        }
+        
       }
+
+      else if(key == ' ') {
+        if(letterIndex != currentWord.length) {
+          setNrOfChars(prevNrOfChars => prevNrOfChars + (currentWord.length - letterIndexState));
+        }
+        setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
+        wordIndex = wordIndex + 1;
+        letterIndex = 0;
+      }
+
       
-      if(key == ' ') {                                       //Handling skipping to next word
-        setCurrentWordIndex(prevIndex => prevIndex + 1);
-        setCurrentLetterIndex(0);
+      else if(code === "Backspace" && letterIndex != 0) {
+        setNrOfChars(prevNrOfChars => prevNrOfChars - 1);
+        letterIndex = letterIndex - 1;
+        setTypedLetters(prevTypedLetters => prevTypedLetters.slice(0, -1));
       }
 
-      if(currentLetterIndex == currentWord.length - 1 && key == ' ') {  //Handling going to next word when previous done
-        setCompletedWords(prevCompletedWords => [...prevCompletedWords, currentWord]);
-        console.log(completedWords);
-        setCurrentWordIndex(prevIndex => prevIndex + 1);
-        setCurrentLetterIndex(0);
-      }
-
-      
-      if (key === currentLetter) {              //Handling individual letters
-        setTypedLetters(prevLetters => [...prevLetters, key.toLowerCase()]);
-        setCurrentLetterIndex(prevIndex => prevIndex + 1);
-        console.log("correct" + completedWords[0])
-      }
     };
 
-    window.addEventListener('keypress', handleKeyPress);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      window.removeEventListener('keypress', handleKeyPress);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [currentLetterIndex, currentWordIndex, words]);
+  },[words]);
+
+
 
   return (
     <main>
       <div className="wordBox">
-              {/* Cursor indicator */}
+     
+     {/*CURSOR*/}
       <div
         className="cursor"
         style={{
           position: 'absolute',
-          left: `${charactersTyped * 17.5 + currentWordIndex*10.5}px`, 
+          left: `${nrOfChars * 17.5 + nrOfSpaces*10.5}px`, 
           height: '30px', 
           width: '2px',
-          backgroundColor: 'red', 
+          backgroundColor: 'yellow', 
         }}
       ></div>
-        {words.map((word, wordIndex) => (
-          <span key={wordIndex} className={`word ${wordIndex < currentWordIndex ? 'completedWord' : ''}`}>
-            {word.split('').map((letter, letterIndex) => (
-              <span
-                key={letterIndex}
-                className={`letter ${wordIndex === currentWordIndex && letterIndex <= currentLetterIndex - 1 ? 'correct' : ''}`}
-              >
-                {letter}
-              </span>
-            ))}
+
+
+     {/*WORDS*/}
+     {words.map((word, wIndex) => (
+          <span key={wIndex} className={'word'}>
+            {word.split('').map((letter, lIndex) => {
+              const typedLetter = typedLetters.find(item => item.wordIndex === wIndex && item.position === lIndex);
+              if (typedLetter) {
+                return (
+                  <span
+                    key={lIndex}
+                    className={typedLetter.correct ? 'correct' : 'incorrect'}
+                  >
+                    {letter}
+                  </span>
+                );
+              }
+              return <span key={lIndex}>{letter}</span>;
+            })}
+            {/* Render space after each word */}
+            {' '}
           </span>
         ))}
       </div>
     </main>
   );
+
+
+
+
+
+
 
 }
 

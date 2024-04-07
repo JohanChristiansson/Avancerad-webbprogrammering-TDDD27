@@ -36,12 +36,18 @@ body
 
 
 .correct {
-  color: white !important;
+  color: white;
 }
 
-.completedWord {
-  color: white !important;
+.incorrect {
+  color: red;
 }
+
+.incorrectWord {
+  text-decoration: underline red;
+}
+
+
 
 .cursor {
   transition: left 0.15s ease;
