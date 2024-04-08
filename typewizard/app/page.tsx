@@ -1,5 +1,5 @@
 'use client'
-import {getRandomWords, getWordsPerRow} from '../app/gamelogic/engine'
+import {getRandomWords} from '../app/gamelogic/engine'
 import '../app/globals.css';
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -11,9 +11,11 @@ const getWidthInPx = (element: HTMLElement | null): number => {
 
 export default function Home() {
 
-  //TIMER
-  const [timer, setTimer] = useState(30); // 30 seconds timer
-  const [timerRunning, setTimerRunning] = useState(false);
+  //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  const [timer, setTimer] = useState(30); // SET TIME HERE
+  const [timerRunning, setTimerRunning] = useState(false); //To start timer
+  const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
+  const [showStats, setShowStats] = useState(false);     //To show stats when game over
 
   // Start the timer when the user presses the first letter
   const handleFirstLetterTyped = () => {
@@ -27,11 +29,14 @@ export default function Home() {
           intervalId = setInterval(() => {
               setTimer(prevTimer => {
                   if (prevTimer > 0) {
-                      return prevTimer - 1; // Decrement timer value if greater than 0
+                    const updatedTimer = prevTimer - 0.1;
+                    return prevTimer - 1; //Set to 1 decimals for style
                   } else {
                       // Timer reached zero, stop the timer
                       setTimerRunning(false);
                       clearInterval(intervalId);
+                      setShowStats(true);
+                      setTimeLeft(false);
                       return 0;
                   }
               });
@@ -42,108 +47,103 @@ export default function Home() {
       return () => clearInterval(intervalId);
   }, [timerRunning]);
 
+//-----------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
+//--------------------------GAME LOGIC--------------------------------------------------------------------------------------------------------------------------------------------------
 
   //LOGIC VARIABLES
   const wordBoxRef = useRef<HTMLDivElement>(null);          //Declaring the wordbox div here so we can determine its width regardless of screen size
   const [words, setWords] = useState<string[]>([]);        //The random words
-  const [typedLetters, setTypedLetters] = useState<{ letter: string; correct: boolean; wordIndex: number; position: number }[]>([]); //List of all input characters, if they are correct, and their position
-  
-
-
+  const [typedLetters, setTypedLetters] = useState<{ letter: string; correct: boolean; wordIndex: number; position: number }[]>([]); //List of all input characters if they are correct, and their position
+                                                                                                                                     
   //STYLING VARIABLES
   const [nrOfChars, setNrOfChars] = useState<number>(0);
   const [nrOfSpaces, setNrOfSpaces] = useState<number>(0);
-  const [currentRowIndex, setCurrentRowIndex] = useState<number>(0); //Which row we are currently on
-  const [wordsPerRowState, setWordsPerRowState] = useState<number>(0);
-  
-  
-  
-  let letterIndex = 0;     //Which letter in the current word the user is on
-  let wordIndex = 0;      //Which word (in total) the user is on
-  let simpleRow = 0;
-  
+  const [currentRowIndex, setCurrentRowIndex] = useState<number>(0);
+  const charWidth = 17.5;
+  const spaceWidth = 10.5;
+  const rowHeight = 38;
+  let letterIndex = 0;      //Which letter in the current word the user is on
+  let wordIndex = 0;       //Which word (in total) the user is on
+  let pxPerRow = 0;       //Ammount of width in px that has been input on the current row
 
-  useEffect(() => {                                        //STUFF THAT LOADS WHEN APPLICATION STARTS
-    setWords(getRandomWords(100,"1337851"));
+  //STATS
+  const [rawCharInput, setRawCharInput] = useState<number>(0);
+  const [rawWordInput, setRawWordInput] = useState<number>(0);
+  const accuracy = ((typedLetters.filter(item => item.correct).length / rawCharInput) * 100).toFixed(2);
+  let correctWords = 0;
+
+  useEffect(() => {                                        
+    setWords(getRandomWords(100,"1337851"));  //Getting random words, note that seed is currently deactivated
   },[]);
 
-  useEffect(() => {
-    if (words.length > 0) {
-        const wordBoxWidth = getWidthInPx(wordBoxRef.current); 
-        console.log(getWordsPerRow(words, getWidthInPx(wordBoxRef.current), 17.5, 10.5));  
-    }
-}, [words]);
-
 
 
 
 
   useEffect(() => {
-
     
     const handleKeyDown = (event: KeyboardEvent) => {
 
       const { key, code } = event;
       const currentWord = words[wordIndex];
+      const nextWord = words[wordIndex + 1];
       const currentLetter = currentWord[letterIndex];
       const letterIndexState = letterIndex;       //letterIndex made const to be used in useState
-      const currentWordsPerRow = getWordsPerRow(words, getWidthInPx(wordBoxRef.current), 17.5, 10.5)[simpleRow];
-
       
-      if (/^[a-zA-Z]$/.test(key) && !timerRunning) { //If letter-key
-        handleFirstLetterTyped();
-    }
+      if(timeLeft) { //To disable keyboard input when timer has run out
 
-      if (/^[a-zA-Z]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
-        setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
-        letterIndex = letterIndex + 1;
-        const position = letterIndex - 1; // Position of the letter within the word
-        if(key == currentLetter) {
-          setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: true, wordIndex, position }]);
-        } else {
-          setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
+        if (/^[a-zA-Z]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
+          handleFirstLetterTyped();
         }
-        
-      }
 
-      else if(key == ' ') {
-        if(letterIndex != currentWord.length) {   //If not on last letter, aka skipping the word
-          setNrOfChars(prevNrOfChars => prevNrOfChars + (currentWord.length - letterIndexState));
+        if (/^[a-zA-Z]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
+          setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
+          letterIndex = letterIndex + 1;
+          const position = letterIndex - 1; // Position of the letter within the word
+          pxPerRow = pxPerRow + charWidth;
+          if(key == currentLetter) {
+            setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: true, wordIndex, position }]);
+          } else {
+            setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
+          }
+          
         }
-        setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
-        wordIndex = wordIndex + 1;
-        console.log(wordIndex);
-        letterIndex = 0;
-        if(wordIndex >= currentWordsPerRow) {
-          setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);
-          setNrOfChars(0);
-          setNrOfSpaces(0);
-          simpleRow++;
-  
+
+        else if(key == ' ') {
+          if(letterIndex != currentWord.length) {   //If not on last letter, aka skipping the word
+            setNrOfChars(prevNrOfChars => prevNrOfChars + (currentWord.length - letterIndexState));
+            pxPerRow =  pxPerRow + (currentWord.length - letterIndexState)*charWidth;
+          }
+          setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
+          wordIndex = wordIndex + 1;
+          setRawWordInput(prevRawWordInput => prevRawWordInput + 1);
+          letterIndex = 0;
+          pxPerRow = pxPerRow + spaceWidth;
+          if(pxPerRow + (nextWord.length * charWidth) >= getWidthInPx(wordBoxRef.current)) { //Row switching, inside the space statement, triggered when pressing space 
+            setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);                           //upon completing last word of the row
+            setNrOfChars(0);
+            setNrOfSpaces(0);
+            pxPerRow = 0;
+    
+          }
+        }
+
+        else if(code === "Backspace" && letterIndex != 0) { //Pressing backspace, while not on the first letter of a word
+          setNrOfChars(prevNrOfChars => prevNrOfChars - 1);
+          letterIndex = letterIndex - 1;
+          setTypedLetters(prevTypedLetters => prevTypedLetters.slice(0, -1));
+          pxPerRow = pxPerRow - charWidth;
+        }
+
+        //SETTING THE STAT-VARIABLES
+        if(/^[a-zA-Z]$/.test(key)) {
+          setRawCharInput(prevRawCharInput => prevRawCharInput + 1);
         }
       }
-
-      
-      else if(code === "Backspace" && letterIndex != 0) { //Pressing backspace, while not on the first letter of a word
-        setNrOfChars(prevNrOfChars => prevNrOfChars - 1);
-        letterIndex = letterIndex - 1;
-        setTypedLetters(prevTypedLetters => prevTypedLetters.slice(0, -1));
-      }
-
-      else if(code === "Enter") {
-        setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);
-        setNrOfChars(0);
-        setNrOfSpaces(0);
-        simpleRow++;
-        wordIndex++;
-        letterIndex = 0;
-      }
-
     };
+  
 
     window.addEventListener('keydown', handleKeyDown);
 
@@ -151,12 +151,26 @@ export default function Home() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   },[words]);
+//------------------------------------------------------------------------------------------------------------------------------
 
-
+//-------------------RENDERING------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  const renderStats = () => {
+    return (
+      <div className="statsBox">
+        <p>Raw character input: {rawCharInput}</p>
+        <p>Raw words per minute: {rawWordInput * 2}</p>
+        <p>Accuracy: {accuracy}%</p>
+        <p>Words per Minute: </p>
+      </div>
+    );
+  };
 
   return (
     <main>
+      
       <h1 className="timer">{timer}</h1>
+      {timeLeft && (
       <div ref={wordBoxRef} className="wordBox">
      
      {/*CURSOR*/}
@@ -164,7 +178,7 @@ export default function Home() {
         className="cursor"
         style={{
           position: 'absolute',
-          left: `${nrOfChars * 17.5 + nrOfSpaces*10.5}px`, 
+          left: `${nrOfChars * charWidth + nrOfSpaces*spaceWidth}px`, 
           height: '30px', 
           width: '2px',
           backgroundColor: 'yellow', 
@@ -174,7 +188,7 @@ export default function Home() {
 
      {/*WORDS*/}
      {words.map((word, wIndex) => (
-          <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-38 * currentRowIndex}px` }}>
+          <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-rowHeight * currentRowIndex}px` }}>
             {word.split('').map((letter, lIndex) => {
               const typedLetter = typedLetters.find(item => item.wordIndex === wIndex && item.position === lIndex);
               if (typedLetter) {
@@ -188,12 +202,12 @@ export default function Home() {
                 );
               }
               return <span key={lIndex}>{letter}</span>;
-            })}
-            {/* Render space after each word */}
-            {' '}
+            })} 
           </span>
         ))}
       </div>
+      )}
+      {showStats && renderStats()}
     </main>
   );
 }

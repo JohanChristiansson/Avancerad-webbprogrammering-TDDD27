@@ -20,12 +20,13 @@ export function getRandomWords(nrOfWords: number, seed: string) {
     ];
 
     const randomWords: string[] = [];
-    const rng = seedrandom(seed); // Seeded random number generator
+    //const rng = seedrandom(seed); // Seeded random number generator
     const wordsLength: number = words.length;
 
     while (randomWords.length < nrOfWords) {
         // Generate a random index using the seeded random number generator
-        const randomIndex: number = Math.floor(rng() * wordsLength);
+        //const randomIndex: number = Math.floor(rng() * wordsLength);
+        const randomIndex: number = Math.floor(Math.random() * words.length);
         const randomWord: string = words[randomIndex];
 
         // Avoid duplicates
@@ -35,33 +36,6 @@ export function getRandomWords(nrOfWords: number, seed: string) {
     }
 
     return randomWords;
-}
-
-
-
-
-export function getWordsPerRow(words: string[], width: number, charWidth: number, spaceWidth: number) {
-
-    let sum = 0;
-    let wordsPerRow: number[] = [];
-    let row = 0;
-    let bonus = 1;
-    
-
-    for(let i = 0; i < words.length; i++) {
-        
-        if(sum + words[i].length*charWidth + spaceWidth < width) {
-            sum = sum + words[i].length*charWidth + spaceWidth;
-        }
-        else {
-            wordsPerRow[row] = i;
-            sum = 0;
-            row++;
-        }
-
-
-    }   
-    return wordsPerRow;
 }
 
 

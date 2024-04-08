@@ -57,9 +57,32 @@ body
 
 .timer {
   color: white;
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
   position: absolute;
-  left: 48%;
+  left: 0;
   top: 20%;
+  width: 100%; /* Ensure full width */
   font-size: 350%;
   font-family: 'Roboto Mono', monospace;
+}
+
+.statsBox {
+  width: 25vw; /* Set width to 50% of the viewport width */
+  height: 25vh; /* Set height to 25% of the viewport height */
+  position: absolute; /* Center the div horizontally and vertically */
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+
+  /* STYLING*/
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  justify-content: center; /* Center items vertically */
+  font-family: 'Roboto Mono', monospace; 
+  font-size: 24px;
+  line-height: 1.2; /* Adjust line height as per your design */
+  max-height: calc(1.7 * 2.25em); /* Calculate max height based on line height and larger font size */
+ /* overflow: hidden;*/
 }
