@@ -23,7 +23,7 @@ body
     display: flex;
     flex-wrap: wrap;
     font-family: 'Roboto Mono', monospace; 
-    font-size: xx-large;
+    font-size: 32px;
     line-height: 1.2; /* Adjust line height as per your design */
     max-height: calc(1.7 * 2.25em); /* Calculate max height based on line height and larger font size */
     overflow: hidden;
@@ -55,3 +55,11 @@ body
   
 }
 
+.timer {
+  color: white;
+  position: absolute;
+  left: 48%;
+  top: 20%;
+  font-size: 350%;
+  font-family: 'Roboto Mono', monospace;
+}

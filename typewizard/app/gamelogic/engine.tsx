@@ -37,8 +37,31 @@ export function getRandomWords(nrOfWords: number, seed: string) {
     return randomWords;
 }
 
-export function getExpectedLetter(words: string[], word: number, pos: number) {
-    return words[word][pos]
+
+
+
+export function getWordsPerRow(words: string[], width: number, charWidth: number, spaceWidth: number) {
+
+    let sum = 0;
+    let wordsPerRow: number[] = [];
+    let row = 0;
+    let bonus = 1;
+    
+
+    for(let i = 0; i < words.length; i++) {
+        
+        if(sum + words[i].length*charWidth + spaceWidth < width) {
+            sum = sum + words[i].length*charWidth + spaceWidth;
+        }
+        else {
+            wordsPerRow[row] = i;
+            sum = 0;
+            row++;
+        }
+
+
+    }   
+    return wordsPerRow;
 }
 
 
