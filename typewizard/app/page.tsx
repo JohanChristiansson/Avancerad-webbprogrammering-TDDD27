@@ -12,7 +12,9 @@ const getWidthInPx = (element: HTMLElement | null): number => {
 export default function Home() {
 
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  const [timer, setTimer] = useState(30); // SET TIME HERE
+  
+  const time = 30;
+  const [timer, setTimer] = useState(time); 
   const [timerRunning, setTimerRunning] = useState(false); //To start timer
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
   const [showStats, setShowStats] = useState(false);     //To show stats when game over
@@ -71,8 +73,9 @@ export default function Home() {
   //STATS
   const [rawCharInput, setRawCharInput] = useState<number>(0);
   const [rawWordInput, setRawWordInput] = useState<number>(0);
-  const accuracy = ((typedLetters.filter(item => item.correct).length / rawCharInput) * 100).toFixed(2);
-  let correctWords = 0;
+  const [correctWords, setCorrectWords] = useState<number>(0); 
+  const accuracy = ((typedLetters.filter(item => item.correct).length / rawCharInput) * 100).toFixed(2); //Calculating accuracy directly so it can be const
+  let correctCharacters = 0; //Used to calculate WPM
 
   useEffect(() => {                                        
     setWords(getRandomWords(100,"1337851"));  //Getting random words, note that seed is currently deactivated
@@ -91,6 +94,8 @@ export default function Home() {
       const nextWord = words[wordIndex + 1];
       const currentLetter = currentWord[letterIndex];
       const letterIndexState = letterIndex;       //letterIndex made const to be used in useState
+
+      console.log(correctCharacters);
       
       if(timeLeft) { //To disable keyboard input when timer has run out
 
@@ -105,6 +110,7 @@ export default function Home() {
           pxPerRow = pxPerRow + charWidth;
           if(key == currentLetter) {
             setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: true, wordIndex, position }]);
+            correctCharacters++;
           } else {
             setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
           }
@@ -112,12 +118,19 @@ export default function Home() {
         }
 
         else if(key == ' ') {
+          
           if(letterIndex != currentWord.length) {   //If not on last letter, aka skipping the word
             setNrOfChars(prevNrOfChars => prevNrOfChars + (currentWord.length - letterIndexState));
             pxPerRow =  pxPerRow + (currentWord.length - letterIndexState)*charWidth;
+          } 
+
+          else if(correctCharacters == currentWord.length) { //If on the last letter, check if the word is correct
+            setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
+            correctCharacters = 0;
           }
-          setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
           wordIndex = wordIndex + 1;
+
+          setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
           setRawWordInput(prevRawWordInput => prevRawWordInput + 1);
           letterIndex = 0;
           pxPerRow = pxPerRow + spaceWidth;
@@ -159,9 +172,9 @@ export default function Home() {
     return (
       <div className="statsBox">
         <p>Raw character input: {rawCharInput}</p>
-        <p>Raw words per minute: {rawWordInput * 2}</p>
+        <p>Raw words per minute: {rawWordInput * (60/time)}</p>
         <p>Accuracy: {accuracy}%</p>
-        <p>Words per Minute: </p>
+        <p>Words per Minute: {correctWords *(60/time)}</p>
       </div>
     );
   };
