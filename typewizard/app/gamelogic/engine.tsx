@@ -1,7 +1,7 @@
 'use client'
 import internal from "stream";
 import React, { useState } from 'react';
-import seedrandom from 'seedrandom';
+//import seedrandom from 'seedrandom';
 
 
 export function getRandomWords(nrOfWords: number, seed: string) {
