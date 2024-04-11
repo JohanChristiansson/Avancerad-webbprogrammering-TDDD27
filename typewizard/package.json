@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "^1.2.2",
     "@nextui-org/avatar": "^2.0.24",
     "@nextui-org/react": "^2.2.10",
     "@radix-ui/react-aspect-ratio": "^1.0.3",

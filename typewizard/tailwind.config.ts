@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss"
-import {nextui} from "@nextui-org/avatar";
+import {nextui} from './node_modules/@nextui-org/react/dist';
 
 const config = {
   darkMode: ["class"],
@@ -76,8 +76,22 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-           [nextui()]
+  //can add more themes here and modify
+  plugins: [nextui({
+      themes: {
+        dark: {
+          colors: {
+            primary: {
+              DEFAULT: "#323437",
+              foreground: "646669",
+            },
+            focus: "#323437",
+          },
+        },
+      },
+    }),
+            require("tailwindcss-animate"),]
+   
 } satisfies Config
 
 export default config
