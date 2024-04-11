@@ -132,7 +132,7 @@ export default function Home() {
           setRawWordInput(prevRawWordInput => prevRawWordInput + 1);
           letterIndex = 0;
           pxPerRow = pxPerRow + spaceWidth;
-          if(pxPerRow + (nextWord.length * charWidth) >= getWidthInPx(wordBoxRef.current)) { //Row switching, inside the space statement, triggered when pressing space 
+          if(pxPerRow + (nextWord.length * charWidth) + spaceWidth >= getWidthInPx(wordBoxRef.current)) { //Row switching, inside the space statement, triggered when pressing space 
             setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);                           //upon completing last word of the row
             setNrOfChars(0);
             setNrOfSpaces(0);
