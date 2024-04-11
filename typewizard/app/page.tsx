@@ -94,8 +94,6 @@ export default function Home() {
       const nextWord = words[wordIndex + 1];
       const currentLetter = currentWord[letterIndex];
       const letterIndexState = letterIndex;       //letterIndex made const to be used in useState
-
-      console.log(correctCharacters);
       
       if(timeLeft) { //To disable keyboard input when timer has run out
 
@@ -124,7 +122,7 @@ export default function Home() {
             pxPerRow =  pxPerRow + (currentWord.length - letterIndexState)*charWidth;
           } 
 
-          else if(correctCharacters == currentWord.length) { //If on the last letter, check if the word is correct
+          else if(correctCharacters >= currentWord.length) { //If on the last letter, check if the word is correct
             setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
             correctCharacters = 0;
           }
