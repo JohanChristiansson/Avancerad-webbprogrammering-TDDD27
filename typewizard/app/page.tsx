@@ -2,7 +2,7 @@
 import { getRandomWords } from '../app/gamelogic/engine'
 import '../app/globals.css';
 import React, { useState, useEffect, useRef } from 'react';
-import Button from '../components/ui/button';
+import {LongButton, RestartButton, LoginButton} from '../components/ui/button';
 
 const getWidthInPx = (element: HTMLElement | null): number => {
   if (!element) return 0;
@@ -59,14 +59,42 @@ export default function Home() {
         setTimeout(() => {
             setShowExplosion(false);
             setShowStats(true);
-        }, 500); // 0.5 seconds = 500 milliseconds
+        }, 650); // 0.5 seconds = 500 milliseconds
     }
 }, [timeLeft]);
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-  const handleButtonClick = (): void => {
-      console.log('Button clicked!');
+//BUTTONS------------------------------------------------------------------------------------------------------------------------------------------------------
+  const handleMultiPlayerButtonClick = (): void => {
+      
   };
+
+  const handleLoginButtonClick = (): void => {
+      
+  };
+
+  const handleRestartButtonClick = (): void => {
+        // Reset the timer
+        setTimer(time);
+        setTimerRunning(false);
+        setTimeLeft(true);
+    
+        // Reset words and generate new random words
+        setWords(getRandomWords(100, "1337851"));
+    
+        // Reset typed letters and other state variables
+        setTypedLetters([]);
+        setRawCharInput(0);
+        setRawWordInput(0);
+        setCorrectWords(0);
+    
+        // Reset rendering-related variables
+        setCurrentRowIndex(0);
+        setNrOfChars(0);
+        setNrOfSpaces(0);
+        setShowStats(false);
+
+  }
   //-----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -187,14 +215,19 @@ export default function Home() {
 //https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png
 //https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png
 //https://i.postimg.cc/zDnxS3xQ/explosion.gif
-  
+//https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png
+//https://i.postimg.cc/htpKtsw9/restart-Press.png
+//https://i.postimg.cc/y6p9DqgN/wizard-Head.png
+//https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png
+//https://i.postimg.cc/BnbJtyFJ/SignLogo.png
+//https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png
+
 const renderExplosion = () => {
   return (
       <div className='explosionContainer'>
           <img 
               src='https://i.postimg.cc/zDnxS3xQ/explosion.gif' 
-              alt='Explosion' 
-              style={{ width: '400px', height: '400px' }} // Adjust width and height as needed
+              style={{ width: '400px', height: '400px' }}
           />
       </div>
   );
@@ -214,14 +247,11 @@ const renderStats = () => {
   return (
     <main>
 
-      <div className='backgroundPicture'>
-
-
-
+      <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
         <div className="logo-container">
-          <img src="https://i.postimg.cc/TPBc4pTN/Type-Wizard-Logo3-removebg-preview.png"
-            style={{ width: '650px', height: '200px' }} />
+          <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+            style={{ width: '400px', height: '400px' }} />
         </div>
 
         <h1 className="timer">{timer}</h1>
@@ -229,7 +259,6 @@ const renderStats = () => {
           <div ref={wordBoxRef} className="wordBox">
 
             
-
             {/*CURSOR*/}
             <div
               className="cursor"
@@ -247,7 +276,7 @@ const renderStats = () => {
               }}
             ></div>
 
-              <div className='wordWrapper'>
+              <div className='wordWrapper'> {/*EXTRA DIV TO MAKE CURSOR NOT CLIP*/}
                 {/*WORDS*/}
                 {words.map((word, wIndex) => (
                   <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-rowHeight * currentRowIndex}px` }}>
@@ -270,22 +299,75 @@ const renderStats = () => {
             </div>  
           </div>
         )}
-      {/* Render the explosion when showExplosion is true */}
+
+      {/*WHEN TIME HAS RUN OUT, THESE FUNCTIONS ARE CALLED IN ORDER*/}
       {showExplosion && renderExplosion()}
-      {/* Render the stats when showStats is true */}
       {showStats && renderStats()}
       </div>
+
+
      {/*MULTIPLAYER BUTTON*/}
-     <div className='multiplayerButton'>
-         <Button 
-            onClick={handleButtonClick}
-            disabled={false}
-            imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png" // Specify image URL
-            
-            
+      <div className='multiplayerButton'>
+         <LongButton 
+          onClick={handleMultiPlayerButtonClick}
+          disabled={false}
+          imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png"
+          imgSrc2='https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png'
+          style={{ width: '250px', height: '120px' }} //Must set size to be visible
         >
-        </Button>
+        </LongButton>
       </div>
+
+      {/*RESTART BUTTON*/}
+      <div className='restartButton'>
+        <RestartButton 
+              onClick={handleRestartButtonClick}
+              disabled={false}
+              imgSrc="https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png"  
+              imgSrc2='https://i.postimg.cc/htpKtsw9/restart-Press.png'
+              style={{width: '115px', height: '112px'}}
+          >
+        </RestartButton>
+      </div>
+
+    {/*LOGIN BUTTON*/}
+    <div className='loginButton'>
+        <LoginButton 
+              onClick={handleLoginButtonClick}
+              disabled={false}
+              imgSrc="https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png"  
+              imgSrc2='https://i.postimg.cc/y6p9DqgN/wizard-Head.png'
+              style={{width: '115px', height: '112px'}}
+          >
+        </LoginButton>
+      </div>
+            
+      {/*MULTIPLAYER STICK*/}
+      <div className='multiplayerStick'>
+        <img 
+          src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
+          style={{ width: '20px', height: '150px' }}
+          />
+      </div>
+
+      {/*RESTART STICK*/}
+      <div className='restartStick'>
+        <img 
+          src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
+          style={{ width: '20px', height: '150px' }}
+        />
+      </div>
+
+      {/*LOGIN STICK*/}
+      <div className='loginStick'>
+        <img 
+          src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
+          style={{ width: '20px', height: '150px' }}
+        />
+      </div>
+
+
+
     </main>
   );
 }

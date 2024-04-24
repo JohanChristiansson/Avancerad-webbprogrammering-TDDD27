@@ -13,6 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <>
       <html lang="en">
+        <link rel="icon" href="https://i.postimg.cc/cLycJq2n/haticon.png" type="image/png" />
         <head />
         <body>
           {children}
