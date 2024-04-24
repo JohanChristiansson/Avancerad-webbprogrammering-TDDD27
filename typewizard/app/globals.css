@@ -31,9 +31,8 @@ body {
 }
 
 .logo-container {
-  margin-top: 2.5%;
-  margin-left: 1.5%;
-  
+  margin-top: 2, 5%;
+  margin-left: 1, 5%;
 }
 
 .wordBox {
@@ -79,8 +78,6 @@ body {
 .incorrectWord {
   text-decoration: underline red;
 }
-
-
 
 .cursor {
   transition: left 0.15s ease;
