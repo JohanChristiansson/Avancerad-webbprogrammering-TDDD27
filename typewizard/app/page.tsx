@@ -59,7 +59,7 @@ export default function Home() {
         setTimeout(() => {
             setShowExplosion(false);
             setShowStats(true);
-        }, 650); // 0.5 seconds = 500 milliseconds
+        }, 1000); // 0.5 seconds = 500 milliseconds
     }
 }, [timeLeft]);
 //------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -221,12 +221,13 @@ export default function Home() {
 //https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png
 //https://i.postimg.cc/BnbJtyFJ/SignLogo.png
 //https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png
+//https://i.postimg.cc/nrX6n85W/fireball-Animation.gif
 
 const renderExplosion = () => {
   return (
       <div className='explosionContainer'>
           <img 
-              src='https://i.postimg.cc/zDnxS3xQ/explosion.gif' 
+              src='https://i.postimg.cc/nrX6n85W/fireball-Animation.gif' 
               style={{ width: '400px', height: '400px' }}
           />
       </div>
