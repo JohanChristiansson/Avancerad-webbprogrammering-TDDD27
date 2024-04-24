@@ -112,6 +112,13 @@ body {
   font-weight: bold;
 }
 
+.explosionContainer {
+  margin-top: 0%;
+  margin-left: 40%;
+  width: 500px;
+  height: 500px;
+}
+
 .statsBox {
   width: 25vw;
   /* Set width to 50% of the viewport width */
@@ -137,4 +144,11 @@ body {
   /* Calculate max height based on line height and larger font size */
   font-weight: bold;
   /* overflow: hidden;*/
+}
+
+/*BUTTONS*/
+
+.multiplayerButton {
+  margin-top: 35%;
+  margin-left: 42%;
 }

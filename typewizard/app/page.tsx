@@ -2,6 +2,7 @@
 import { getRandomWords } from '../app/gamelogic/engine'
 import '../app/globals.css';
 import React, { useState, useEffect, useRef } from 'react';
+import Button from '../components/ui/button';
 
 const getWidthInPx = (element: HTMLElement | null): number => {
   if (!element) return 0;
@@ -37,7 +38,7 @@ export default function Home() {
             // Timer reached zero, stop the timer
             setTimerRunning(false);
             clearInterval(intervalId);
-            setShowStats(true);
+            //setShowStats(true);
             setTimeLeft(false);
             return 0;
           }
@@ -49,6 +50,23 @@ export default function Home() {
     return () => clearInterval(intervalId);
   }, [timerRunning]);
 
+  const [showExplosion, setShowExplosion] = useState(false);
+
+  useEffect(() => {
+    if (!timeLeft) {
+        setShowExplosion(true);
+        // Hide the explosion after 0.5 seconds and show stats
+        setTimeout(() => {
+            setShowExplosion(false);
+            setShowStats(true);
+        }, 500); // 0.5 seconds = 500 milliseconds
+    }
+}, [timeLeft]);
+
+
+  const handleButtonClick = (): void => {
+      console.log('Button clicked!');
+  };
   //-----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -166,7 +184,23 @@ export default function Home() {
 
   //-------------------RENDERING------------------------------------------------------------------------------------------------------------------------------------------------
 //https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png
-  const renderStats = () => {
+//https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png
+//https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png
+//https://i.postimg.cc/zDnxS3xQ/explosion.gif
+  
+const renderExplosion = () => {
+  return (
+      <div className='explosionContainer'>
+          <img 
+              src='https://i.postimg.cc/zDnxS3xQ/explosion.gif' 
+              alt='Explosion' 
+              style={{ width: '400px', height: '400px' }} // Adjust width and height as needed
+          />
+      </div>
+  );
+};
+
+const renderStats = () => {
     return (
       <div className="statsBox">
         <p>Raw character input: {rawCharInput}</p>
@@ -181,6 +215,8 @@ export default function Home() {
     <main>
 
       <div className='backgroundPicture'>
+
+
 
 
         <div className="logo-container">
@@ -234,7 +270,21 @@ export default function Home() {
             </div>  
           </div>
         )}
-        {showStats && renderStats()}
+      {/* Render the explosion when showExplosion is true */}
+      {showExplosion && renderExplosion()}
+      {/* Render the stats when showStats is true */}
+      {showStats && renderStats()}
+      </div>
+     {/*MULTIPLAYER BUTTON*/}
+     <div className='multiplayerButton'>
+         <Button 
+            onClick={handleButtonClick}
+            disabled={false}
+            imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png" // Specify image URL
+            
+            
+        >
+        </Button>
       </div>
     </main>
   );
