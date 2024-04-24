@@ -31,8 +31,8 @@ body {
 }
 
 .logo-container {
-  margin-top: 2, 5%;
-  margin-left: 1, 5%;
+  margin-top: 2.8%;
+  margin-left: 1.0%;
 }
 
 .wordBox {
@@ -56,9 +56,16 @@ body {
   /* Adjust line height as per your design */
   max-height: calc(1.7 * 2.25em);
   /* Calculate max height based on line height and larger font size */
-  overflow: hidden;
+  
   font-weight: bold;
 
+}
+
+.wordWrapper {
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: calc(1.7 * 2.25em);
 }
 
 .word {
@@ -81,6 +88,8 @@ body {
 
 .cursor {
   transition: left 0.15s ease;
+  rotate: 0.25rad;
+  
 
 
 }

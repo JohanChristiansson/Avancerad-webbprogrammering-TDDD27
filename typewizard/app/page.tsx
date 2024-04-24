@@ -165,7 +165,7 @@ export default function Home() {
   //------------------------------------------------------------------------------------------------------------------------------
 
   //-------------------RENDERING------------------------------------------------------------------------------------------------------------------------------------------------
-
+//https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png
   const renderStats = () => {
     return (
       <div className="statsBox">
@@ -192,38 +192,46 @@ export default function Home() {
         {timeLeft && (
           <div ref={wordBoxRef} className="wordBox">
 
+            
+
             {/*CURSOR*/}
             <div
               className="cursor"
               style={{
                 position: 'absolute',
-                left: `${nrOfChars * charWidth + nrOfSpaces * spaceWidth}px`,
-                height: '30px',
-                width: '2px',
-                backgroundColor: 'yellow',
+                top: '-10px',
+                left: `${nrOfChars * charWidth + nrOfSpaces * spaceWidth - 20}px`,
+                height: '45px',
+                width: '35px',
+                /*backgroundColor: 'yellow',*/
+                backgroundImage: `url('https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png')`,
+                backgroundSize: 'cover', // Optional: This ensures the image covers the entire div
+                backgroundPosition: 'center', // Optional: This centers the image within the div
+                
               }}
             ></div>
 
-
-            {/*WORDS*/}
-            {words.map((word, wIndex) => (
-              <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-rowHeight * currentRowIndex}px` }}>
-                {word.split('').map((letter, lIndex) => {
-                  const typedLetter = typedLetters.find(item => item.wordIndex === wIndex && item.position === lIndex);
-                  if (typedLetter) {
-                    return (
-                      <span
-                        key={lIndex}
-                        className={typedLetter.correct ? 'correct' : 'incorrect'}
-                      >
-                        {letter}
-                      </span>
-                    );
-                  }
-                  return <span key={lIndex}>{letter}</span>;
-                })}
-              </span>
-            ))}
+              <div className='wordWrapper'>
+                {/*WORDS*/}
+                {words.map((word, wIndex) => (
+                  <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-rowHeight * currentRowIndex}px` }}>
+                    {word.split('').map((letter, lIndex) => {
+                      const typedLetter = typedLetters.find(item => item.wordIndex === wIndex && item.position === lIndex);
+                      if (typedLetter) {
+                        return (
+                          <span
+                            key={lIndex}
+                            className={typedLetter.correct ? 'correct' : 'incorrect'}
+                          >
+                            {letter}
+                          </span>
+                        );
+                      }
+                      return <span key={lIndex}>{letter}</span>;
+                    })}
+                  </span>
+                ))}
+            </div>  
           </div>
         )}
         {showStats && renderStats()}
