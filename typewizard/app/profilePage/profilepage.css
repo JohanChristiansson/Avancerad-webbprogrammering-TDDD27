@@ -1,0 +1,54 @@
+
+
+.playerContainer {
+    
+    position: absolute;
+    overflow: hidden;
+    left: 2.5%;
+    bottom: 25%;
+    width: 95%;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+}
+
+.playerContainer h1 {
+    color: white;
+    font-size: 32px;
+    margin-left: 35%;
+    margin-bottom: -8%;
+    
+
+}
+
+.player1 {
+    
+    height: 100%;
+    margin-right: -14%;
+}
+
+.player2 {
+    
+    height: 100%;
+    margin-right: -14%;
+    margin-left: -7%;
+    margin-bottom: 15%;
+}
+
+.player3 {
+     
+    height: 100%;
+    margin-right: -14%;
+}
+
+.player4 {
+     
+    height: 100%;
+    margin-right: -14%;
+}
+
+.player2 img {
+    height: 170%;
+    width: 170%;
+    
+}

@@ -3,6 +3,8 @@ import { getRandomWords } from '../app/gamelogic/engine'
 import '../app/globals.css';
 import React, { useState, useEffect, useRef } from 'react';
 import {LongButton, RestartButton, LoginButton} from '../components/ui/button';
+import { usePathname, useRouter } from 'next/navigation';
+
 
 const getWidthInPx = (element: HTMLElement | null): number => {
   if (!element) return 0;
@@ -12,9 +14,11 @@ const getWidthInPx = (element: HTMLElement | null): number => {
 
 export default function Home() {
 
+  const router = useRouter();
+
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  const time = 30;
+  const time = 3;
   const [timer, setTimer] = useState(time);
   const [timerRunning, setTimerRunning] = useState(false); //To start timer
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
@@ -62,6 +66,7 @@ export default function Home() {
         }, 1000); // 0.5 seconds = 500 milliseconds
     }
 }, [timeLeft]);
+
 //------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //BUTTONS------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +75,8 @@ export default function Home() {
   };
 
   const handleLoginButtonClick = (): void => {
-      
+    router.push('/profilePage');
+    
   };
 
   const handleRestartButtonClick = (): void => {
@@ -222,6 +228,12 @@ export default function Home() {
 //https://i.postimg.cc/BnbJtyFJ/SignLogo.png
 //https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png
 //https://i.postimg.cc/nrX6n85W/fireball-Animation.gif
+//https://i.postimg.cc/LsDPp5rx/paper-Pixel2-removebg-preview.png
+//https://i.postimg.cc/cC2500vb/pixelpaper3-removebg-preview-1-1.png
+//https://i.postimg.cc/Vsx3xWXL/pixelpaper3-removebg-preview-1-1-1.png
+//https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png
+//https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif
+//https://i.postimg.cc/DfgQq25Q/Wizard-Player2-ezgif-com-gif-maker-1.gif
 
 const renderExplosion = () => {
   return (
@@ -249,6 +261,7 @@ const renderStats = () => {
     <main>
 
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
+        
 
         <div className="logo-container">
           <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
@@ -256,118 +269,127 @@ const renderStats = () => {
         </div>
 
         <h1 className="timer">{timer}</h1>
-        {timeLeft && (
-          <div ref={wordBoxRef} className="wordBox">
+        
+          {timeLeft && (
+          <div className='wordBoxBackground'>
+            <div ref={wordBoxRef} className="wordBox">
 
             
-            {/*CURSOR*/}
-            <div
-              className="cursor"
-              style={{
-                position: 'absolute',
-                top: '-10px',
-                left: `${nrOfChars * charWidth + nrOfSpaces * spaceWidth - 20}px`,
-                height: '45px',
-                width: '35px',
-                /*backgroundColor: 'yellow',*/
-                backgroundImage: `url('https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png')`,
-                backgroundSize: 'cover', // Optional: This ensures the image covers the entire div
-                backgroundPosition: 'center', // Optional: This centers the image within the div
+            
                 
-              }}
-            ></div>
+                {/*CURSOR*/}
+                <div
+                  className="cursor"
+                  style={{
+                    position: 'absolute',
+                    top: '-10px',
+                    left: `${nrOfChars * charWidth + nrOfSpaces * spaceWidth - 20}px`,
+                    height: '45px',
+                    width: '35px',
+                    /*backgroundColor: 'yellow',*/
+                    backgroundImage: `url('https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png')`,
+                    backgroundSize: 'cover', // Optional: This ensures the image covers the entire div
+                    backgroundPosition: 'center', // Optional: This centers the image within the div
+                    
+                  }}
+                ></div>
 
-              <div className='wordWrapper'> {/*EXTRA DIV TO MAKE CURSOR NOT CLIP*/}
-                {/*WORDS*/}
-                {words.map((word, wIndex) => (
-                  <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-rowHeight * currentRowIndex}px` }}>
-                    {word.split('').map((letter, lIndex) => {
-                      const typedLetter = typedLetters.find(item => item.wordIndex === wIndex && item.position === lIndex);
-                      if (typedLetter) {
-                        return (
-                          <span
-                            key={lIndex}
-                            className={typedLetter.correct ? 'correct' : 'incorrect'}
-                          >
-                            {letter}
-                          </span>
-                        );
-                      }
-                      return <span key={lIndex}>{letter}</span>;
-                    })}
-                  </span>
-                ))}
-            </div>  
+                  <div className='wordWrapper'> {/*EXTRA DIV TO MAKE CURSOR NOT CLIP*/}
+                    {/*WORDS*/}
+                    {words.map((word, wIndex) => (
+                      <span key={wIndex} className={'word'} style={{ position: 'relative', top: `${-rowHeight * currentRowIndex}px` }}>
+                        {word.split('').map((letter, lIndex) => {
+                          const typedLetter = typedLetters.find(item => item.wordIndex === wIndex && item.position === lIndex);
+                          if (typedLetter) {
+                            return (
+                              <span
+                                key={lIndex}
+                                className={typedLetter.correct ? 'correct' : 'incorrect'}
+                              >
+                                {letter}
+                              </span>
+                            );
+                          }
+                          return <span key={lIndex}>{letter}</span>;
+                        })}
+                      </span>
+                    ))}
+                </div>  
+              
+            </div>
           </div>
-        )}
-
-      {/*WHEN TIME HAS RUN OUT, THESE FUNCTIONS ARE CALLED IN ORDER*/}
-      {showExplosion && renderExplosion()}
-      {showStats && renderStats()}
+          )}
+          
+        
+        {/*WHEN TIME HAS RUN OUT, THESE FUNCTIONS ARE CALLED IN ORDER*/}
+        {showExplosion && renderExplosion()}
+        {showStats && renderStats()}
+        
       </div>
 
-
-     {/*MULTIPLAYER BUTTON*/}
-      <div className='multiplayerButton'>
-         <LongButton 
-          onClick={handleMultiPlayerButtonClick}
-          disabled={false}
-          imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png"
-          imgSrc2='https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png'
-          style={{ width: '250px', height: '120px' }} //Must set size to be visible
-        >
-        </LongButton>
-      </div>
-
-      {/*RESTART BUTTON*/}
-      <div className='restartButton'>
-        <RestartButton 
-              onClick={handleRestartButtonClick}
+      <div className='buttonContainer'>
+        
+        {/*MULTIPLAYER BUTTON*/}
+          <div className='multiplayerButton'>
+            <LongButton 
+              onClick={handleMultiPlayerButtonClick}
               disabled={false}
-              imgSrc="https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png"  
-              imgSrc2='https://i.postimg.cc/htpKtsw9/restart-Press.png'
-              style={{width: '115px', height: '112px'}}
-          >
-        </RestartButton>
-      </div>
+              imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png"
+              imgSrc2='https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png'
+              style={{ width: '250px', height: '120px' }} //Must set size to be visible
+            >
+            </LongButton>
+          </div>
 
-    {/*LOGIN BUTTON*/}
-    <div className='loginButton'>
-        <LoginButton 
-              onClick={handleLoginButtonClick}
-              disabled={false}
-              imgSrc="https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png"  
-              imgSrc2='https://i.postimg.cc/y6p9DqgN/wizard-Head.png'
-              style={{width: '115px', height: '112px'}}
-          >
-        </LoginButton>
-      </div>
-            
-      {/*MULTIPLAYER STICK*/}
-      <div className='multiplayerStick'>
-        <img 
-          src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
-          style={{ width: '20px', height: '150px' }}
-          />
-      </div>
+          {/*RESTART BUTTON*/}
+          <div className='restartButton'>
+            <RestartButton 
+                  onClick={handleRestartButtonClick}
+                  disabled={false}
+                  imgSrc="https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png"  
+                  imgSrc2='https://i.postimg.cc/htpKtsw9/restart-Press.png'
+                  style={{width: '115px', height: '112px'}}
+              >
+            </RestartButton>
+          </div>
 
-      {/*RESTART STICK*/}
-      <div className='restartStick'>
-        <img 
-          src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
-          style={{ width: '20px', height: '150px' }}
-        />
+        {/*LOGIN BUTTON*/}
+        <div className='loginButton'>
+            <LoginButton 
+                  onClick={handleLoginButtonClick}
+                  disabled={false}
+                  imgSrc="https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png"  
+                  imgSrc2='https://i.postimg.cc/y6p9DqgN/wizard-Head.png'
+                  style={{width: '115px', height: '112px'}}
+              >
+            </LoginButton>
+          </div>
+                
+          {/*MULTIPLAYER STICK*/}
+          <div className='multiplayerStick'>
+            <img 
+              src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
+              style={{ width: '20px', height: '200px' }}
+              />
+          </div>
+
+          {/*RESTART STICK*/}
+          <div className='restartStick'>
+            <img 
+              src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
+              style={{ width: '20px', height: '200px' }}
+            />
+          </div>
+
+          {/*LOGIN STICK*/}
+          <div className='loginStick'>
+            <img 
+              src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
+              style={{ width: '20px', height: '160px' }}
+            />
+          </div>
+
       </div>
-
-      {/*LOGIN STICK*/}
-      <div className='loginStick'>
-        <img 
-          src='https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png' 
-          style={{ width: '20px', height: '150px' }}
-        />
-      </div>
-
-
 
     </main>
   );
