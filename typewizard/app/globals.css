@@ -3,12 +3,6 @@
 @tailwind utilities;
 
 
-body {
-  background-color: #323437;
-  color: #646669;
-
-}
-
 .wordBox {
   /*POSITIONING*/
   width: 60vw;

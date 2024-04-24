@@ -18,8 +18,8 @@ export default function Page() {
             <section>
                 <ToggleGroup type="single">
                     <ToggleGroupItem size="lg" value="time">time</ToggleGroupItem>
-                    <ToggleGroupItem size="lg" value="words">words</ToggleGroupItem>
-                    <ToggleGroupItem size="lg" value="d">C</ToggleGroupItem>
+                    <ToggleGroupItem size="lg" value="word">word</ToggleGroupItem>
+                    <ToggleGroupItem size="lg" value="temp">temp</ToggleGroupItem>
                 </ToggleGroup>
             </section>
 
