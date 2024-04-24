@@ -30,7 +30,11 @@ body {
   /* Keep the background image behind other elements */
 }
 
-.logo-container {}
+.logo-container {
+  margin-top: 2.5%;
+  margin-left: 1.5%;
+  
+}
 
 .wordBox {
   /*POSITIONING*/
