@@ -184,7 +184,7 @@ export default function Home() {
 
 
         <div className="logo-container">
-          <img src="https://i.postimg.cc/2jqWMHPy/Type-Wizard-Logo2-removebg-preview.png"
+          <img src="https://i.postimg.cc/TPBc4pTN/Type-Wizard-Logo3-removebg-preview.png"
             style={{ width: '650px', height: '200px' }} />
         </div>
 
