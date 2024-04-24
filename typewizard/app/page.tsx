@@ -184,8 +184,8 @@ export default function Home() {
        
 
       <div className ="logo-container">
-      <img src="https://private-user-images.githubusercontent.com/121040102/325192454-4ac7fd2b-1cef-4023-be40-5fb59287908e.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTM5NTY1ODYsIm5iZiI6MTcxMzk1NjI4NiwicGF0aCI6Ii8xMjEwNDAxMDIvMzI1MTkyNDU0LTRhYzdmZDJiLTFjZWYtNDAyMy1iZTQwLTVmYjU5Mjg3OTA4ZS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNDI0JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDQyNFQxMDU4MDZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00NzQ3MmYyNzE0ZjMzMjJkNzYyYTJjOWYyMWViNGNjZDczODFmMjY5ZGQ2ZjA4YjEzMTNhODI2NjRkNzUxMTc1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.TAR6BSSzkbX2XvAEPjz6ojDdxdZ-IdOvjnAD61usKLs"
-       style={{ width: '650px', height: '200px'}} />
+      <img src="https://i.postimg.cc/TPBc4pTN/Type-Wizard-Logo3-removebg-preview.png"
+       style={{ width: '450px', height: '180px'}} />
       </div>
       
       <h1 className="timer">{timer}</h1>
