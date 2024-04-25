@@ -3,7 +3,8 @@ import { getRandomWords } from '../app/gamelogic/engine'
 import '../app/globals.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '../node_modules/next/navigation'
+//next/navigation';
 
 
 const getWidthInPx = (element: HTMLElement | null): number => {
