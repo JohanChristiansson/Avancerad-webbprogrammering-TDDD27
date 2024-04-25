@@ -352,14 +352,14 @@ export default function Home() {
 
        <div className='loginContainer'>
         <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
-        <input className='passwordBox' type="text" name="password" placeholder="Password"></input>
+        <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
         <div className='loginButtonContainer'>
           <LongButton
               onClick={handleLoginButtonClick}
               disabled={false}
               imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png"
               imgSrc2='https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png'
-              style={{ width: '250px', height: '120px' }} //Must set size to be visible
+              style={{ width: '12vw', height: '12vh' }} //Must set size to be visible
             >
             </LongButton>
           </div>

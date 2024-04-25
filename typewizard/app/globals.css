@@ -17,6 +17,7 @@
 }
 
 .logo-container {
+  position: absolute;
   margin-top: -6.5%;
   margin-left: -4%;
 }
@@ -233,13 +234,13 @@
 
 
 .loginContainer {
+  position: absolute;
   background-image: url("https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png");
   background-size: 50%;
-  position: relative;
   width: 25vw;
   height: 55vh;
   left: 37.5vw;
-  top: -20vh;
+  top: 12vh;
   border-width: 15px;
   border-style: groove;
   border-color: #965948;
@@ -257,6 +258,8 @@
   border-width: 4px;
   border-color: #965948;
   border-style: groove;
+  background-color: antiquewhite;
+  font-family: cursive;
   
 }
 
@@ -269,9 +272,17 @@
   border-width: 4px;
   border-color: #965948;
   border-style: groove;
+  background-color: antiquewhite;
+  font-family: cursive;
 }
 
 .loginButtonContainer {
+  position: absolute;
+  width: 70%;
+  height: 20%;
   margin-top: 8%;
-  margin-left: 20%;
+  margin-left: 15%;
+}
+.loginButtonContainer img {
+  margin-left: 18%;
 }
