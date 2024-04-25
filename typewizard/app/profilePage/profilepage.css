@@ -1,7 +1,5 @@
-
-
 .playerContainer {
-    
+
     position: absolute;
     overflow: hidden;
     left: 2.5%;
@@ -17,38 +15,64 @@
     font-size: 32px;
     margin-left: 35%;
     margin-bottom: -8%;
-    
+
 
 }
 
 .player1 {
-    
+
     height: 100%;
-    margin-right: -14%;
+    width: auto;
+    position: relative;
+    left: -3%;
+    top: 20%;
 }
 
 .player2 {
-    
+
     height: 100%;
-    margin-right: -14%;
-    margin-left: -7%;
     margin-bottom: 15%;
+    width: auto;
+    position: relative;
+    left: -15%;
 }
 
 .player3 {
-     
+
     height: 100%;
-    margin-right: -14%;
+    width: auto;
+    position: relative;
+    left: 15%;
+    top: 20%;
 }
 
 .player4 {
-     
+
     height: 100%;
-    margin-right: -14%;
+    width: auto;
+    position: relative;
+    left: 5%;
+    top: 20%;
 }
 
 .player2 img {
     height: 170%;
-    width: 170%;
-    
+    width: auto;
+
+
+}
+
+.textBox {
+
+    position: relative;
+    top: 25vh;
+    left: 33vw;
+    width: 70vw;
+    height: 50vh;
+    background-image: url("https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png");
+    background-size: 50% 60%;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-clip: unset;
+    z-index: -1;
 }
