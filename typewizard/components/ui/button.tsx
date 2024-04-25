@@ -7,7 +7,7 @@ interface ButtonProps {
   
 
   // Content inside the button
-  children: React.ReactNode;
+  children?: React.ReactNode;
 
  //? means parameter is optional
   style?: React.CSSProperties;
