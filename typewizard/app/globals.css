@@ -91,7 +91,6 @@
 }
 
 .timer {
-
   display: flex;
   /* Use flexbox */
   justify-content: center;
@@ -229,4 +228,50 @@
   max-width: 10%;
   max-height: 10%;
   z-index: -1;
+}
+
+
+
+.loginContainer {
+  background-image: url("https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png");
+  background-size: 50%;
+  position: relative;
+  width: 25vw;
+  height: 55vh;
+  left: 37.5vw;
+  top: -20vh;
+  border-width: 15px;
+  border-style: groove;
+  border-color: #965948;
+
+}
+
+.usernameBox {
+  border: 1px;
+  border-color: black;
+  width: 70%;
+  height: 10%;
+  margin-top: 35%;
+  margin-left: 15%;
+  text-align: center;
+  border-width: 4px;
+  border-color: #965948;
+  border-style: groove;
+  
+}
+
+.passwordBox {
+  width: 70%;
+  height: 10%;
+  margin-top: 10%;
+  margin-left: 15%;
+  text-align: center;
+  border-width: 4px;
+  border-color: #965948;
+  border-style: groove;
+}
+
+.loginButtonContainer {
+  margin-top: 8%;
+  margin-left: 20%;
 }

@@ -71,15 +71,27 @@ export default function Home() {
   //------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   //BUTTONS------------------------------------------------------------------------------------------------------------------------------------------------------
+
+  const [showLoginBox, setShowLoginBox] = useState(false);
+
   const handleMultiPlayerButtonClick = (): void => {
     router.push('/lobby');
 
   };
 
-  const handleLoginButtonClick = (): void => {
-
-
+  const handleProfileButtonClick = (): void => {
+    if(showLoginBox) {
+      setShowLoginBox(false);
+    }
+    else {
+      setShowLoginBox(true);
+    }
   };
+
+  const handleLoginButtonClick = (): void => {
+    router.push('/profile');
+  };
+
 
   const handleRestartButtonClick = (): void => {
     // Reset the timer
@@ -138,10 +150,14 @@ export default function Home() {
 
 
 
-
+//THIS IS THE BIG USEEFFECT, BASICALLY CONTROLLING THE WHOLE GAME
   useEffect(() => {
-
+    
     const handleKeyDown = (event: KeyboardEvent) => {
+
+      if (showLoginBox) { //prevents writing when the loginbox is open
+        return;
+      }
 
       const { key, code } = event;
       const currentWord = words[wordIndex];
@@ -215,7 +231,7 @@ export default function Home() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [words]);
+  }, [words, showLoginBox]);
   //------------------------------------------------------------------------------------------------------------------------------
 
   //-------------------RENDERING------------------------------------------------------------------------------------------------------------------------------------------------
@@ -236,6 +252,10 @@ export default function Home() {
   //https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png
   //https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif
   //https://i.postimg.cc/DfgQq25Q/Wizard-Player2-ezgif-com-gif-maker-1.gif
+  //https://i.postimg.cc/02snssq6/pixel-Box-removebg-preview.png
+  //https://i.postimg.cc/50HJbzLm/text-Box-Pixel.png
+  //https://i.postimg.cc/2S7rwv4H/simon-sanchez-madera-tilepreview.png
+  //https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png
 
   const renderExplosion = () => {
     return (
@@ -327,6 +347,25 @@ export default function Home() {
         {showExplosion && renderExplosion()}
         {showStats && renderStats()}
 
+      {/*LOGIN BOX*/}
+      {showLoginBox && (
+
+       <div className='loginContainer'>
+        <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
+        <input className='passwordBox' type="text" name="password" placeholder="Password"></input>
+        <div className='loginButtonContainer'>
+          <LongButton
+              onClick={handleLoginButtonClick}
+              disabled={false}
+              imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png"
+              imgSrc2='https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png'
+              style={{ width: '250px', height: '120px' }} //Must set size to be visible
+            >
+            </LongButton>
+          </div>
+       </div>
+      )}
+
       </div>
 
       <div className='buttonContainer'>
@@ -358,7 +397,7 @@ export default function Home() {
         {/*LOGIN BUTTON*/}
         <div className='loginButton'>
           <LoginButton
-            onClick={handleLoginButtonClick}
+            onClick={handleProfileButtonClick}
             disabled={false}
             imgSrc="https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png"
             imgSrc2='https://i.postimg.cc/y6p9DqgN/wizard-Head.png'
@@ -392,6 +431,7 @@ export default function Home() {
         </div>
 
       </div>
+
 
     </main>
   );

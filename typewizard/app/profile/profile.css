@@ -1,0 +1,36 @@
+    
+
+
+.characterContainer {
+    position: absolute;
+    top: 12vh;
+    left: -2vw;
+    width: 30vw;
+    height: 50vh;
+
+}
+
+.characterContainer img {
+    position: absolute;
+    margin-top: -10%;
+    
+}
+
+.characterContainer h1 {
+    font-size: 32px;
+    color: antiquewhite;
+    text-align: center;
+}
+
+.profileInfoContainer {
+    background-image: url("https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png");
+    background-size: 28%;
+    border-width: 25px;
+    border-color: #965948; 
+    border-style:groove;
+    position: absolute;
+    width: 60vw;
+    height: 60vh;
+    left: 25vw;
+    top: 13vh;
+}
