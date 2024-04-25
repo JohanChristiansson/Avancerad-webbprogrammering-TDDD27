@@ -17,9 +17,9 @@ export default function Page() {
         <main className="p-24">
             <section>
                 <ToggleGroup type="single">
-                    <ToggleGroupItem size="lg" value="time">time</ToggleGroupItem>
-                    <ToggleGroupItem size="lg" value="word">word</ToggleGroupItem>
-                    <ToggleGroupItem size="lg" value="temp">temp</ToggleGroupItem>
+                    <ToggleGroupItem variant="outline" size="lg" value="time">time</ToggleGroupItem>
+                    <ToggleGroupItem variant="outline" size="lg" value="word">word</ToggleGroupItem>
+                    <ToggleGroupItem variant="outline" size="lg" value="temp">temp</ToggleGroupItem>
                 </ToggleGroup>
             </section>
 
@@ -36,16 +36,5 @@ export default function Page() {
             </section>
         </main>
 
-        //         {
-        //     <div>
-        //     { }
-        //     {[...Array(5)].map((_, index) => (
-        //         <Avatar key={index}>
-        //             <AvatarImage src={`https://github.com/shadcn.png`} />
-        //             <AvatarFallback>{String.fromCharCode(65 + index)}</AvatarFallback>
-        //         </Avatar>
-        //     ))}
-        // </div>
-        // }
     );
 };
