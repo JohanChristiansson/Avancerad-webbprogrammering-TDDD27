@@ -63,7 +63,6 @@
 }
 
 .textBoxBackground {
-    border: 1px solid red;
 
     position: relative;
     top: -30vh;
@@ -82,7 +81,6 @@
 }
 
 .textBox {
-    border: 1px solid blue;
     margin-top: 25vh;
     margin-left: 14vw;
     width: 45%;
