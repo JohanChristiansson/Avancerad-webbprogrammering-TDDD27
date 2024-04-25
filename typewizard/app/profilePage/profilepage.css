@@ -62,17 +62,28 @@
 
 }
 
-.textBox {
+.textBoxBackground {
+    border: 1px solid red;
 
     position: relative;
-    top: 25vh;
-    left: 33vw;
-    width: 70vw;
+    top: -30vh;
+    left: 25vw;
+    width: 50vw;
     height: 50vh;
     background-image: url("https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png");
-    background-size: 50% 60%;
-    background-position: left;
+    background-size: 80% 60%;
+    background-position: center;
     background-repeat: no-repeat;
     background-clip: unset;
     z-index: -1;
+}
+
+.textBoxBackground img {
+}
+
+.textBox {
+    border: 1px solid blue;
+    margin-top: 25vh;
+    margin-left: 14vw;
+    width: 45%;
 }

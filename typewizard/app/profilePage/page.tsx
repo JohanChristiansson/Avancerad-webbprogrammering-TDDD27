@@ -16,26 +16,31 @@ export default function Page() {
 
     return (
         <main>
-            <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
-                <div className='textBox '>
-                    <div className="test">
-                        <div className="absolute left-20 top-50">
-                            <Carousel>
-                                <CarouselContent>
-                                    <CarouselItem>Väldigt svår text</CarouselItem>
-                                    <CarouselItem>Very hard english text </CarouselItem>
-                                    <CarouselItem>GOT fanfic</CarouselItem>
-                                </CarouselContent>
-                                <CarouselPrevious />
-                                <CarouselNext />
-                            </Carousel>
-                        </div>
-                    </div>
-                </div>
-                <div className="logo-container">
+        <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
+            
+            <div className="logo-container">
                     <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
                         style={{ width: '400px', height: '400px' }} />
+            </div>
+               
+                <div className='textBoxBackground'>
+                    
+                    <div className="textBox">
+                        <Carousel>
+                            <CarouselContent>
+                                <CarouselItem>Väldigt svår text</CarouselItem>
+                                <CarouselItem>Very hard english text </CarouselItem>
+                                <CarouselItem>GOT fanfic</CarouselItem>
+                            </CarouselContent>
+                            <CarouselPrevious />
+                            <CarouselNext />
+                        </Carousel>
+                    </div>
+
                 </div>
+
+
+
                 <div className='playerContainer'>
 
                     <div className='player1'>
