@@ -1,13 +1,12 @@
 'use client'
 import '../globals.css';
 import '../profile/profile.css'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../../node_modules/next/navigation'
 
 
 export default function page() {
-
 
     return(
 

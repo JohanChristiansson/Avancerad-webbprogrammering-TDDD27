@@ -1,10 +1,11 @@
 'use client'
 import { getRandomWords } from '../app/gamelogic/engine'
 import '../app/globals.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
 //next/navigation';
+
 
 
 //DATABASE FOR LOGGING IN
@@ -38,16 +39,22 @@ const handleSubmit = async (event: React.FormEvent) => {
   }
 };
 
+
 const getWidthInPx = (element: HTMLElement | null): number => {
   if (!element) return 0;
   return element.offsetWidth;
 };
 
 
+//PAGE FUNCTION
 export default function Home() {
 
-  const router = useRouter();
-
+  
+  //ADMIN_STUF---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  const router = useRouter(); //FOR GOING BETWEEN PAGES
+  
+  
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   const time = 30;
@@ -156,6 +163,7 @@ export default function Home() {
         alert('There was an error connecting to the server. Contact Gustav.');
     }
 };
+
 
 const handleRegisterButtonClick = async () => {
   try {
