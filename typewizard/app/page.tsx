@@ -7,6 +7,37 @@ import { usePathname, useRouter } from '../node_modules/next/navigation'
 //next/navigation';
 
 
+//DATABASE FOR LOGGING IN
+const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault();
+
+  // Retrieve the values from the form inputs
+  const username = (event.target as HTMLFormElement).elements.namedItem('username') as HTMLInputElement;
+  const password = (event.target as HTMLFormElement).elements.namedItem('password') as HTMLInputElement;
+
+  // Send the data to the server via a POST request
+  const response = await fetch('/register', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          username: username.value,
+          password: password.value,
+      }),
+  });
+
+  if (response.ok) {
+      // Handle successful registration (e.g., redirecting to a login page)
+      console.log('User registered successfully');
+      // Redirect to login page
+      window.location.href = '/login';
+  } else {
+      // Handle registration failure (e.g., display an error message)
+      console.error('Registration failed');
+  }
+};
+
 const getWidthInPx = (element: HTMLElement | null): number => {
   if (!element) return 0;
   return element.offsetWidth;
@@ -88,9 +119,86 @@ export default function Home() {
     }
   };
 
-  const handleLoginButtonClick = (): void => {
-    router.push('/profile');
-  };
+  const handleLoginButtonClick = async () => {
+    try {
+        // Retrieve the form element
+        const form = document.querySelector('form') as HTMLFormElement;
+    
+        // Retrieve the input values
+        const username = form.elements.namedItem('username') as HTMLInputElement;
+        const password = form.elements.namedItem('password') as HTMLInputElement;
+        
+        // Send the data to the server via a POST request
+        const response = await fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value,
+            }),
+        });
+
+        if (response.ok) {
+            // Handle successful login (e.g., redirecting to the dashboard)
+            console.log('Login successful');
+            // window.location.href = '/dashboard';
+            router.push('/profile');
+        } else {
+            // Handle login failure (e.g., displaying an error message)
+            console.error('Login failed');
+            alert('Invalid username or password.');
+        }
+    } catch (error) {
+        // Catch any error that occurs during the fetch request
+        console.error('Fetch error:', error);
+        alert('There was an error connecting to the server. Contact Gustav.');
+    }
+};
+
+const handleRegisterButtonClick = async () => {
+  try {
+      // Retrieve the form element
+      const form = document.querySelector('form') as HTMLFormElement;
+
+      // Retrieve the input values
+      const username = form.elements.namedItem('username') as HTMLInputElement;
+      const password = form.elements.namedItem('password') as HTMLInputElement;
+      console.log("Username input: ", username.value);
+      console.log("Password input: ", password.value);
+
+      // Send the data to the server via a POST request
+      const response = await fetch('http://localhost:5000/register', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              username: username.value,
+              password: password.value,
+          }),
+      });
+
+      if (response && response.ok) {
+          // Handle successful registration (e.g., redirecting to the login page)
+          alert('Registration successful! Happy typing!')
+          console.log('User registered successfully');
+          console.log(response);
+          // Redirect to the login page
+          // router.push('/login');
+      } else {
+          // Handle registration failure (e.g., displaying an error message)
+          console.error('Registration failed');
+          console.log(response);
+          alert('Registration failed. Please try again.');
+      }
+  } catch (error) {
+      // Catch any error that occurs during the fetch request
+      console.error('Fetch error:', error);
+      alert('There was an error connecting to the server. Contact Gustav.');
+  }
+};
 
 
   const handleRestartButtonClick = (): void => {
@@ -257,6 +365,10 @@ export default function Home() {
   //https://i.postimg.cc/2S7rwv4H/simon-sanchez-madera-tilepreview.png
   //https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png
   //https://i.postimg.cc/QN1JNk1Y/Namnl-s-design-4.png
+  //https://i.postimg.cc/Kvg2BTMR/Pixel-Score-Board-removebg-preview.png
+  //https://i.postimg.cc/t4pnc9yt/Namnl-s-design-5-removebg-preview.png
+  //https://i.postimg.cc/PqJ2cgkJ/loginbutton-removebg-preview.png
+  //https://i.postimg.cc/Kvm7w6Pb/login-Button-Center.png
 
   const renderExplosion = () => {
     return (
@@ -311,8 +423,8 @@ export default function Home() {
                   width: '35px',
                   /*backgroundColor: 'yellow',*/
                   backgroundImage: `url('https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png')`,
-                  backgroundSize: 'cover', // Optional: This ensures the image covers the entire div
-                  backgroundPosition: 'center', // Optional: This centers the image within the div
+                  backgroundSize: 'cover', 
+                  backgroundPosition: 'center', 
 
                 }}
               ></div>
@@ -352,18 +464,12 @@ export default function Home() {
       {showLoginBox && (
 
        <div className='loginContainer'>
-        <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
-        <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
-        <div className='loginButtonContainer'>
-          <LongButton
-              onClick={handleLoginButtonClick}
-              disabled={false}
-              imgSrc="https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png"
-              imgSrc2='https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png'
-              style={{ width: '12vw', height: '12vh' }} //Must set size to be visible
-            >
-            </LongButton>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
+            <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
+          </form>
+              <button className='loginBoxButton' onClick={handleLoginButtonClick}>Login</button>
+              <button className='registerBoxButton' onClick={handleRegisterButtonClick}>Register</button>
        </div>
       )}
 

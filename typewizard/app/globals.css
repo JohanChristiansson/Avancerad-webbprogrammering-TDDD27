@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 
+
+
 .backgroundPicture {
   position: absolute;
   top: 0;
@@ -55,6 +57,7 @@
   line-height: 1.2;
   max-height: calc(1.7 * 2.25em);
   font-weight: bold;
+
 
 }
 
@@ -276,13 +279,33 @@
   font-family: cursive;
 }
 
-.loginButtonContainer {
+.loginBoxButton {
   position: absolute;
-  width: 70%;
-  height: 20%;
-  margin-top: 8%;
-  margin-left: 15%;
+  width: 40%;
+  height: 10%;
+  top: 60%;
+  left: 30%;
+  background-color: cyan;
+  border-width: 6px;
+  border-color: #965948;
+  border-style: groove;
+  font-family: cursive;
+  color: antiquewhite;
+  background-image: url("https://i.postimg.cc/2S7rwv4H/simon-sanchez-madera-tilepreview.png");
+  background-size: 100%;
 }
-.loginButtonContainer img {
-  margin-left: 18%;
+
+.registerBoxButton {
+  position: absolute;
+  width: 30%;
+  height: 10%;
+  left: 35%;
+  top: 80%;
+  border-width: 6px;
+  border-color: #965948;
+  border-style: groove;
+  font-family: cursive;
+  color: antiquewhite;
+  background-image: url("https://i.postimg.cc/2S7rwv4H/simon-sanchez-madera-tilepreview.png");
+  background-size: 100%;
 }

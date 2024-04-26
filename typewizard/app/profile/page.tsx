@@ -23,7 +23,25 @@ export default function page() {
                     }} 
                  />
             </div>
-            <div className='profileInfoContainer'></div>
+            <div className='profileInfoContainer'>
+                <div className='profileInfoHeader'>
+                    <h1>Your Profile</h1>
+                </div>
+                <div className='stats1'>
+                    <h1>-Average WPM: get_value</h1>
+                    <h1>-Highest WPM: get_value</h1>
+                    <h1>-Times played: get_value</h1>
+                    <h1>-Average accuracy: get_value</h1>
+                </div>
+                <div className='stats2'>
+                    <h1>-Online wins: get_value</h1>
+                    <h1>-Online matches played: get_value</h1>
+                    <h1>-Most played opponent: get_value</h1>
+                    <h1>-Global ranking: get_value</h1>
+                </div>
+
+
+            </div>
 
 
 
