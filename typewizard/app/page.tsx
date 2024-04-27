@@ -28,7 +28,6 @@ const handleSubmit = async (event: React.FormEvent) => {
           password: password.value,
       }),
   });
-
   if (response.ok) {
       // Handle successful registration (e.g., redirecting to a login page)
       console.log('User registered successfully');
@@ -40,8 +39,10 @@ const handleSubmit = async (event: React.FormEvent) => {
   }
 };
 
+
 //USER-RELATED
-export const currentUser = new User("null");
+export const currentUser = new User("null", false);
+
 
 
 const getWidthInPx = (element: HTMLElement | null): number => {
@@ -57,7 +58,7 @@ export default function Home() {
   //ADMIN_STUF---------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
   const router = useRouter(); //FOR GOING BETWEEN PAGES
-
+  const [loggedIn, setLoggedIn] = useState(false);
   
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -123,12 +124,16 @@ export default function Home() {
   };
 
   const handleProfileButtonClick = (): void => {
+    if(currentUser.loggedIn == false) {
     if(showLoginBox) {
       setShowLoginBox(false);
     }
     else {
       setShowLoginBox(true);
     }
+  } else {
+    router.push('/profile');
+  }
   };
 
   const handleLoginButtonClick = async () => {
@@ -143,6 +148,8 @@ export default function Home() {
         if(username.value == "admin" && password.value == "admin"){
           console.log('Login successful');
           currentUser.setUser(username.value);
+          currentUser.loggedIn = true;
+          setLoggedIn(true);
           router.push('/profile');
         } else {
         
@@ -161,6 +168,8 @@ export default function Home() {
         if (response.ok) {
             console.log('Login successful');
             currentUser.setUser(username.value);
+            currentUser.loggedIn = true;
+            setLoggedIn(true);
             router.push('/profile');
         } else {
             console.error('Login failed');

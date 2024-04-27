@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 
 export class User {
     username: string;
+    loggedIn: boolean;
 
 
-    constructor(username: string) {
+    constructor(username: string, loggedIn : boolean) {
         this.username = username;
+        this.loggedIn = loggedIn;
     }
 
     setUser(input: string) {
