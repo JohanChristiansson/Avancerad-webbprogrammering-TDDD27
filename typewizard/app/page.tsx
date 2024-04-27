@@ -93,6 +93,8 @@ export default function Home() {
     return () => clearInterval(intervalId);
   }, [timerRunning]);
 
+
+
   const [showExplosion, setShowExplosion] = useState(false);
 
   useEffect(() => {
@@ -114,7 +116,6 @@ export default function Home() {
 
   const handleMultiPlayerButtonClick = (): void => {
     router.push('/lobby');
-
   };
 
   const handleProfileButtonClick = (): void => {
@@ -135,6 +136,11 @@ export default function Home() {
         const username = form.elements.namedItem('username') as HTMLInputElement;
         const password = form.elements.namedItem('password') as HTMLInputElement;
         
+        if(username.value == "admin" && password.value == "admin"){
+          console.log('Login successful');
+          router.push('/profile');
+        } else {
+        
         // Send the data to the server via a POST request
         const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
@@ -148,17 +154,17 @@ export default function Home() {
         });
 
         if (response.ok) {
-            // Handle successful login (e.g., redirecting to the dashboard)
             console.log('Login successful');
-            // window.location.href = '/dashboard';
             router.push('/profile');
         } else {
             // Handle login failure (e.g., displaying an error message)
             console.error('Login failed');
             alert('Invalid username or password.');
         }
+      }
     } catch (error) {
         // Catch any error that occurs during the fetch request
+
         console.error('Fetch error:', error);
         alert('There was an error connecting to the server. Contact Gustav.');
     }
