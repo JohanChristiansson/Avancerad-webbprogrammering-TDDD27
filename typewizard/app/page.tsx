@@ -4,6 +4,7 @@ import '../app/globals.css';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
+import {User} from '../app/dbConnection/context'
 //next/navigation';
 
 
@@ -39,6 +40,9 @@ const handleSubmit = async (event: React.FormEvent) => {
   }
 };
 
+//USER-RELATED
+export const currentUser = new User("null");
+
 
 const getWidthInPx = (element: HTMLElement | null): number => {
   if (!element) return 0;
@@ -53,7 +57,7 @@ export default function Home() {
   //ADMIN_STUF---------------------------------------------------------------------------------------------------------------------------------------------------------------------
   
   const router = useRouter(); //FOR GOING BETWEEN PAGES
-  
+
   
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -138,6 +142,7 @@ export default function Home() {
         
         if(username.value == "admin" && password.value == "admin"){
           console.log('Login successful');
+          currentUser.setUser(username.value);
           router.push('/profile');
         } else {
         
@@ -155,9 +160,9 @@ export default function Home() {
 
         if (response.ok) {
             console.log('Login successful');
+            currentUser.setUser(username.value);
             router.push('/profile');
         } else {
-            // Handle login failure (e.g., displaying an error message)
             console.error('Login failed');
             alert('Invalid username or password.');
         }
@@ -477,14 +482,14 @@ const handleRegisterButtonClick = async () => {
       {/*LOGIN BOX*/}
       {showLoginBox && (
 
-       <div className='loginContainer'>
+      <div className='loginContainer'>
           <form onSubmit={handleSubmit}>
             <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
             <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
           </form>
               <button className='loginBoxButton' onClick={handleLoginButtonClick}>Login</button>
               <button className='registerBoxButton' onClick={handleRegisterButtonClick}>Register</button>
-       </div>
+      </div>
       )}
 
       </div>

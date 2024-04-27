@@ -54,3 +54,4 @@ def register_user(username, password):
     finally:
         # Close the connection
         conn.close()
+
