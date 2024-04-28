@@ -119,6 +119,11 @@ export default function Home() {
 
   const [showLoginBox, setShowLoginBox] = useState(false);
 
+  const handleHomeButtonClick = (event: React.MouseEvent<HTMLAnchorElement>): void => {
+    event.preventDefault();
+    router.replace('/');
+  }
+
   const handleMultiPlayerButtonClick = (): void => {
     router.push('/lobby');
   };
@@ -439,10 +444,12 @@ const handleRegisterButtonClick = async () => {
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
 
-        <div className="logo-container">
-          <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-            style={{ width: '380px', height: '380px' }} />
-        </div>
+      <div className="logo-container">
+        <a href="#" onClick={handleHomeButtonClick}>
+            <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+                style={{ width: '380px', height: '380px' }} />
+        </a>
+      </div>
 
         <h1 className="timer">{timer}</h1>
 

@@ -10,7 +10,7 @@
 
 .characterContainer {
     position: absolute;
-    top: 12vh;
+    top: 20vh;
     left: -2vw;
     width: 30vw;
     height: 50vh;
@@ -24,9 +24,13 @@
 }
 
 .characterContainer h1 {
+    position: absolute;
+    left: 45%;
+    top: 100%;
     font-size: 32px;
     color: antiquewhite;
     text-align: center;
+    
 }
 
 .profileInfoContainer {
