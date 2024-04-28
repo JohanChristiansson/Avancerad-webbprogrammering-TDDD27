@@ -14,40 +14,7 @@ export default function page() {
     const [highestWPM, setHighestWPM] = useState(0);
     const [timesPlayed, setTimesPlayed] = useState(0);
     const [avgAccuracy, setAvgAccuracy] = useState(0);
-/*
-    // Fetch user statistics when the component mounts
-useEffect(() => {
-    // Function to fetch user's average WPM
-    const fetchUserProfile = async () => {
-        // Assume `username` is available in your application's state or context
-        const username = currentUser.username; // Replace 'someUsername' with your actual username retrieval logic
 
-        try {
-            // Pass the username as a query parameter in the URL
-            const response = await fetch(`http://localhost:5000/get_avgWPM?username=${username}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                // Update state variables with the fetched data
-                setAvgWPM(data.avg_wpm);
-                // Here, you would fetch and set other stats (highestWPM, timesPlayed, avgAccuracy) as well
-            } else {
-                console.error('Failed to fetch user profile data');
-            }
-        } catch (error) {
-            console.error('Error fetching user profile data:', error);
-        }
-    };
-
-    // Call the function to fetch user statistics
-    fetchUserProfile();
-}, []); // Empty dependency array to run the effect only once on mount
-*/
 useEffect(() => {
     // Function to fetch all user information
     const fetchUserInfo = async () => {

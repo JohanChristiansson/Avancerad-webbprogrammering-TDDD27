@@ -62,7 +62,7 @@ export default function Home() {
   
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  const time = 30;
+  const time = 2;
   const [timer, setTimer] = useState(time);
   const [timerRunning, setTimerRunning] = useState(false); //To start timer
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
@@ -397,6 +397,8 @@ const handleRegisterButtonClick = async () => {
   //https://i.postimg.cc/t4pnc9yt/Namnl-s-design-5-removebg-preview.png
   //https://i.postimg.cc/PqJ2cgkJ/loginbutton-removebg-preview.png
   //https://i.postimg.cc/Kvm7w6Pb/login-Button-Center.png
+  //https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif
+  //https://i.postimg.cc/fRZxqf2V/Board-With-Hat-removebg-preview.png
 
   const renderExplosion = () => {
     return (
@@ -411,11 +413,22 @@ const handleRegisterButtonClick = async () => {
 
   const renderStats = () => {
     return (
-      <div className="statsBox">
-        <p>Raw character input: {rawCharInput}</p>
-        <p>Raw words per minute: {rawWordInput * (60 / time)}</p>
-        <p>Accuracy: {accuracy}%</p>
-        <p>Words per Minute: {correctWords * (60 / time)}</p>
+      <div>
+        <div className='statsWizard'>
+          <img
+            src='https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif'
+            style={{ width: '190px', height: '190px' }}
+          />
+        </div>
+        <div className="statsBox">
+  
+          <div className='statsText'>
+            <p>Raw character input: {rawCharInput}</p>
+            <p>Raw words per minute: {rawWordInput * (60 / time)}</p>
+            <p>Accuracy: {accuracy}%</p>
+            <p>Words per Minute: {correctWords * (60 / time)}</p>
+          </div>
+        </div>
       </div>
     );
   };
@@ -428,7 +441,7 @@ const handleRegisterButtonClick = async () => {
 
         <div className="logo-container">
           <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-            style={{ width: '400px', height: '400px' }} />
+            style={{ width: '380px', height: '380px' }} />
         </div>
 
         <h1 className="timer">{timer}</h1>
