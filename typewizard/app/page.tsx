@@ -62,7 +62,7 @@ export default function Home() {
   
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  const time = 2;
+  const time = 30;
   const [timer, setTimer] = useState(time);
   const [timerRunning, setTimerRunning] = useState(false); //To start timer
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
