@@ -299,8 +299,13 @@ const handleRegisterButtonClick = async () => {
   const accuracy = ((typedLetters.filter(item => item.correct).length / rawCharInput) * 100).toFixed(2); //Calculating accuracy directly so it can be const
   let correctCharacters = 0; //Used to calculate WPM
 
+
   useEffect(() => {
-    setWords(getRandomWords(100, "1337851", language));  //Getting random words, note that seed is currently deactivated
+    setWords(getRandomWords(100, "1337851", language));  //Getting random words when loadin page, note that seed is currently deactivated
+  }, []);
+
+  useEffect(() => {
+    setWords(getRandomWords(100, "1337851", language));  //Getting random words when language is swithced
   }, [language]);
 
 
