@@ -59,6 +59,8 @@ export default function Home() {
   
   const router = useRouter(); //FOR GOING BETWEEN PAGES
   const [loggedIn, setLoggedIn] = useState(false);
+  const [language, setLanguage] = useState<string>("english");
+  const [languageButtonLink, setLangugeButtonLink] = useState<string>("https://i.postimg.cc/MG3M1f0T/british-removebg-preview-1.png");
   
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -122,6 +124,18 @@ export default function Home() {
   const handleHomeButtonClick = (event: React.MouseEvent<HTMLAnchorElement>): void => {
     event.preventDefault();
     router.replace('/');
+  }
+
+  const handleLanguageButtonClick = (): void => {
+    if(language == "english") {
+    setLanguage("swedish");
+    setLangugeButtonLink("https://i.postimg.cc/htpfqQ5r/swedish-removebg-preview-1.png");
+    handleRestartButtonClick();
+    } else {
+      setLanguage("english");
+      setLangugeButtonLink("https://i.postimg.cc/MG3M1f0T/british-removebg-preview-1.png");
+      handleRestartButtonClick();
+    }
   }
 
   const handleMultiPlayerButtonClick = (): void => {
@@ -241,7 +255,7 @@ const handleRegisterButtonClick = async () => {
     setTimeLeft(true);
 
     // Reset words and generate new random words
-    setWords(getRandomWords(100, "1337851"));
+    setWords(getRandomWords(100, "1337851", language));
 
     // Reset typed letters and other state variables
     setTypedLetters([]);
@@ -285,8 +299,8 @@ const handleRegisterButtonClick = async () => {
   let correctCharacters = 0; //Used to calculate WPM
 
   useEffect(() => {
-    setWords(getRandomWords(100, "1337851"));  //Getting random words, note that seed is currently deactivated
-  }, []);
+    setWords(getRandomWords(100, "1337851", language));  //Getting random words, note that seed is currently deactivated
+  }, [language]);
 
 
 
@@ -404,6 +418,8 @@ const handleRegisterButtonClick = async () => {
   //https://i.postimg.cc/Kvm7w6Pb/login-Button-Center.png
   //https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif
   //https://i.postimg.cc/fRZxqf2V/Board-With-Hat-removebg-preview.png
+  //https://i.postimg.cc/MG3M1f0T/british-removebg-preview-1.png
+  //https://i.postimg.cc/htpfqQ5r/swedish-removebg-preview-1.png
 
   const renderExplosion = () => {
     return (
@@ -449,6 +465,17 @@ const handleRegisterButtonClick = async () => {
             <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
                 style={{ width: '380px', height: '380px' }} />
         </a>
+      </div>
+
+      <div className='languageButtonContainer'>
+      <RestartButton
+            onClick={handleLanguageButtonClick}
+            disabled={false}
+            imgSrc="https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png"
+            imgSrc2= {languageButtonLink}
+            style={{ width: '115px', height: '112px' }}
+          >
+          </RestartButton>
       </div>
 
         <h1 className="timer">{timer}</h1>

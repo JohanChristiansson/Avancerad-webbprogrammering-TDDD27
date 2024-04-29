@@ -26,6 +26,18 @@
   width: 25vw;
 }
 
+.languageButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 90vw;
+  width: 10vw;
+  height: 30vh;
+
+}
+
+
 .wordBoxBackground {
 
   position: absolute;

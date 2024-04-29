@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 //import seedrandom from 'seedrandom';
 
 
-export function getRandomWords(nrOfWords: number, seed: string) {
-    const words: string[] = [
+export function getRandomWords(nrOfWords: number, seed: string, language: string) {
+    const engWords: string[] = [
         "time", "year", "people", "way", "day", "man", "thing", "woman", "life", "child", 
         "world", "school", "state", "family", "student", "group", "country", "problem", 
         "hand", "part", "place", "case", "week", "company", "system", "program", "question", 
@@ -19,7 +19,7 @@ export function getRandomWords(nrOfWords: number, seed: string) {
         "research", "girl", "guy", "moment", "air", "teacher", "force", "education"
     ];
 
-    const words2: string[] = [
+    const sweWords: string[] = [
         "och", "att", "det", "som", "en", "på", "är", "av", "för", "med", "till", "den", "har", "de", "inte", "om", "ett", "han", "men",
         "var", "jag", "sig", "från", "vi", "så", "kan", "man", "när", "år", "säger", "hon", "under", "också", "efter", "eller", "nu", "sin", "där", "vid",
         "mot", "ska", "skulle", "kommer", "ut", "får", "finns", "vara", "hade", "alla", "andra", "mycket", "än", "här", "då", "sedan", "över", "bara", "in", "blir",
@@ -31,6 +31,14 @@ export function getRandomWords(nrOfWords: number, seed: string) {
         "därför", "fyra", "ny", "gick", "hos", "dessutom", "ger", "lika", "eftersom", "vilket", "trots", "tycker", "människor", "ligger", "vet", "kvar", "bättre", "gjorde", "ändå",
         "inför", "regeringen", "senaste", "samtidigt", "annan", "ännu", "blivit", "fall", "talet", "exempel", "gamla", "deras", "tiden", "min", "hennes", "sista", "komma", "större", "visar"
     ];
+
+    let words = null;
+
+    if(language == "swedish") {
+         words = sweWords;
+    } else {
+        words = engWords;
+    }
 
     const randomWords: string[] = [];
     //const rng = seedrandom(seed); // Seeded random number generator
