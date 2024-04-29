@@ -74,8 +74,8 @@ export default function Page() {
                     <h1>{currentUser.username}</h1>
                     <img src='https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif'
                         style={{
-                            width: '600px', // Set the desired width
-                            height: '580px', // Maintain aspect ratio (or set specific height)
+                            width: '600px', 
+                            height: '580px', 
                         }} 
                     />
                 </div>

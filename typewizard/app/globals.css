@@ -33,7 +33,7 @@
   position: absolute;
   left: 90vw;
   width: 10vw;
-  height: 30vh;
+  height: 20vh;
 
 }
 
@@ -84,9 +84,7 @@
 
 .word {
   margin-right: 10px;
-  /* Add space between words */
 }
-
 
 .correct {
   color: white;
@@ -96,16 +94,9 @@
   color: red;
 }
 
-.incorrectWord {
-  text-decoration: underline red;
-}
-
 .cursor {
   transition: left 0.15s ease;
   rotate: 0.25rad;
-
-
-
 }
 
 .timer {
@@ -132,7 +123,6 @@
 }
 
 .statsBox {
-  
   width: 45vw;
   height: 50vh;
   position: absolute;
@@ -150,8 +140,6 @@
   align-items: center;
   justify-content: center;
   
-  
-
   /* STYLING*/
   display: flex;
   flex-direction: column;
