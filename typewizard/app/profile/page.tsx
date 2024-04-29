@@ -4,8 +4,7 @@ import '../profile/profile.css'
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../../node_modules/next/navigation'
-import {User} from '../dbConnection/context'
-import { currentUser } from '../page';
+import {User, currentUser} from '../dbConnection/context'
 
 
 export default function Page() {

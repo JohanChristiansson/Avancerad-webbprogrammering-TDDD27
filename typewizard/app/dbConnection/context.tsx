@@ -20,3 +20,5 @@ export class User {
         return this.username;
     }
 }
+
+export const currentUser = new User("null", false);

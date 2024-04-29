@@ -4,7 +4,8 @@ import '../app/globals.css';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
-import {User} from '../app/dbConnection/context'
+import {User, currentUser} from '../app/dbConnection/context'
+
 //next/navigation';
 
 
@@ -41,7 +42,7 @@ const handleSubmit = async (event: React.FormEvent) => {
 
 
 //USER-RELATED
-export const currentUser = new User("null", false);
+//export const currentUser: User = new User("null", false);
 
 
 
@@ -322,11 +323,11 @@ const handleRegisterButtonClick = async () => {
 
       if (timeLeft) { //To disable keyboard input when timer has run out
 
-        if (/^[a-zA-Z]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
+        if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
           handleFirstLetterTyped();
         }
 
-        if (/^[a-zA-Z]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
+        if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
           setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
           letterIndex = letterIndex + 1;
           const position = letterIndex - 1; // Position of the letter within the word
@@ -618,6 +619,7 @@ const handleRegisterButtonClick = async () => {
     </main>
   );
 }
+
 
 
 
