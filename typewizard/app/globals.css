@@ -26,6 +26,11 @@
   width: 25vw;
 }
 
+.logo-container img {
+  width: 85%;
+  height: 85%;
+}
+
 .languageButtonContainer {
   display: flex;
   align-items: center;

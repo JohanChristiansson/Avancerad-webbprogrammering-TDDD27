@@ -66,17 +66,14 @@ export default function Page() {
             <div className="logo-container">
                 <a href="#" onClick={handleHomeButtonClick}>
                     <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-                        style={{ width: '380px', height: '380px' }} />
+                        style={{}} />
                 </a>
             </div>
 
                 <div className='characterContainer'>
                     <h1>{currentUser.username}</h1>
                     <img src='https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif'
-                        style={{
-                            width: '600px', 
-                            height: '580px', 
-                        }} 
+                        style={{}} 
                     />
                 </div>
 

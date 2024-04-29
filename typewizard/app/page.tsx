@@ -440,7 +440,7 @@ const handleRegisterButtonClick = async () => {
       <div className="logo-container">
         <a href="#" onClick={handleHomeButtonClick}>
             <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-                style={{ width: '380px', height: '380px' }} />
+                style={{}} />
         </a>
       </div>
 
