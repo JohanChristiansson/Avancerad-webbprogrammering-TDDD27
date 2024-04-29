@@ -8,7 +8,7 @@ import {User} from '../dbConnection/context'
 import { currentUser } from '../page';
 
 
-export default function page() {
+export default function Page() {
 
     const [avgWPM, setAvgWPM] = useState(0);
     const [highestWPM, setHighestWPM] = useState(0);
