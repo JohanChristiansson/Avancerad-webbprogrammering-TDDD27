@@ -59,5 +59,9 @@ export function getRandomWords(nrOfWords: number, seed: string, language: string
     return randomWords;
 }
 
+export const getWidthInPx = (element: HTMLElement | null): number => {
+    if (!element) return 0;
+    return element.offsetWidth;
+  };
 
 

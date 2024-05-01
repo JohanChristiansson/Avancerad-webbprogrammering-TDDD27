@@ -39,8 +39,10 @@
 .lanePlayer2 img,
 .lanePlayer3 img,
 .lanePlayer4 img {
+    position: absolute;
     width: 10%;
     height: 68%;
+    transition: left 0.5s ease-in-out;
 }
 
 

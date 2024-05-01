@@ -1,5 +1,5 @@
 'use client'
-import { getRandomWords } from '../app/gamelogic/engine'
+import { getRandomWords, getWidthInPx } from '../app/gamelogic/engine'
 import '../app/globals.css';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
@@ -46,10 +46,10 @@ const handleSubmit = async (event: React.FormEvent) => {
 
 
 
-const getWidthInPx = (element: HTMLElement | null): number => {
-  if (!element) return 0;
-  return element.offsetWidth;
-};
+//const getWidthInPx = (element: HTMLElement | null): number => {
+//  if (!element) return 0;
+//  return element.offsetWidth;
+//};
 
 
 //PAGE FUNCTION
