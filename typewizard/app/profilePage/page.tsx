@@ -1,4 +1,5 @@
-'use client'
+"use client"
+
 import '../globals.css';
 import '../profilePage/profilepage.css'
 import React, { useState, useEffect, useRef } from 'react';
@@ -8,23 +9,45 @@ import {
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/components/ui/carousel";
+import { io } from 'socket.io-client'
 
 
 export default function Page() {
+    const [socket, setSocket] = useState<any>(undefined)
+    const [inbox, setInbox] = useState<any>(["hello", "nice"])
+    const [message, setMessage] = useState("")
+    const [roomName, setRoomName] = useState("")
 
+    const handleSendMessage = () => {
+        socket.emit("message", message, roomName)
+    }
+
+    const handleJoinRoom = () => {
+        console.log("testtt")
+        socket.emit("joinRoom", roomName)
+    }
+
+    useEffect(() => {
+        const socket = io("http://localhost:5000")
+
+        socket.on('message', (message) => (
+            setInbox([...inbox, message])
+        ))
+
+        setSocket(socket)
+    }, [])
 
     return (
         <main>
-        <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
-            
-            <div className="logo-container">
+            <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
+
+                <div className="logo-container">
                     <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
                         style={{ width: '400px', height: '400px' }} />
-            </div>
-               
+                </div>
+
                 <div className='textBoxBackground'>
-                    
                     <div className="textBox">
                         <Carousel>
                             <CarouselContent>
@@ -36,11 +59,10 @@ export default function Page() {
                             <CarouselNext />
                         </Carousel>
                     </div>
-
                 </div>
 
 
-
+                {/* 
                 <div className='playerContainer'>
 
                     <div className='player1'>
@@ -65,7 +87,7 @@ export default function Page() {
                             src='https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif' />
                     </div>
 
-                </div>
+                </div> */}
 
             </div>
         </main >

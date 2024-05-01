@@ -75,13 +75,12 @@
     background-repeat: no-repeat;
     background-clip: unset;
     z-index: -1;
-}
-
-.textBoxBackground img {
+    background-color: blue;
 }
 
 .textBox {
     margin-top: 25vh;
     margin-left: 14vw;
+    background-color: blue;
     width: 45%;
 }

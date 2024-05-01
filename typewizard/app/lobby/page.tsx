@@ -1,40 +1,66 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+"use client"
+
+import '../globals.css';
+import '../profilePage/profilepage.css'
+import React, { useState, useEffect, useRef } from 'react';
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/components/ui/carousel";
+import { io } from 'socket.io-client'
 
 export default function Page() {
-    const aspectRatio = 16 / 9;
-    const width = 450
-    const height = width / aspectRatio
+    const [socket, setSocket] = useState<any>(undefined)
+    const [inbox, setInbox] = useState<string[]>([])
+    const [message, setMessage] = useState("")
+    const [roomName, setRoomName] = useState("")
+
+    const handleSendMessage = () => {
+        //send message to the server using websocket
+        if (socket) {
+            socket.emit("message", message, roomName)
+        }
+    }
+    const handleJoinRoom = () => {
+        socket.emit("joinRoom", roomName)
+    }
+
+    useEffect(() => {
+        // Initialize socket when component mounts
+        const newSocket = io("http://localhost:5000");
+
+        // Set up event listener for incoming messages
+        newSocket.on('message', (newMessage) => {
+            setInbox(prevInbox => [...prevInbox, newMessage]);
+        });
+
+        setSocket(newSocket);
+    }, []);
 
     return (
-        <main className="p-24">
-            <section>
-                <ToggleGroup type="single">
-                    <ToggleGroupItem variant="outline" size="lg" value="time">time</ToggleGroupItem>
-                    <ToggleGroupItem variant="outline" size="lg" value="word">word</ToggleGroupItem>
-                    <ToggleGroupItem variant="outline" size="lg" value="temp">temp</ToggleGroupItem>
-                </ToggleGroup>
-            </section>
+        <div className="flex flex-col gap-5 mt-20 px-10 lg:px-48">
+            <div className="flex flex-col gap-2 border rounded-lg p-10">
+                {inbox.map((message: string, index: number) => (
+                    <div key={index} className='border rounded px-4 py-2'>{message}</div>
+                ))}
+            </div>
 
-            <section className="py-12 flex flex-col items-center text-center gap-8">
-                <Carousel>
-                    <CarouselContent>
-                        <CarouselItem>Väldigt svår text</CarouselItem>
-                        <CarouselItem>Very hard english text </CarouselItem>
-                        <CarouselItem>GOT fanfic</CarouselItem>
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
-            </section>
-        </main>
+            <div className='flex gap-2 align-center justify center'>
+                <input onChange={(e) => {
+                    setMessage(e.target.value)
+                }} type="text" name='message' className='border rounded px-4 py-2' />
+                <button className='w-40' onClick={handleSendMessage}> Send message </button>
+            </div>
+            <div className='flex gap-2 align-center justify center'>
+                <input onChange={(e) => {
+                    setRoomName(e.target.value)
+                }} type="text" name='room' className='flex-1 border-black rounded px-2 py-1' />
+                <button onClick={handleJoinRoom} className='w-40'> Join Room </button>
+            </div>
+        </div>
 
     );
 };
