@@ -7,7 +7,7 @@ export class User {
     loggedIn: boolean;
 
 
-    constructor(username: string, loggedIn : boolean) {
+    constructor(username: string, loggedIn: boolean) {
         this.username = username;
         this.loggedIn = loggedIn;
     }
@@ -20,3 +20,6 @@ export class User {
         return this.username;
     }
 }
+
+//USER-RELATED
+export const currentUser = new User("null", false);

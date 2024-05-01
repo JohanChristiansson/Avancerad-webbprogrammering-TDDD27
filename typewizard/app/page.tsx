@@ -4,7 +4,7 @@ import '../app/globals.css';
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
-import {User} from '../app/dbConnection/context'
+import { User, currentUser } from '../app/dbConnection/context'
 //next/navigation';
 
 
@@ -19,29 +19,28 @@ const handleSubmit = async (event: React.FormEvent) => {
 
   // Send the data to the server via a POST request
   const response = await fetch('/register', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          username: username.value,
-          password: password.value,
-      }),
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: username.value,
+      password: password.value,
+    }),
   });
   if (response.ok) {
-      // Handle successful registration (e.g., redirecting to a login page)
-      console.log('User registered successfully');
-      // Redirect to login page
-      window.location.href = '/login';
+    // Handle successful registration (e.g., redirecting to a login page)
+    console.log('User registered successfully');
+    // Redirect to login page
+    window.location.href = '/login';
   } else {
-      // Handle registration failure (e.g., display an error message)
-      console.error('Registration failed');
+    // Handle registration failure (e.g., display an error message)
+    console.error('Registration failed');
   }
 };
 
 
-//USER-RELATED
-export const currentUser = new User("null", false);
+
 
 
 
@@ -54,12 +53,12 @@ const getWidthInPx = (element: HTMLElement | null): number => {
 //PAGE FUNCTION
 export default function Home() {
 
-  
+
   //ADMIN_STUF---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  
+
   const router = useRouter(); //FOR GOING BETWEEN PAGES
   const [loggedIn, setLoggedIn] = useState(false);
-  
+
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   const time = 30;
@@ -124,69 +123,69 @@ export default function Home() {
   };
 
   const handleProfileButtonClick = (): void => {
-    if(currentUser.loggedIn == false) {
-    if(showLoginBox) {
-      setShowLoginBox(false);
+    if (currentUser.loggedIn == false) {
+      if (showLoginBox) {
+        setShowLoginBox(false);
+      }
+      else {
+        setShowLoginBox(true);
+      }
+    } else {
+      router.push('/profile');
     }
-    else {
-      setShowLoginBox(true);
-    }
-  } else {
-    router.push('/profile');
-  }
   };
 
   const handleLoginButtonClick = async () => {
     try {
-        // Retrieve the form element
-        const form = document.querySelector('form') as HTMLFormElement;
-    
-        // Retrieve the input values
-        const username = form.elements.namedItem('username') as HTMLInputElement;
-        const password = form.elements.namedItem('password') as HTMLInputElement;
-        
-        if(username.value == "admin" && password.value == "admin"){
+      // Retrieve the form element
+      const form = document.querySelector('form') as HTMLFormElement;
+
+      // Retrieve the input values
+      const username = form.elements.namedItem('username') as HTMLInputElement;
+      const password = form.elements.namedItem('password') as HTMLInputElement;
+
+      if (username.value == "admin" && password.value == "admin") {
+        console.log('Login successful');
+        currentUser.setUser(username.value);
+        currentUser.loggedIn = true;
+        setLoggedIn(true);
+        router.push('/profile');
+      } else {
+
+        // Send the data to the server via a POST request
+        const response = await fetch('http://localhost:5000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username.value,
+            password: password.value,
+          }),
+        });
+
+        if (response.ok) {
           console.log('Login successful');
           currentUser.setUser(username.value);
           currentUser.loggedIn = true;
           setLoggedIn(true);
           router.push('/profile');
         } else {
-        
-        // Send the data to the server via a POST request
-        const response = await fetch('http://localhost:5000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username.value,
-                password: password.value,
-            }),
-        });
-
-        if (response.ok) {
-            console.log('Login successful');
-            currentUser.setUser(username.value);
-            currentUser.loggedIn = true;
-            setLoggedIn(true);
-            router.push('/profile');
-        } else {
-            console.error('Login failed');
-            alert('Invalid username or password.');
+          console.error('Login failed');
+          alert('Invalid username or password.');
         }
       }
     } catch (error) {
-        // Catch any error that occurs during the fetch request
+      // Catch any error that occurs during the fetch request
 
-        console.error('Fetch error:', error);
-        alert('There was an error connecting to the server. Contact Gustav.');
+      console.error('Fetch error:', error);
+      alert('There was an error connecting to the server. Contact Gustav.');
     }
-};
+  };
 
 
-const handleRegisterButtonClick = async () => {
-  try {
+  const handleRegisterButtonClick = async () => {
+    try {
       // Retrieve the form element
       const form = document.querySelector('form') as HTMLFormElement;
 
@@ -198,35 +197,35 @@ const handleRegisterButtonClick = async () => {
 
       // Send the data to the server via a POST request
       const response = await fetch('http://localhost:5000/register', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              username: username.value,
-              password: password.value,
-          }),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username.value,
+          password: password.value,
+        }),
       });
 
       if (response && response.ok) {
-          // Handle successful registration (e.g., redirecting to the login page)
-          alert('Registration successful! Happy typing!')
-          console.log('User registered successfully');
-          console.log(response);
-          // Redirect to the login page
-          // router.push('/login');
+        // Handle successful registration (e.g., redirecting to the login page)
+        alert('Registration successful! Happy typing!')
+        console.log('User registered successfully');
+        console.log(response);
+        // Redirect to the login page
+        // router.push('/login');
       } else {
-          // Handle registration failure (e.g., displaying an error message)
-          console.error('Registration failed');
-          console.log(response);
-          alert('Registration failed. Please try again.');
+        // Handle registration failure (e.g., displaying an error message)
+        console.error('Registration failed');
+        console.log(response);
+        alert('Registration failed. Please try again.');
       }
-  } catch (error) {
+    } catch (error) {
       // Catch any error that occurs during the fetch request
       console.error('Fetch error:', error);
       alert('There was an error connecting to the server. Contact Gustav.');
-  }
-};
+    }
+  };
 
 
   const handleRestartButtonClick = (): void => {
@@ -286,9 +285,9 @@ const handleRegisterButtonClick = async () => {
 
 
 
-//THIS IS THE BIG USEEFFECT, BASICALLY CONTROLLING THE WHOLE GAME
+  //THIS IS THE BIG USEEFFECT, BASICALLY CONTROLLING THE WHOLE GAME
   useEffect(() => {
-    
+
     const handleKeyDown = (event: KeyboardEvent) => {
 
       if (showLoginBox) { //prevents writing when the loginbox is open
@@ -451,8 +450,8 @@ const handleRegisterButtonClick = async () => {
                   width: '35px',
                   /*backgroundColor: 'yellow',*/
                   backgroundImage: `url('https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png')`,
-                  backgroundSize: 'cover', 
-                  backgroundPosition: 'center', 
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
 
                 }}
               ></div>
@@ -488,18 +487,18 @@ const handleRegisterButtonClick = async () => {
         {showExplosion && renderExplosion()}
         {showStats && renderStats()}
 
-      {/*LOGIN BOX*/}
-      {showLoginBox && (
+        {/*LOGIN BOX*/}
+        {showLoginBox && (
 
-      <div className='loginContainer'>
-          <form onSubmit={handleSubmit}>
-            <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
-            <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
-          </form>
-              <button className='loginBoxButton' onClick={handleLoginButtonClick}>Login</button>
-              <button className='registerBoxButton' onClick={handleRegisterButtonClick}>Register</button>
-      </div>
-      )}
+          <div className='loginContainer'>
+            <form onSubmit={handleSubmit}>
+              <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
+              <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
+            </form>
+            <button className='loginBoxButton' onClick={handleLoginButtonClick}>Login</button>
+            <button className='registerBoxButton' onClick={handleRegisterButtonClick}>Register</button>
+          </div>
+        )}
 
       </div>
 
