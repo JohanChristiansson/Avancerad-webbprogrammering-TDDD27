@@ -3,8 +3,6 @@
 @tailwind utilities;
 
 
-
-
 .backgroundPicture {
   position: absolute;
   top: 0;
@@ -263,7 +261,7 @@
   border-style: groove;
   background-color: antiquewhite;
   font-family: cursive;
-  
+
 }
 
 .passwordBox {
