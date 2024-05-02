@@ -1,7 +1,8 @@
 'use client'
 import { getRandomWords } from '../app/gamelogic/engine'
 import '../app/globals.css';
-import React, { useState, useEffect, useRef, useContext } from 'react';
+
+import React, { useState, useEffect, useRef, useContext, FC } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
 import { User, currentUser } from '../app/dbConnection/context'
@@ -118,9 +119,18 @@ export default function Home() {
 
   const [showLoginBox, setShowLoginBox] = useState(false);
 
-  const handleMultiPlayerButtonClick = (): void => {
-    router.push('/lobby');
+
+  const handleMultiPlayerButtonClick = async () => {
+    console.log("clickade på multiplayer knapp", process.env.NEXT_PUBLIC_PUSHER_APP_KEY)
+    const res = await fetch('/api/lobby')
+    const lobbyId: string = await res.text()
+    console.log(lobbyId, "lobby id in big page")
+    router.push(`/lobby/${lobbyId}`)
   };
+
+  const joinRoom = async (lobbyId: string) => {
+    router.push(`/lobby/${lobbyId}`)
+  }
 
   const handleProfileButtonClick = (): void => {
     if (currentUser.loggedIn == false) {

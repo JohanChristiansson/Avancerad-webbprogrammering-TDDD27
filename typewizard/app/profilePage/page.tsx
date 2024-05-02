@@ -10,33 +10,10 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import { io } from 'socket.io-client'
 
 
 export default function Page() {
-    const [socket, setSocket] = useState<any>(undefined)
-    const [inbox, setInbox] = useState<any>(["hello", "nice"])
-    const [message, setMessage] = useState("")
-    const [roomName, setRoomName] = useState("")
 
-    const handleSendMessage = () => {
-        socket.emit("message", message, roomName)
-    }
-
-    const handleJoinRoom = () => {
-        console.log("testtt")
-        socket.emit("joinRoom", roomName)
-    }
-
-    useEffect(() => {
-        const socket = io("http://localhost:5000")
-
-        socket.on('message', (message) => (
-            setInbox([...inbox, message])
-        ))
-
-        setSocket(socket)
-    }, [])
 
     return (
         <main>

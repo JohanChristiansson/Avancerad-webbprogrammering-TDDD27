@@ -10,7 +10,6 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import { io } from 'socket.io-client'
 
 export default function Page() {
     const [socket, setSocket] = useState<any>(undefined)
@@ -18,27 +17,6 @@ export default function Page() {
     const [message, setMessage] = useState("")
     const [roomName, setRoomName] = useState("")
 
-    const handleSendMessage = () => {
-        //send message to the server using websocket
-        if (socket) {
-            socket.emit("message", message, roomName)
-        }
-    }
-    const handleJoinRoom = () => {
-        socket.emit("joinRoom", roomName)
-    }
-
-    useEffect(() => {
-        // Initialize socket when component mounts
-        const newSocket = io("http://localhost:5000");
-
-        // Set up event listener for incoming messages
-        newSocket.on('message', (newMessage) => {
-            setInbox(prevInbox => [...prevInbox, newMessage]);
-        });
-
-        setSocket(newSocket);
-    }, []);
 
     return (
         <div className="flex flex-col gap-5 mt-20 px-10 lg:px-48">
@@ -52,13 +30,13 @@ export default function Page() {
                 <input onChange={(e) => {
                     setMessage(e.target.value)
                 }} type="text" name='message' className='border rounded px-4 py-2' />
-                <button className='w-40' onClick={handleSendMessage}> Send message </button>
+                <button className='w-40'> Send message </button>
             </div>
             <div className='flex gap-2 align-center justify center'>
                 <input onChange={(e) => {
                     setRoomName(e.target.value)
                 }} type="text" name='room' className='flex-1 border-black rounded px-2 py-1' />
-                <button onClick={handleJoinRoom} className='w-40'> Join Room </button>
+                <button className='w-40'> Join Room </button>
             </div>
         </div>
 

@@ -1,0 +1,13 @@
+CREATE TABLE Lobby (
+    id VARCHAR(255) PRIMARY KEY,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+//Do we need to remove old lobbys
+
+CREATE TABLE Message (
+    id VARCHAR(255) PRIMARY KEY,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    text TEXT,
+    LobbyId VARCHAR(255),
+    FOREIGN KEY (LobbyId) REFERENCES Lobby(id)
+);
