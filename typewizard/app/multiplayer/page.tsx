@@ -86,7 +86,18 @@ export default function Page() {
         setWords(getRandomWords(totNrOfWords, "1337851", ""));  //Getting random words when loadin page, note that seed is currently deactivated
       }, []);
 
+    const [showExplosion, setShowExplosion] = useState(false);
 
+    useEffect(() => {
+      if (finished) {
+        setShowExplosion(true);
+        // Hide the explosion after 0.5 seconds and show stats
+        setTimeout(() => {
+          setShowExplosion(false);
+          setShowStats(true);
+        }, 950); // 0.5 seconds = 500 milliseconds
+      }
+    }, [finished]);
 
     //THIS IS THE BIG USEEFFECT, BASICALLY CONTROLLING THE WHOLE GAME
     useEffect(() => {
@@ -170,6 +181,17 @@ export default function Page() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [words,timeLeft]);
+
+  const renderExplosion = () => {
+    return (
+      <div className='multiplayerExplosionContainer'>
+        <img
+          src='https://i.postimg.cc/nrX6n85W/fireball-Animation.gif'
+          style={{}}
+        />
+      </div>
+    );
+  };
 
 
     return (
@@ -265,9 +287,11 @@ export default function Page() {
             </div>
             )}
 
-            {finished && (
+            {showExplosion && renderExplosion()}
+
+            {finished && !showExplosion && (
               <div className='multiplayerStatsBox'>
-                
+
               </div>
             )}
 
