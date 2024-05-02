@@ -320,13 +320,14 @@ const handleRegisterButtonClick = async () => {
         return;
       }
 
+
       const { key, code } = event;
       const currentWord = words[wordIndex];
       const nextWord = words[wordIndex + 1];
       const currentLetter = currentWord[letterIndex];
       const letterIndexState = letterIndex;       //letterIndex made const to be used in useState
 
-      if (timeLeft) { //To disable keyboard input when timer has run out
+
 
         if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
           handleFirstLetterTyped();
@@ -383,7 +384,7 @@ const handleRegisterButtonClick = async () => {
         if (/^[a-zA-Z]$/.test(key)) {
           setRawCharInput(prevRawCharInput => prevRawCharInput + 1);
         }
-      }
+      
     };
 
 

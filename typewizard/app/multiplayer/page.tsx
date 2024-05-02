@@ -19,12 +19,13 @@ export default function Page() {
     //MULTIPLAYER-SPECIFIC VARIABLES
     const [characterXpos, setCharacterXpos] = useState<number>(0);
     const totNrOfWords = 35;
+    const [finished, setFinished] = useState<boolean>(false);
 
 
     //TIMER
-    const time = 30;
+    const time = 5;
     const [timer, setTimer] = useState(time);
-    const [timerRunning, setTimerRunning] = useState(false); //To start timer
+    const [timerRunning, setTimerRunning] = useState(true); //To start timer
     const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
     const [showStats, setShowStats] = useState(false);     //To show stats when game over
 
@@ -92,19 +93,15 @@ export default function Page() {
     
     const handleKeyDown = (event: KeyboardEvent) => {
 
-
+      if(timeLeft) {
+        return;
+      }
 
       const { key, code } = event;
       const currentWord = words[wordIndex];
       const nextWord = words[wordIndex + 1];
       const currentLetter = currentWord[letterIndex];
       const letterIndexState = letterIndex;       //letterIndex made const to be used in useState
-
-      if (timeLeft) { //To disable keyboard input when timer has run out
-
-        if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
-          handleFirstLetterTyped();
-        }
 
         if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
           setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
@@ -117,7 +114,6 @@ export default function Page() {
           } else {
             setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
           }
-
         }
 
         else if (key == ' ') {
@@ -133,11 +129,16 @@ export default function Page() {
             correctCharacters = 0;
           }
           wordIndex = wordIndex + 1;
+          
+          if(wordIndex == totNrOfWords) {  //For multiplaer the game ends when the user has written a set ammount of words
+            setFinished(true);
+          }
 
           setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
           setRawWordInput(prevRawWordInput => prevRawWordInput + 1);
           letterIndex = 0;
           pxPerRow = pxPerRow + spaceWidth;
+          if(wordIndex < totNrOfWords) { //Extra check to prevent error when completing last word
           if (pxPerRow + (nextWord.length * charWidth) + spaceWidth >= getWidthInPx(wordBoxRef.current)) { //Row switching, inside the space statement, triggered when pressing space 
             setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);                           //upon completing last word of the row
             setNrOfChars(0);
@@ -145,6 +146,7 @@ export default function Page() {
             pxPerRow = 0;
 
           }
+        }
         }
 
         else if (code === "Backspace" && letterIndex != 0) { //Pressing backspace, while not on the first letter of a word
@@ -158,7 +160,7 @@ export default function Page() {
         if (/^[a-zA-Z]$/.test(key)) {
           setRawCharInput(prevRawCharInput => prevRawCharInput + 1);
         }
-      }
+      
     };
 
 
@@ -167,11 +169,7 @@ export default function Page() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [words]);
-
-
-
-
+  }, [words,timeLeft]);
 
 
     return (
@@ -212,6 +210,16 @@ export default function Page() {
                     <div className='playerGround'></div>
                 </div>
             </div>
+            {timerRunning && (
+              
+              <div className='timerBackground'>
+                <img src='https://i.postimg.cc/YSBQ5Bjd/30-removebg-preview.png'></img>
+                <h1 className="multiplayerTimer">{timer}</h1>
+              </div>
+              
+            )}
+            {!finished && (
+
             <div className='wordBoxBackgroundMultiPlayer'>
                     <div ref={wordBoxRef} className="wordBox">
 
@@ -255,6 +263,13 @@ export default function Page() {
                     </div>
                 </div>
             </div>
+            )}
+
+            {finished && (
+              <div className='multiplayerStatsBox'>
+                
+              </div>
+            )}
 
 
 
