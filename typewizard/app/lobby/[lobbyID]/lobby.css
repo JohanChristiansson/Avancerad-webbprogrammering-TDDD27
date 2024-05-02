@@ -61,26 +61,3 @@
 
 
 }
-
-.textBoxBackground {
-
-    position: relative;
-    top: -30vh;
-    left: 25vw;
-    width: 50vw;
-    height: 50vh;
-    background-image: url("https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png");
-    background-size: 80% 60%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-clip: unset;
-    z-index: -1;
-    background-color: blue;
-}
-
-.textBox {
-    margin-top: 25vh;
-    margin-left: 14vw;
-    background-color: blue;
-    width: 45%;
-}

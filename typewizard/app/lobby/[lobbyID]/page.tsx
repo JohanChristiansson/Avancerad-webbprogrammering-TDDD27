@@ -22,6 +22,7 @@ const page = async ({ params }: PageProps) => {
             id: message.id,
         }));
 
+
         return (
             <main>
                 <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
@@ -31,34 +32,19 @@ const page = async ({ params }: PageProps) => {
                             style={{ width: '400px', height: '400px' }} />
                     </div>
 
-                    <div className='textBoxBackground'>
-                        <div className="textBox">
-                            <div>
-                                <p>messages:</p>
-                                <Messages lobbyId={lobbyId} initialMessages={serializedMessages} />
-                                <MessageField lobbyId={lobbyId} />
-                            </div>
+                    <div className="w-[40vw] h-[35vh] bg-center absolute left-[30vw] top-[22vh] bg-no-repeat"
+                        style={{
+                            backgroundImage: "url('https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png')",
+                            backgroundSize: "105% 100%"
+                        }}>
+                        <div className="absolute left-[6vw] top-[6vh] max-h-[23vh] overflow-y-auto w-[90vw]">
+                            <Messages lobbyId={lobbyId} initialMessages={serializedMessages} />
+                        </div>
+                        <div className="absolute left-[6vw] bottom-[3vh]">
+                            <MessageField lobbyId={lobbyId} />
                         </div>
                     </div>
                 </div>
-
-            </main>
-
-
-        );
-
-    } catch (error) {
-        console.error("Error retrieving messages:", error);
-
-        return <div>Error retrieving messages from the database</div>;
-    }
-}
-
-export default page;
-
-
-
-{/* 
                 <div className='playerContainer'>
 
                     <div className='player1'>
@@ -83,4 +69,18 @@ export default page;
                             src='https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif' />
                     </div>
 
-                </div> */}
+                </div>
+
+            </main >
+
+
+        );
+
+    } catch (error) {
+        console.error("Error retrieving messages:", error);
+
+        return <div>Error retrieving messages from the database</div>;
+    }
+}
+
+export default page;
