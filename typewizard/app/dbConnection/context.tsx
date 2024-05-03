@@ -21,5 +21,6 @@ export class User {
     }
 }
 
-//USER-RELATED
 export const currentUser = new User("null", false);
+
+

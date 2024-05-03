@@ -1,5 +1,5 @@
 'use client'
-import { getRandomWords } from '../app/gamelogic/engine'
+import { getRandomWords, getWidthInPx } from '../app/gamelogic/engine'
 import '../app/globals.css';
 
 import React, { useState, useEffect, useRef, useContext, FC } from 'react';
@@ -41,14 +41,16 @@ const handleSubmit = async (event: React.FormEvent) => {
 };
 
 
+//USER-RELATED
+//export const currentUser: User = new User("null", false);
 
 
 
 
-const getWidthInPx = (element: HTMLElement | null): number => {
-  if (!element) return 0;
-  return element.offsetWidth;
-};
+//const getWidthInPx = (element: HTMLElement | null): number => {
+//  if (!element) return 0;
+//  return element.offsetWidth;
+//};
 
 
 //PAGE FUNCTION
@@ -59,6 +61,8 @@ export default function Home() {
 
   const router = useRouter(); //FOR GOING BETWEEN PAGES
   const [loggedIn, setLoggedIn] = useState(false);
+  const [language, setLanguage] = useState<string>("english");
+  const [languageButtonLink, setLangugeButtonLink] = useState<string>("https://i.postimg.cc/MG3M1f0T/british-removebg-preview-1.png");
 
   //TIMER-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -118,6 +122,23 @@ export default function Home() {
   //BUTTONS------------------------------------------------------------------------------------------------------------------------------------------------------
 
   const [showLoginBox, setShowLoginBox] = useState(false);
+
+  const handleHomeButtonClick = (event: React.MouseEvent<HTMLAnchorElement>): void => {
+    event.preventDefault();
+    router.replace('/');
+  }
+
+  const handleLanguageButtonClick = (): void => {
+    if (language == "english") {
+      setLanguage("swedish");
+      setLangugeButtonLink("https://i.postimg.cc/htpfqQ5r/swedish-removebg-preview-1.png");
+      handleRestartButtonClick();
+    } else {
+      setLanguage("english");
+      setLangugeButtonLink("https://i.postimg.cc/MG3M1f0T/british-removebg-preview-1.png");
+      handleRestartButtonClick();
+    }
+  }
 
 
   const handleMultiPlayerButtonClick = async () => {
@@ -245,7 +266,7 @@ export default function Home() {
     setTimeLeft(true);
 
     // Reset words and generate new random words
-    setWords(getRandomWords(100, "1337851"));
+    setWords(getRandomWords(100, "1337851", language));
 
     // Reset typed letters and other state variables
     setTypedLetters([]);
@@ -288,9 +309,14 @@ export default function Home() {
   const accuracy = ((typedLetters.filter(item => item.correct).length / rawCharInput) * 100).toFixed(2); //Calculating accuracy directly so it can be const
   let correctCharacters = 0; //Used to calculate WPM
 
+
   useEffect(() => {
-    setWords(getRandomWords(100, "1337851"));  //Getting random words, note that seed is currently deactivated
+    setWords(getRandomWords(100, "1337851", language));  //Getting random words when loadin page, note that seed is currently deactivated
   }, []);
+
+  useEffect(() => {
+    setWords(getRandomWords(100, "1337851", language));  //Getting random words when language is swithced
+  }, [language]);
 
 
 
@@ -304,70 +330,71 @@ export default function Home() {
         return;
       }
 
+
       const { key, code } = event;
       const currentWord = words[wordIndex];
       const nextWord = words[wordIndex + 1];
       const currentLetter = currentWord[letterIndex];
       const letterIndexState = letterIndex;       //letterIndex made const to be used in useState
 
-      if (timeLeft) { //To disable keyboard input when timer has run out
 
-        if (/^[a-zA-Z]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
-          handleFirstLetterTyped();
+
+      if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && !timerRunning) { //If letter-key and timer is not started, start timer
+        handleFirstLetterTyped();
+      }
+
+      if (/^[a-zA-ZåäöÅÄÖ]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
+        setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
+        letterIndex = letterIndex + 1;
+        const position = letterIndex - 1; // Position of the letter within the word
+        pxPerRow = pxPerRow + charWidth;
+        if (key == currentLetter) {
+          setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: true, wordIndex, position }]);
+          correctCharacters++;
+        } else {
+          setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
         }
 
-        if (/^[a-zA-Z]$/.test(key) && letterIndex < currentWord.length) { //If input is a letter and it is not the last letter of the current word
-          setNrOfChars(prevNrOfChars => prevNrOfChars + 1);
-          letterIndex = letterIndex + 1;
-          const position = letterIndex - 1; // Position of the letter within the word
-          pxPerRow = pxPerRow + charWidth;
-          if (key == currentLetter) {
-            setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: true, wordIndex, position }]);
-            correctCharacters++;
-          } else {
-            setTypedLetters(prevTypedLetters => [...prevTypedLetters, { letter: key, correct: false, wordIndex, position }]);
-          }
+      }
 
+      else if (key == ' ') {
+
+        if (letterIndex != currentWord.length) {   //If not on last letter, aka skipping the word
+          setNrOfChars(prevNrOfChars => prevNrOfChars + (currentWord.length - letterIndexState));
+          pxPerRow = pxPerRow + (currentWord.length - letterIndexState) * charWidth;
         }
 
-        else if (key == ' ') {
-
-          if (letterIndex != currentWord.length) {   //If not on last letter, aka skipping the word
-            setNrOfChars(prevNrOfChars => prevNrOfChars + (currentWord.length - letterIndexState));
-            pxPerRow = pxPerRow + (currentWord.length - letterIndexState) * charWidth;
-          }
-
-          else if (correctCharacters >= currentWord.length) { //If on the last letter, check if the word is correct
-            setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
-            correctCharacters = 0;
-          }
-          wordIndex = wordIndex + 1;
-
-          setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
-          setRawWordInput(prevRawWordInput => prevRawWordInput + 1);
-          letterIndex = 0;
-          pxPerRow = pxPerRow + spaceWidth;
-          if (pxPerRow + (nextWord.length * charWidth) + spaceWidth >= getWidthInPx(wordBoxRef.current)) { //Row switching, inside the space statement, triggered when pressing space 
-            setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);                           //upon completing last word of the row
-            setNrOfChars(0);
-            setNrOfSpaces(0);
-            pxPerRow = 0;
-
-          }
+        else if (correctCharacters >= currentWord.length) { //If on the last letter, check if the word is correct
+          setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
+          correctCharacters = 0;
         }
+        wordIndex = wordIndex + 1;
 
-        else if (code === "Backspace" && letterIndex != 0) { //Pressing backspace, while not on the first letter of a word
-          setNrOfChars(prevNrOfChars => prevNrOfChars - 1);
-          letterIndex = letterIndex - 1;
-          setTypedLetters(prevTypedLetters => prevTypedLetters.slice(0, -1));
-          pxPerRow = pxPerRow - charWidth;
-        }
+        setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
+        setRawWordInput(prevRawWordInput => prevRawWordInput + 1);
+        letterIndex = 0;
+        pxPerRow = pxPerRow + spaceWidth;
+        if (pxPerRow + (nextWord.length * charWidth) + spaceWidth >= getWidthInPx(wordBoxRef.current)) { //Row switching, inside the space statement, triggered when pressing space 
+          setCurrentRowIndex(prevRowIndex => prevRowIndex + 1);                           //upon completing last word of the row
+          setNrOfChars(0);
+          setNrOfSpaces(0);
+          pxPerRow = 0;
 
-        //SETTING THE STAT-VARIABLES
-        if (/^[a-zA-Z]$/.test(key)) {
-          setRawCharInput(prevRawCharInput => prevRawCharInput + 1);
         }
       }
+
+      else if (code === "Backspace" && letterIndex != 0) { //Pressing backspace, while not on the first letter of a word
+        setNrOfChars(prevNrOfChars => prevNrOfChars - 1);
+        letterIndex = letterIndex - 1;
+        setTypedLetters(prevTypedLetters => prevTypedLetters.slice(0, -1));
+        pxPerRow = pxPerRow - charWidth;
+      }
+
+      //SETTING THE STAT-VARIABLES
+      if (/^[a-zA-Z]$/.test(key)) {
+        setRawCharInput(prevRawCharInput => prevRawCharInput + 1);
+      }
+
     };
 
 
@@ -380,32 +407,7 @@ export default function Home() {
   //------------------------------------------------------------------------------------------------------------------------------
 
   //-------------------RENDERING------------------------------------------------------------------------------------------------------------------------------------------------
-  //https://i.postimg.cc/GmdzSzsn/Pixel-Wand-removebg-preview-1.png
-  //https://i.postimg.cc/2yt0VBkj/Multi-Player-Button-Border-removebg-preview.png
-  //https://i.postimg.cc/1zSJnSQF/Multiplayer-Button.png
-  //https://i.postimg.cc/zDnxS3xQ/explosion.gif
-  //https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png
-  //https://i.postimg.cc/htpKtsw9/restart-Press.png
-  //https://i.postimg.cc/y6p9DqgN/wizard-Head.png
-  //https://i.postimg.cc/T3MKbTRT/square-Button-removebg-preview-1.png
-  //https://i.postimg.cc/BnbJtyFJ/SignLogo.png
-  //https://i.postimg.cc/QNvzcyvX/wooden-Sticks-removebg-preview.png
-  //https://i.postimg.cc/nrX6n85W/fireball-Animation.gif
-  //https://i.postimg.cc/LsDPp5rx/paper-Pixel2-removebg-preview.png
-  //https://i.postimg.cc/cC2500vb/pixelpaper3-removebg-preview-1-1.png
-  //https://i.postimg.cc/Vsx3xWXL/pixelpaper3-removebg-preview-1-1-1.png
-  //https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png
-  //https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif
-  //https://i.postimg.cc/DfgQq25Q/Wizard-Player2-ezgif-com-gif-maker-1.gif
-  //https://i.postimg.cc/02snssq6/pixel-Box-removebg-preview.png
-  //https://i.postimg.cc/50HJbzLm/text-Box-Pixel.png
-  //https://i.postimg.cc/2S7rwv4H/simon-sanchez-madera-tilepreview.png
-  //https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png
-  //https://i.postimg.cc/QN1JNk1Y/Namnl-s-design-4.png
-  //https://i.postimg.cc/Kvg2BTMR/Pixel-Score-Board-removebg-preview.png
-  //https://i.postimg.cc/t4pnc9yt/Namnl-s-design-5-removebg-preview.png
-  //https://i.postimg.cc/PqJ2cgkJ/loginbutton-removebg-preview.png
-  //https://i.postimg.cc/Kvm7w6Pb/login-Button-Center.png
+
 
   const renderExplosion = () => {
     return (
@@ -420,11 +422,22 @@ export default function Home() {
 
   const renderStats = () => {
     return (
-      <div className="statsBox">
-        <p>Raw character input: {rawCharInput}</p>
-        <p>Raw words per minute: {rawWordInput * (60 / time)}</p>
-        <p>Accuracy: {accuracy}%</p>
-        <p>Words per Minute: {correctWords * (60 / time)}</p>
+      <div>
+        <div className='statsWizard'>
+          <img
+            src='https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif'
+            style={{ width: '190px', height: '190px' }}
+          />
+        </div>
+        <div className="statsBox">
+
+          <div className='statsText'>
+            <p>Raw character input: {rawCharInput}</p>
+            <p>Raw words per minute: {rawWordInput * (60 / time)}</p>
+            <p>Accuracy: {accuracy}%</p>
+            <p>Words per Minute: {correctWords * (60 / time)}</p>
+          </div>
+        </div>
       </div>
     );
   };
@@ -436,8 +449,21 @@ export default function Home() {
 
 
         <div className="logo-container">
-          <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-            style={{ width: '400px', height: '400px' }} />
+          <a href="#" onClick={handleHomeButtonClick}>
+            <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+              style={{}} />
+          </a>
+        </div>
+
+        <div className='languageButtonContainer'>
+          <RestartButton
+            onClick={handleLanguageButtonClick}
+            disabled={false}
+            imgSrc="https://i.postimg.cc/rpCNvdYZ/restart-Button-removebg-preview.png"
+            imgSrc2={languageButtonLink}
+            style={{ width: '115px', height: '112px' }}
+          >
+          </RestartButton>
         </div>
 
         <h1 className="timer">{timer}</h1>
@@ -445,9 +471,6 @@ export default function Home() {
         {timeLeft && (
           <div className='wordBoxBackground'>
             <div ref={wordBoxRef} className="wordBox">
-
-
-
 
               {/*CURSOR*/}
               <div
@@ -487,7 +510,6 @@ export default function Home() {
                   </span>
                 ))}
               </div>
-
             </div>
           </div>
         )}
@@ -580,6 +602,7 @@ export default function Home() {
     </main>
   );
 }
+
 
 
 

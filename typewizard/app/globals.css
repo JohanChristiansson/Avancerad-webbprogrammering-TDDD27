@@ -18,9 +18,28 @@
 
 .logo-container {
   position: absolute;
-  margin-top: -6.5%;
-  margin-left: -4%;
+  left: -4.5%;
+  top: -17%;
+  height: 50vh;
+  width: 25vw;
 }
+
+.logo-container img {
+  width: 85%;
+  height: 85%;
+}
+
+.languageButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 90vw;
+  width: 10vw;
+  height: 20vh;
+
+}
+
 
 .wordBoxBackground {
 
@@ -68,9 +87,7 @@
 
 .word {
   margin-right: 10px;
-  /* Add space between words */
 }
-
 
 .correct {
   color: white;
@@ -80,36 +97,28 @@
   color: red;
 }
 
-.incorrectWord {
-  text-decoration: underline red;
-}
-
 .cursor {
   transition: left 0.15s ease;
   rotate: 0.25rad;
-
-
-
 }
 
 .timer {
   display: flex;
-  /* Use flexbox */
   justify-content: center;
-  /* Center horizontally */
   align-items: center;
-  /* Center vertically */
   position: absolute;
   left: 0;
   top: 13.5%;
   width: 100%;
-  /* Ensure full width */
+  
   font-size: 350%;
   font-family: 'Roboto Mono', monospace;
   font-weight: bold;
 }
 
 .explosionContainer {
+  position: absolute;
+  top: 21%;
   margin-top: 0%;
   margin-left: 40%;
   width: 500px;
@@ -118,30 +127,51 @@
 
 .statsBox {
   width: 45vw;
-  /* Set width to 50% of the viewport width */
-  height: 25vh;
-  /* Set height to 25% of the viewport height */
+  height: 50vh;
   position: absolute;
-  /* Center the div horizontally and vertically */
-  top: 50%;
-  left: 65%;
+  top: 46%;
+  left: 50%;
   transform: translate(-50%, -50%);
-
+  background-image: url("https://i.postimg.cc/fRZxqf2V/Board-With-Hat-removebg-preview.png");
+  background-repeat: no-repeat;
+  background-position-x: 79%;
+  background-position-y: -10%;
+  background-size: 80%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
   /* STYLING*/
   display: flex;
   flex-direction: column;
-  /* Arrange items vertically */
   justify-content: center;
-  /* Center items vertically */
   font-family: 'Roboto Mono', monospace;
   font-size: 29px;
   line-height: 1.2;
-  /* Adjust line height as per your design */
-  max-height: calc(1.7 * 2.25em);
-  /* Calculate max height based on line height and larger font size */
   font-weight: bold;
   /* overflow: hidden;*/
 }
+
+.statsText {
+  
+  position: absolute;
+  /*top: 21%;
+  left: 12%;
+  */
+  width: 64.5%;
+  height: 40%;
+}
+
+.statsWizard {
+  position: absolute;
+  left: 29%;
+  top: 40%;
+  z-index: 1;
+}
+
+
 
 /*ShadCn components theming*/
 @layer base {
@@ -172,13 +202,19 @@
 /*BUTTONS*/
 
 .buttonContainer {
+  
   position: relative;
   overflow: hidden;
   margin-top: 60vh;
   height: 40vh;
+  width: 95vw;
+  left: 1%;
 }
 
+
+
 .multiplayerButton {
+  
   rotate: 0rad;
   max-width: 20%;
   max-height: 10%;
@@ -187,26 +223,28 @@
 }
 
 .restartButton {
+  
   rotate: 0.2rad;
   max-width: 10%;
   max-height: 10%;
   margin-top: 0%;
-  margin-left: 60%;
+  margin-left: 63%;
 }
 
 .loginButton {
+  
   rotate: -0.15rad;
   max-width: 10%;
   max-height: 10%;
   margin-top: -3%;
-  margin-left: 36%;
+  margin-left: 34%;
 }
 
 .multiplayerStick {
   position: relative;
   rotate: 0rad;
   margin-top: 0%;
-  margin-left: 51%;
+  margin-left: 52%;
   max-width: 10%;
   max-height: 10%;
   z-index: -1;
@@ -216,7 +254,7 @@
   position: relative;
   rotate: 0.2rad;
   margin-top: 0%;
-  margin-left: 62%;
+  margin-left: 65%;
   max-width: 10%;
   max-height: 10%;
   z-index: -1;
@@ -226,7 +264,7 @@
   position: relative;
   rotate: -0.15rad;
   margin-top: -2%;
-  margin-left: 39%;
+  margin-left: 37.5%;
   max-width: 10%;
   max-height: 10%;
   z-index: -1;

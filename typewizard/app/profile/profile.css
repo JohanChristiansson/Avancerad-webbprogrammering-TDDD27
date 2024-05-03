@@ -10,8 +10,8 @@
 
 .characterContainer {
     position: absolute;
-    top: 12vh;
-    left: -2vw;
+    top: 20vh;
+    left: 0;
     width: 30vw;
     height: 50vh;
 
@@ -20,13 +20,20 @@
 .characterContainer img {
     position: absolute;
     margin-top: -10%;
+    width: 90%;
+    height: 130%;
+
     
 }
 
 .characterContainer h1 {
-    font-size: 32px;
+    position: absolute;
+    left: 37%;
+    top: 100%;
+    font-size: 2rem;
     color: antiquewhite;
-    text-align: center;
+    
+    
 }
 
 .profileInfoContainer {

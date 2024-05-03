@@ -1,0 +1,118 @@
+
+
+
+.progressionContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    left: 25vw;
+    top: 5vh;
+    width: 50vw;
+    height: 45vh;
+}
+
+.lanePlayer1,
+.lanePlayer2,
+.lanePlayer3,
+.lanePlayer4 {
+    position: relative;
+    width: 100%;
+    height: 25%;
+}
+
+
+
+.playerGround {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30%;
+    border-width: 4px;
+    border-color: #965948;
+    border-style: groove;
+    /*background-image: url('https://i.postimg.cc/2S7rwv4H/simon-sanchez-madera-tilepreview.png');*/
+    background-image: url('https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png');
+    background-size: 18%;
+}
+
+.lanePlayer1 img,
+.lanePlayer2 img,
+.lanePlayer3 img,
+.lanePlayer4 img {
+    position: absolute;
+    width: 10%;
+    height: 68%;
+    transition: left 0.5s ease-in-out;
+}
+
+
+.wordBoxBackgroundMultiPlayer {
+  position: absolute;
+  top: 45vh;
+  left: 18vw;
+  width: 70vw;
+  height: 50vh;
+  background-image: url("https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png");
+  background-size: 95% 80%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-clip: unset;
+  z-index: -1;
+}
+
+.timerBackground {
+    position: absolute;
+    top: 0%;
+    left: 40%;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.timerBackground img {
+    position: relative;
+    left: 5%;
+    size: 50%;
+}
+
+.multiplayerTimer {
+    position: relative;
+    left: -50%;
+    margin-top: 53%;
+    font-size: 64px;
+    color: black;
+    
+}
+
+.multiplayerStatsBox {
+    position: absolute;
+    top: 52.5%;
+    left: 22.5%;
+    width: 55%;
+    height: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://i.postimg.cc/t4pnc9yt/Namnl-s-design-5-removebg-preview.png");
+    background-position: 45%;
+    background-size: 120%;
+    border-width: 25px;
+    border-color: #965948; 
+    border-style:groove;
+}
+
+
+
+.multiplayerExplosionContainer {
+    position: absolute;
+    left: 35%;
+    top: 53%;
+    width: 30%;
+    height: 45%;
+    overflow: hidden;
+}
+
+.multiplayerExplosionContainer img {
+    width: 100%;
+    height: 100%;
+}
