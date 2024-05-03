@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { sql } from "@vercel/postgres";
 import { pusherServer } from '@/lib/pusher';
 import { v4 as uuidv4 } from 'uuid';

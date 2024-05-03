@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { pusherServer } from '@/lib/pusher'
 import { nanoid } from 'nanoid'
 
