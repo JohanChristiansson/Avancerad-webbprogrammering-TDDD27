@@ -2,7 +2,6 @@ CREATE TABLE Lobby (
     id VARCHAR(255) PRIMARY KEY,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-//Do we need to remove old lobbys
 
 CREATE TABLE Message (
     id VARCHAR(255) PRIMARY KEY,
@@ -10,4 +9,17 @@ CREATE TABLE Message (
     text TEXT,
     LobbyId VARCHAR(255),
     FOREIGN KEY (LobbyId) REFERENCES Lobby(id)
+);
+
+CREATE TABLE Players (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE player_games (
+    player_id INTEGER REFERENCES Players(id),
+    game_id VARCHAR(255) REFERENCES Lobby(id),
+    current_words INTEGER,
+    wpm INTEGER,
+    PRIMARY KEY (player_id, game_id)
 );
