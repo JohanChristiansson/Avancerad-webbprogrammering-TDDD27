@@ -12,6 +12,7 @@ export async function POST(req: Request) {
         else{
             console.log("odefinerat lobbyid i send msg")
         }
+        console.log("här triggas pusher trigger")
         pusherServer.trigger(lobbyId, 'incoming-message', text);
 
         // Insert message into database

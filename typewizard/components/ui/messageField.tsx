@@ -18,14 +18,14 @@ const MessageField: FC<MessageFieldProps> = ({ lobbyId }) => {
 
   return (
     <div className='flex gap-2'>
-      type a new message:
       <input
         onChange={({ target }) => (input = target.value)}
-        className='border border-zinc-300'
+        className='border border-amber-300 bg-amber-200/50'
         type='text'
       />
       <button onClick={() => sendMessage(input || '')}>send</button>
     </div>
+    //Need to add error handling if send mesg is
   )
 }
 

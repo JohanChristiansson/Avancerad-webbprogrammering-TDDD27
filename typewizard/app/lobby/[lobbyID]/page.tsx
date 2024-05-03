@@ -12,7 +12,6 @@ interface PageProps {
 const page = async ({ params }: PageProps) => {
     const lobbyId = params.lobbyID; //ID with caps IS CORRECT IGNORE THE STUPID STUPID ERROR
     console.log("lobbyid in lobby page", lobbyId)
-    console.log("params", params)
     try {
         const { rows: existingMessages } = await sql`SELECT * FROM Message WHERE LobbyId = ${lobbyId}`;
 
@@ -21,6 +20,7 @@ const page = async ({ params }: PageProps) => {
             text: message.text,
             id: message.id,
         }));
+        console.log(serializedMessages, "serialised messages")
 
 
         return (
@@ -45,7 +45,7 @@ const page = async ({ params }: PageProps) => {
                         </div>
                     </div>
                 </div>
-                <div className='playerContainer'>
+                {/* {<div className='playerContainer'>
 
                     <div className='player1'>
                         <h1>PlayerName</h1>
@@ -69,7 +69,7 @@ const page = async ({ params }: PageProps) => {
                             src='https://i.postimg.cc/tCpRWb7j/pixelwizard-Gif-ezgif-com-gif-maker.gif' />
                     </div>
 
-                </div>
+                </div>} */}
 
             </main >
 

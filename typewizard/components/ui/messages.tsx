@@ -12,10 +12,11 @@ interface MessagesProps {
 
 const Messages: FC<MessagesProps> = ({ lobbyId, initialMessages }) => {
     const [incomingMessages, setIncomingMessages] = useState<string[]>([])
+    //Initial messages dont load correctly
+    console.log(initialMessages, "initialMessages")
 
     useEffect(() => {
         pusherClient.subscribe(lobbyId)
-        pusherClient.subscribe("chat")
 
         pusherClient.bind('incoming-message', (text: string) => {
             setIncomingMessages((prev) => [...prev, text])
@@ -24,8 +25,8 @@ const Messages: FC<MessagesProps> = ({ lobbyId, initialMessages }) => {
         return () => {
             pusherClient.unsubscribe(lobbyId)
         }
-    }, [setIncomingMessages, lobbyId])
-
+    }, [incomingMessages, lobbyId])
+    console.log(incomingMessages, "incommingMessages")
     return (
         <div>
             {initialMessages.map((message) => (
