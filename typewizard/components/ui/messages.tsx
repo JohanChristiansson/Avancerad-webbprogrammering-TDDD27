@@ -25,7 +25,7 @@ const Messages: FC<MessagesProps> = ({ lobbyId, initialMessages }) => {
         return () => {
             pusherClient.unsubscribe(lobbyId)
         }
-    }, [incomingMessages, lobbyId])
+    }, [lobbyId])
     console.log(incomingMessages, "incommingMessages")
     return (
         <div>
