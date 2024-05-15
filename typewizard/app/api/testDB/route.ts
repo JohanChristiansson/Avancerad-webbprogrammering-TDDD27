@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     try {
         console.log(req, "req")
       
-        await sql`INSERT INTO Lobby (id) VALUES (${"1"}) RETURNING id`;
+        await sql`INSERT INTO Lobby (id) VALUES (${"2"}) RETURNING id`;
 
         return new Response(JSON.stringify({ success: true }));
     } catch (error) {
