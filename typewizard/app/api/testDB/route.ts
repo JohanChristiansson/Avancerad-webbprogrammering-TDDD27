@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     try {
         console.log(req, "req")
       
-        await sql`INSERT INTO player_Games (player_id, game_id, current_words, wpm) VALUES (${2}, ${2}, ${2}, ${2})`;
+        await sql`INSERT INTO Lobby (id) VALUES (${"1"}) RETURNING id`;
 
         return new Response(JSON.stringify({ success: true }));
     } catch (error) {
