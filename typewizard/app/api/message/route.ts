@@ -14,7 +14,7 @@ export async function POST(req: Request) {
             console.log("odefinerat lobbyid i send msg")
         }
         console.log("här triggas pusher trigger")
-        pusherServer.trigger(lobbyId, 'incoming-message', text);
+        await pusherServer.trigger(lobbyId, 'incoming-message', text);
 
         // Insert message into database
         await sql`INSERT INTO Message (id, text, lobbyId) VALUES (${uuid}, ${text}, ${lobbyId})`;
