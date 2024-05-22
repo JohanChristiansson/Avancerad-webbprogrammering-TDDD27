@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         await pusherServer.trigger(lobbyId, 'incoming-message', text);
 
         // Insert message into database
-        await sql`INSERT INTO Message (id, text, lobbyId) VALUES (${uuid}, ${text}, ${lobbyId})`;
+        await sql`INSERT INTO Message (id, text, lobby_id) VALUES (${uuid}, ${text}, ${lobbyId})`;
 
         return new Response(JSON.stringify({ success: true }));
     } catch (error) {

@@ -23,7 +23,7 @@ export default function ProfileStats({ initialData }: ProfileStatsProps) {
             const username = localStorage.getItem('user');
 
             try {
-                const response = await axios.post('/api/user/stats', { username });
+                const response = await axios.get(`/api/user/stats?username=${username}`);
 
                 if (response.status === 200) {
                     const data = response.data;

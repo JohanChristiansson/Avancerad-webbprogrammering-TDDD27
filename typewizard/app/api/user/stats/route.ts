@@ -1,8 +1,8 @@
 import { sql } from "@vercel/postgres";
 
 export async function GET(req: Request) {
-    const { username } = await req.json();
-
+    const { searchParams } = new URL(req.url)
+    const username = searchParams.get('username')
     try {
         // SQL queries to retrieve stats
     var averageWPM = await sql`

@@ -14,7 +14,7 @@ interface PageProps {
 const page = async ({ params }: PageProps) => {
     const lobbyId = params.lobbyID; //ID with caps IS CORRECT IGNORE THE STUPID STUPID ERROR
     console.log("lobbyid in lobby page", lobbyId)
-    const { rows: existingMessages } = await sql`SELECT * FROM Message WHERE LobbyId = ${lobbyId}`;
+    const { rows: existingMessages } = await sql`SELECT * FROM Message WHERE lobby_id = ${lobbyId}`;
 
     // Map the retrieved messages to the desired format
     const serializedMessages = existingMessages.map((message) => ({
