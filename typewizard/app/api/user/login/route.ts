@@ -19,6 +19,7 @@ export async function POST(req: Request) {
      const { userName, password } = await req.json();
 
     if (!userName || !password) {
+        console.log(userName, password)
         return new Response("Missing userName or password", { status: 400 });
     }
 

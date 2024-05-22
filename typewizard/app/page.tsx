@@ -140,7 +140,7 @@ export default function Home() {
       const password = form.elements.namedItem('password') as HTMLInputElement;
 
       // Send the data to the server via a POST request
-      const response = await axios.post('/api/user/login', { username: username.value, password: password.value })
+      const response = await axios.post('/api/user/login', { userName: username.value, password: password.value })
 
       if (response.status === 200) {
         console.log('Login successful');
