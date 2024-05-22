@@ -1,57 +1,11 @@
 'use client'
 import { getRandomWords, getWidthInPx } from '../app/gamelogic/engine'
 import '../app/globals.css';
-
+import axios from 'axios'
 import React, { useState, useEffect, useRef, useContext, FC } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
-import { User, currentUser } from '../app/dbConnection/context'
-//next/navigation';
-
-
-
-//DATABASE FOR LOGGING IN
-const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
-
-  // Retrieve the values from the form inputs
-  const username = (event.target as HTMLFormElement).elements.namedItem('username') as HTMLInputElement;
-  const password = (event.target as HTMLFormElement).elements.namedItem('password') as HTMLInputElement;
-
-  // Send the data to the server via a POST request
-  const response = await fetch('/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: username.value,
-      password: password.value,
-    }),
-  });
-  if (response.ok) {
-    // Handle successful registration (e.g., redirecting to a login page)
-    console.log('User registered successfully');
-    // Redirect to login page
-    window.location.href = '/login';
-  } else {
-    // Handle registration failure (e.g., display an error message)
-    console.error('Registration failed');
-  }
-};
-
-
-//USER-RELATED
-//export const currentUser: User = new User("null", false);
-
-
-
-
-//const getWidthInPx = (element: HTMLElement | null): number => {
-//  if (!element) return 0;
-//  return element.offsetWidth;
-//};
-
+//import { cookies } from 'next/headers'
 
 //PAGE FUNCTION
 export default function Home() {
@@ -60,7 +14,7 @@ export default function Home() {
   //ADMIN_STUF---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   const router = useRouter(); //FOR GOING BETWEEN PAGES
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState("");
   const [language, setLanguage] = useState<string>("english");
   const [languageButtonLink, setLangugeButtonLink] = useState<string>("https://i.postimg.cc/MG3M1f0T/british-removebg-preview-1.png");
 
@@ -72,10 +26,20 @@ export default function Home() {
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
   const [showStats, setShowStats] = useState(false);     //To show stats when game over
 
+  //onst cookieStore = cookies()
+
   // Start the timer when the user presses the first letter
   const handleFirstLetterTyped = () => {
     setTimerRunning(true);
   };
+
+  //get savedUser from localStorage if it is there
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(savedUser);
+    }
+  }, []);
 
   // Update the timer every second
   useEffect(() => {
@@ -142,7 +106,6 @@ export default function Home() {
 
 
   const handleMultiPlayerButtonClick = async () => {
-    console.log("clickade på multiplayer knapp", process.env.NEXT_PUBLIC_PUSHER_APP_KEY)
     const res = await fetch('/api/lobby')
     const lobbyId: string = await res.text()
     console.log(lobbyId, "lobby id in big page")
@@ -154,7 +117,7 @@ export default function Home() {
   }
 
   const handleProfileButtonClick = (): void => {
-    if (currentUser.loggedIn == false) {
+    if (!user) {
       if (showLoginBox) {
         setShowLoginBox(false);
       }
@@ -166,7 +129,8 @@ export default function Home() {
     }
   };
 
-  const handleLoginButtonClick = async () => {
+  const handleLoginButtonClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
     try {
       // Retrieve the form element
       const form = document.querySelector('form') as HTMLFormElement;
@@ -175,47 +139,35 @@ export default function Home() {
       const username = form.elements.namedItem('username') as HTMLInputElement;
       const password = form.elements.namedItem('password') as HTMLInputElement;
 
-      if (username.value == "admin" && password.value == "admin") {
+      // Send the data to the server via a POST request
+      const response = await axios.post('/api/user/login', { username: username.value, password: password.value })
+
+      if (response.status === 200) {
         console.log('Login successful');
-        currentUser.setUser(username.value);
-        currentUser.loggedIn = true;
-        setLoggedIn(true);
+        //cookieStore.set({ name: "user", value: username.value, httpOnly: false, path: '/' });
+        localStorage.setItem("user", username.value);
+        setUser(username.value)
         router.push('/profile');
+      } else if (response.status == 401) {
+        console.error('invalid password');
+        alert('wrong password.');
+      } else if (response.status == 404) {
+        console.error('invalid user');
+        alert('user does not exist.');
       } else {
-
-        // Send the data to the server via a POST request
-        const response = await fetch('http://localhost:5000/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: username.value,
-            password: password.value,
-          }),
-        });
-
-        if (response.ok) {
-          console.log('Login successful');
-          currentUser.setUser(username.value);
-          currentUser.loggedIn = true;
-          setLoggedIn(true);
-          router.push('/profile');
-        } else {
-          console.error('Login failed');
-          alert('Invalid username or password.');
-        }
+        alert("something went wrong")
       }
     } catch (error) {
       // Catch any error that occurs during the fetch request
 
       console.error('Fetch error:', error);
-      alert('There was an error connecting to the server. Contact Gustav.');
+      alert('There was an error connecting to the server');
     }
   };
 
 
-  const handleRegisterButtonClick = async () => {
+  const handleRegisterButtonClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
     try {
       // Retrieve the form element
       const form = document.querySelector('form') as HTMLFormElement;
@@ -226,30 +178,29 @@ export default function Home() {
       console.log("Username input: ", username.value);
       console.log("Password input: ", password.value);
 
-      // Send the data to the server via a POST request
-      const response = await fetch('http://localhost:5000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username.value,
-          password: password.value,
-        }),
-      });
+      var regex = /^(?=.*[a-zåäö])(?=.*[A-ZÅÄÖ])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
-      if (response && response.ok) {
-        // Handle successful registration (e.g., redirecting to the login page)
-        alert('Registration successful! Happy typing!')
-        console.log('User registered successfully');
-        console.log(response);
-        // Redirect to the login page
-        // router.push('/login');
+      if (!regex.test(password.value)) {
+        alert("Minimum 8 characters.\n At least one lowercase letter.\n At least one uppercase letter.\n At least one digit.\n At least one special character.")
+      }
+
+      // Send the data to the server via a POST request
+      const response = await axios.post('/api/user/register', { userName: username.value, password: password.value })
+
+      if (response.status === 201) {
+        console.log('Registerd successfully');
+        //cookieStore.set({ name: "user", value: username.value, httpOnly: false, path: '/' });
+        localStorage.setItem("user", username.value);
+        setUser(username.value)
+        router.push('/profile');
+      } else if (response.status == 409) {
+        console.error('User does already exist');
+        alert('user already exist');
+      } else if (response.status == 404) {
+        console.error('invalid user');
+        alert('user does not exist.');
       } else {
-        // Handle registration failure (e.g., displaying an error message)
-        console.error('Registration failed');
-        console.log(response);
-        alert('Registration failed. Please try again.');
+        alert("something went wrong, this should not be printed ever")
       }
     } catch (error) {
       // Catch any error that occurs during the fetch request
@@ -523,7 +474,7 @@ export default function Home() {
         {showLoginBox && (
 
           <div className='loginContainer'>
-            <form onSubmit={handleSubmit}>
+            <form>
               <input className='usernameBox' type="text" name="username" placeholder="Username"></input>
               <input className='passwordBox' type="password" name="password" placeholder="Password"></input>
             </form>

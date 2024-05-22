@@ -1,25 +1,25 @@
-CREATE TABLE Lobby (
+CREATE TABLE lobby (
     id VARCHAR(255) PRIMARY KEY,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Message (
+CREATE TABLE message (
     id VARCHAR(255) PRIMARY KEY,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     text TEXT,
-    LobbyId VARCHAR(255),
-    FOREIGN KEY (LobbyId) REFERENCES Lobby(id)
+    lobby_id VARCHAR(255),
+    FOREIGN KEY (lobby_id) REFERENCES lobby(id)
 );
 
-CREATE TABLE Players (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+CREATE TABLE users (
+    name VARCHAR(255) PRIMARY KEY,
+    password VARCHAR(255)
 );
 
-CREATE TABLE player_games (
-    player_id INTEGER REFERENCES Players(id),
-    game_id VARCHAR(255) REFERENCES Lobby(id),
+CREATE TABLE user_in_lobby (
+    player_name VARCHAR(255) REFERENCES users(name),
+    game_id VARCHAR(255) REFERENCES lobby(id),
     current_words INTEGER,
     wpm INTEGER,
-    PRIMARY KEY (player_id, game_id)
+    PRIMARY KEY (player_name, game_id)
 );
