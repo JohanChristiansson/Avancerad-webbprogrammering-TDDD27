@@ -13,15 +13,34 @@ interface PageProps {
 
 const page = async ({ params }: PageProps) => {
     const lobbyId = params.lobbyID; //ID with caps IS CORRECT IGNORE THE STUPID STUPID ERROR
-    console.log("lobbyid in lobby page", lobbyId)
-    const { rows: existingMessages } = await sql`SELECT * FROM Message WHERE lobby_id = ${lobbyId}`;
+    //add player to the current lobby
 
-    // Map the retrieved messages to the desired format
-    const serializedMessages = existingMessages.map((message) => ({
-        text: message.text,
-        id: message.id,
-    }));
+    //Get previous messages
+    var serializedMessages;
+    try {
+        const existingMessages = await sql`SELECT text, id FROM Message WHERE lobby_id = ${lobbyId}`;
+        serializedMessages = existingMessages.rows.map(item => ({
+            id: item.id,
+            text: item.text
+        }));
+    } catch (error) {
+        console.log(error, "error retrieving serializedMessages")
+        serializedMessages = [{ id: null, text: null }]
+    }
     console.log(serializedMessages, "serialised messages")
+
+    //Get players in lobby
+    var serializedPlayers;
+    try {
+        const players = await sql`SELECT player_name FROM player_in_lobby WHERE game_id = ${lobbyId}`;
+        serializedPlayers = players.rows.map(item => ({
+            playerName: item.text
+        }));
+    } catch (error) {
+        console.log(error, "error retrieving serializedMessages")
+        serializedPlayers = [{ playerName: null }]
+    }
+    console.log(serializedPlayers, "serialised players")
 
 
     return (

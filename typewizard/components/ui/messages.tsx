@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 
 interface MessagesProps {
     initialMessages: {
-        text: string
+        text: string,
         id: string
     }[]
     lobbyId: string
@@ -14,6 +14,7 @@ const Messages: FC<MessagesProps> = ({ lobbyId, initialMessages }) => {
     const [incomingMessages, setIncomingMessages] = useState<string[]>([])
     //Initial messages dont load correctly
     console.log(initialMessages, "initialMessages")
+    console.log(incomingMessages, "incommingMsg")
 
     useEffect(() => {
         pusherClient.subscribe(lobbyId)
