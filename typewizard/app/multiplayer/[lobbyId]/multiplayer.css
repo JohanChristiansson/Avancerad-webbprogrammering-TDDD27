@@ -86,19 +86,26 @@
 
 .multiplayerStatsBox {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     top: 52.5%;
-    left: 22.5%;
+    left: 24.5%;
     width: 55%;
     height: 45%;
     display: flex;
     justify-content: center;
-    align-items: center;
     background-image: url("https://i.postimg.cc/t4pnc9yt/Namnl-s-design-5-removebg-preview.png");
     background-position: 45%;
     background-size: 120%;
     border-width: 25px;
     border-color: #965948; 
     border-style:groove;
+    font-weight: bold;
+    font-style: italic; 
+}
+
+.multiplayerStatsBox h1 {
+    font-size: xx-large;
 }
 
 
