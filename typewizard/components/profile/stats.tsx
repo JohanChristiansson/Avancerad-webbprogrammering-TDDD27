@@ -42,18 +42,20 @@ export default function ProfileStats({ initialData }: ProfileStatsProps) {
         fetchUserInfo();
     }, []);
 
+    const avgWPMNumber = Number(avgWPM) || 0;
+    const highestWPMNumber = Number(highestWPM) || 0;
+    const avgAccuracyNumber = Number(avgAccuracy) || 0;
+
     return (
         <div>
             <div className='stats1'>
-                <h1>Average WPM: {avgWPM}</h1>
-                <h1>Highest WPM: {highestWPM}</h1>
+                <h1>Average WPM: {avgWPMNumber.toFixed(1)}</h1>
+                <h1>Highest WPM: {highestWPMNumber.toFixed(1)}</h1>
                 <h1>Times played: {timesPlayed}</h1>
-                <h1>Average accuracy: {avgAccuracy}</h1>
+                <h1>Average accuracy: {avgAccuracyNumber.toFixed(1)}</h1>
             </div>
             <div className='stats2'>
                 <h1>Online wins: get_value</h1>
-                <h1>Online matches played: get_value</h1>
-                <h1>Most played opponent: get_value</h1>
                 <h1>Global ranking: get_value</h1>
             </div>
         </div>

@@ -94,6 +94,7 @@ import '../globals.css';
 import './profile.css';
 import ProfileStats from '../../components/profile/stats';
 import ProfileHeader from '../../components/profile/header';
+import {HomeButton} from '../../components/ui/tmpButton';
 
 interface InitialData {
     avgWPM: number;
@@ -113,8 +114,13 @@ export default async function Page() {
     return (
         <main>
             <div className='backgroundPicture'>
-                <div className="logo-container">
-                    <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png" alt="Logo" />
+            <div className='home-button'>
+                    <HomeButton
+                        disabled={false}
+                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+                        style={{}} //Must set size to be visible
+                    >
+                    </HomeButton>
                 </div>
                 <div className='characterContainer'>
                     <ProfileHeader />

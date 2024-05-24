@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation'
 import { getRandomWords, getWidthInPx } from '../../gamelogic/engine';
+import { HomeButton } from '@/components/ui/tmpButton';
 
 export default function Page() {
 
@@ -197,12 +198,14 @@ export default function Page() {
     <main>
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
-        <div className="logo-container">
-          <a href="#" onClick={handleHomeButtonClick}>
-            <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-              style={{}} />
-          </a>
-        </div>
+      <div className='home-button'>
+                    <HomeButton
+                        disabled={false}
+                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+                        style={{}} //Must set size to be visible
+                    >
+                    </HomeButton>
+      </div>
 
         <div className='progressionContainer'>
           <div className='lanePlayer1'>

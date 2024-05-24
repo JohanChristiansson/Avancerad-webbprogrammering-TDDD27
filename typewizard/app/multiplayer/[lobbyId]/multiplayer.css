@@ -5,8 +5,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    left: 25vw;
-    top: 5vh;
+    left: 27vw;
+    top: -3vh;
     width: 50vw;
     height: 45vh;
 }

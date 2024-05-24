@@ -4,6 +4,7 @@ import Messages from '@/components/ui/messages';
 import '../../globals.css';
 import { LongButton } from '@/components/ui/tmpButton';
 import { usePathname, redirect } from 'next/navigation'
+import {HomeButton} from '@/components/ui/tmpButton'
 
 interface PageProps {
     params: {
@@ -28,10 +29,14 @@ const page = async ({ params }: PageProps) => {
         <main>
             <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
-                <div className="logo-container">
-                    <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-                        style={{ width: '400px', height: '400px' }} />
-                </div>
+            <div className='home-button'>
+                    <HomeButton
+                        disabled={false}
+                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+                        style={{}} //Must set size to be visible
+                    >
+                    </HomeButton>
+            </div>
 
                 <div className="w-[40vw] h-[35vh] bg-center absolute left-[30vw] top-[22vh] bg-no-repeat"
                     style={{

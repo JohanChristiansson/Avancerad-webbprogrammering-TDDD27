@@ -5,6 +5,7 @@ import axios from 'axios'
 import React, { useState, useEffect, useRef, useContext, FC } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
+import { HomeButton } from '@/components/ui/tmpButton';
 //import { cookies } from 'next/headers'
 
 //PAGE FUNCTION
@@ -399,12 +400,14 @@ export default function Home() {
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
 
-        <div className="logo-container">
-          <a href="#" onClick={handleHomeButtonClick}>
-            <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-              style={{}} />
-          </a>
-        </div>
+      <div className='home-button'>
+                    <HomeButton
+                        disabled={false}
+                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+                        style={{}} //Must set size to be visible
+                    >
+                    </HomeButton>
+      </div>
 
         <div className='languageButtonContainer'>
           <RestartButton
