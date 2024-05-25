@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import bcrypt from 'bcrypt';
+import { cookies } from 'next/headers'
 
 async function getUser(userName : string) {
     try {
@@ -17,6 +18,7 @@ async function getUser(userName : string) {
 //Should be post even tho we dont change any data as it is more secure as the password is sent
 export async function POST(req: Request) {
      const { userName, password } = await req.json();
+     const cookieStore = cookies()
 
     if (!userName || !password) {
         console.log(userName, password)
@@ -29,6 +31,7 @@ export async function POST(req: Request) {
         if (user) {
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (passwordMatch) {
+                cookieStore.set({ name: "user", value: user.name, httpOnly: true, path: '/' });
                 return new Response(JSON.stringify(user), { status: 200 });
             } else {
                 return new Response("Invalid password", { status: 401 });

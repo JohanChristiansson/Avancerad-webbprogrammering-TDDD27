@@ -6,7 +6,6 @@ import React, { useState, useEffect, useRef, useContext, FC } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from '../node_modules/next/navigation'
 import { HomeButton } from '@/components/ui/tmpButton';
-//import { cookies } from 'next/headers'
 
 //PAGE FUNCTION
 export default function Home() {
@@ -26,8 +25,6 @@ export default function Home() {
   const [timerRunning, setTimerRunning] = useState(false); //To start timer
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
   const [showStats, setShowStats] = useState(false);     //To show stats when game over
-
-  //onst cookieStore = cookies()
 
   // Start the timer when the user presses the first letter
   const handleFirstLetterTyped = () => {
@@ -145,7 +142,6 @@ export default function Home() {
 
       if (response.status === 200) {
         console.log('Login successful');
-        //cookieStore.set({ name: "user", value: username.value, httpOnly: false, path: '/' });
         localStorage.setItem("user", username.value);
         setUser(username.value)
         router.push('/profile');
@@ -400,14 +396,14 @@ export default function Home() {
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
 
-      <div className='home-button'>
-                    <HomeButton
-                        disabled={false}
-                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-                        style={{}} //Must set size to be visible
-                    >
-                    </HomeButton>
-      </div>
+        <div className='home-button'>
+          <HomeButton
+            disabled={false}
+            imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+            style={{}} //Must set size to be visible
+          >
+          </HomeButton>
+        </div>
 
         <div className='languageButtonContainer'>
           <RestartButton

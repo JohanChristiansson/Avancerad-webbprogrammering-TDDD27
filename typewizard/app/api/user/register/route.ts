@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import bcrypt from 'bcrypt';
+import { cookies } from 'next/headers'
 
 // Helper function to check if user exists
 async function getUser(userName : string) {
@@ -17,6 +18,7 @@ async function getUser(userName : string) {
 
 // Create new user
 export async function POST(req: Request) {
+    const cookieStore = cookies()
     try {
         const { userName, password } = await req.json();
         if (!userName || !password) {
@@ -33,7 +35,7 @@ export async function POST(req: Request) {
             VALUES (${userName}, ${hashedPassword})
             RETURNING *;
         `;
-
+        cookieStore.set({ name: "user", value: userName, httpOnly: true, path: '/' });
         return new Response(JSON.stringify(result.rows[0]), { status: 201 });
     } catch (error) {
         console.error(error);
