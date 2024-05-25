@@ -29,6 +29,13 @@
   height: 85%;
 }
 
+.home-button {
+  width: 50vh;
+  height: 25vh;
+  margin-top: -17vh;
+  margin-left: -9vh;
+}
+
 .languageButtonContainer {
   display: flex;
   align-items: center;
@@ -37,7 +44,7 @@
   left: 90vw;
   width: 10vw;
   height: 20vh;
-
+  margin-top: -3.95%;
 }
 
 

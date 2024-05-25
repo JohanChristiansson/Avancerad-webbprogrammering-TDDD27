@@ -40,7 +40,7 @@
     background-image: url("https://i.postimg.cc/t4pnc9yt/Namnl-s-design-5-removebg-preview.png");
     /*background-image: url("https://i.postimg.cc/7hmCCcKk/Namnl-s-design-3.png"); */
     background-position: 45%;
-    background-size: 120%;
+    background-size: 250%;
     border-width: 25px;
     border-color: #965948; 
     border-style:groove;
@@ -96,4 +96,11 @@
     font-size: 28px;
     margin-top: 2%;
     
+}
+
+.home-button {
+    width: 50vh;
+    height: 25vh;
+    margin-top: -17vh;
+    margin-left: -9vh;
 }

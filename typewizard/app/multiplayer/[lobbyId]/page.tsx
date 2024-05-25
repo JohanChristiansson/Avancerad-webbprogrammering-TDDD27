@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
 import { usePathname, useRouter } from 'next/navigation'
 import { getRandomWords, getWidthInPx } from '../../gamelogic/engine';
+import { HomeButton } from '@/components/ui/tmpButton';
 
 export default function Page() {
 
@@ -27,6 +28,11 @@ export default function Page() {
   const [timerRunning, setTimerRunning] = useState(true); //To start timer
   const [timeLeft, setTimeLeft] = useState(true);         //To end game when timer reaches 0
   const [showStats, setShowStats] = useState(false);     //To show stats when game over
+
+  const gameTime = 0;
+  const [finalTime, setFinalTime] = useState(0);
+  const [gameTimer, setGameTimer] = useState(gameTime);
+  const [gameTimerRunning, setGameTimerRunning] = useState(false);
 
   // Start the timer when the user presses the first letter
   const handleFirstLetterTyped = () => {
@@ -57,6 +63,36 @@ export default function Page() {
     // Clean up function to stop the timer when the component unmounts or when timerRunning becomes false
     return () => clearInterval(intervalId);
   }, [timerRunning]);
+
+  useEffect(() => {
+    if(!timerRunning) {
+      setGameTimerRunning(true);
+    }
+  }, [timerRunning]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (gameTimerRunning) {
+      intervalId = setInterval(() => {
+        setFinalTime((prevGameTime) => {
+          if (!finished) {
+            return parseFloat((prevGameTime + 0.1).toFixed(1)); // Update game timer with 1 decimal
+          } else {
+            // Game finished, stop the game timer
+            setGameTimerRunning(false);
+            clearInterval(intervalId);
+            setShowStats(true); // Show stats when the game is over
+            return prevGameTime;
+          }
+        });
+      }, 100);
+    }
+  
+    // Clean up function to stop the game timer when the component unmounts or when gameTimerRunning becomes false
+    return () => clearInterval(intervalId);
+  }, [gameTimerRunning, finished]);
+
+  
 
   //LOGIC VARIABLES
   const wordBoxRef = useRef<HTMLDivElement>(null);          //Declaring the wordbox div here so we can determine its width regardless of screen size
@@ -182,6 +218,7 @@ export default function Page() {
   }, [words, timeLeft]);
 
   const renderExplosion = () => {
+    console.log(finalTime);
     return (
       <div className='multiplayerExplosionContainer'>
         <img
@@ -197,12 +234,14 @@ export default function Page() {
     <main>
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
-        <div className="logo-container">
-          <a href="#" onClick={handleHomeButtonClick}>
-            <img src="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-              style={{}} />
-          </a>
-        </div>
+      <div className='home-button'>
+                    <HomeButton
+                        disabled={false}
+                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+                        style={{}} //Must set size to be visible
+                    >
+                    </HomeButton>
+      </div>
 
         <div className='progressionContainer'>
           <div className='lanePlayer1'>
@@ -290,7 +329,9 @@ export default function Page() {
 
         {finished && !showExplosion && (
           <div className='multiplayerStatsBox'>
-
+            <h1>Score: {Number(Number(accuracy) / 100 *(correctWords * (60/finalTime)) * 69).toFixed(0)}</h1>
+            <h1>WPM: {Number(correctWords * (60 / finalTime)).toFixed(0)}</h1>
+            <h1>Accuracy: {Number(accuracy).toFixed(1)}%</h1>
           </div>
         )}
 
