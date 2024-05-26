@@ -1,6 +1,8 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePathname, redirect, useRouter } from 'next/navigation'
+import { pusherClient } from '@/lib/pusher'
+import axios from 'axios'
 
 interface ButtonProps {
     // Content inside the button
@@ -20,6 +22,18 @@ interface ButtonProps {
 
 export const LongButton: React.FC<ButtonProps> = ({ children, style, disabled, imgSrc, imgSrc2, lobbyId }) => {
 
+    if (lobbyId) {
+        useEffect(() => {
+            pusherClient.subscribe(lobbyId)
+
+            pusherClient.bind('start-game', (text: string) => {
+                router.push(`/multiplayer/${lobbyId}`)
+            })
+            return () => {
+                pusherClient.unsubscribe(lobbyId)
+            }
+        }, [lobbyId])
+    }
     const ButtonLeft = 16;
     const ButtonTop = 22;
 
@@ -47,6 +61,7 @@ export const LongButton: React.FC<ButtonProps> = ({ children, style, disabled, i
     };
     const onClick = async () => {
         console.log(lobbyId, "lobby id in tmpbutton")
+        await axios.post('/api/lobby/start', { lobbyId })
         router.push(`/multiplayer/${lobbyId}`)
     };
     // Handle button click
@@ -103,7 +118,7 @@ export const LongButton: React.FC<ButtonProps> = ({ children, style, disabled, i
     );
 };
 
-export const HomeButton: React.FC<ButtonProps> = ({ children, style, disabled, imgSrc, imgSrc2, lobbyId }) => { 
+export const HomeButton: React.FC<ButtonProps> = ({ children, style, disabled, imgSrc, imgSrc2, lobbyId }) => {
     const ButtonLeft = 0;
     const ButtonTop = 0;
 
@@ -137,8 +152,8 @@ export const HomeButton: React.FC<ButtonProps> = ({ children, style, disabled, i
         if (onClick) onClick();
         if (handlePress) handlePress();
     };
-    return(
-<button
+    return (
+        <button
             onClick={handleButtonClick}
             style={{ ...style, position: 'relative' }} // Positioning is important
             disabled={disabled}
