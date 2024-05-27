@@ -2,13 +2,20 @@
 import '../../globals.css';
 import '../[lobbyId]/multiplayer.css'
 import React, { useState, useEffect, useRef } from 'react';
-import { LongButton, RestartButton, LoginButton } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { getRandomWords, getWidthInPx } from '../../gamelogic/engine';
 import { HomeButton } from '@/components/ui/tmpButton';
+import { pusherClient } from '@/lib/pusher'
+import axios from 'axios'
 
-export default function Page() {
+interface PageProps {
+  params: {
+    lobbyId: string //JUste denna kan också ha caps
+  }
+}
 
+export default function Page({ params }: PageProps) {
+  const lobbyId = params.lobbyId
   const router = useRouter();
 
   const handleHomeButtonClick = (event: React.MouseEvent<HTMLAnchorElement>): void => {
@@ -16,7 +23,7 @@ export default function Page() {
     router.replace('/');
   }
 
-  //MULTIPLAYER-SPECIFIC VARIABLES
+  //MULTIPLAYER-SPECIFIC VARIAFBLES
   const [characterXpos, setCharacterXpos] = useState<number>(0);
   const totNrOfWords = 35;
   const [finished, setFinished] = useState<boolean>(false);
@@ -65,7 +72,7 @@ export default function Page() {
   }, [timerRunning]);
 
   useEffect(() => {
-    if(!timerRunning) {
+    if (!timerRunning) {
       setGameTimerRunning(true);
     }
   }, [timerRunning]);
@@ -87,12 +94,12 @@ export default function Page() {
         });
       }, 100);
     }
-  
+
     // Clean up function to stop the game timer when the component unmounts or when gameTimerRunning becomes false
     return () => clearInterval(intervalId);
   }, [gameTimerRunning, finished]);
 
-  
+
 
   //LOGIC VARIABLES
   const wordBoxRef = useRef<HTMLDivElement>(null);          //Declaring the wordbox div here so we can determine its width regardless of screen size
@@ -134,6 +141,29 @@ export default function Page() {
     }
   }, [finished]);
 
+  interface UserWords {
+    [user: string]: number;
+  }
+
+  const [userWords, setUserWords] = useState<UserWords>({});
+  useEffect(() => {
+    pusherClient.subscribe(lobbyId)
+
+    pusherClient.bind('update-words', (resp: {
+      user: string,
+      words: number
+    }) => {
+      setUserWords(prevUserWords => ({
+        ...prevUserWords,
+        [resp.user]: resp.words
+      }));
+      console.log(resp.user, resp.words, "sss", userWords[0], "user wsords")
+    });
+
+    return () => {
+      pusherClient.unsubscribe(lobbyId);
+    };
+  }, []);
   //THIS IS THE BIG USEEFFECT, BASICALLY CONTROLLING THE WHOLE GAME
   useEffect(() => {
 
@@ -171,6 +201,13 @@ export default function Page() {
 
         else if (correctCharacters >= currentWord.length) { //If on the last letter, check if the word is correct
           setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
+          const updateWpm = async (lobbyId: string, correctWords: number) => {
+            console.log("correct words", correctWords)
+            await axios.post('/api/game/updateWords', { lobbyId, correctWords })
+          }
+          console.log(correctWords, "correct words")
+          updateWpm(lobbyId, correctWords)
+
           setCharacterXpos(prevCharacterXpos => prevCharacterXpos + 100 / (totNrOfWords + 3));
           correctCharacters = 0;
         }
@@ -234,14 +271,14 @@ export default function Page() {
     <main>
       <div className='backgroundPicture'>  {/*BACKGROUND GIF IN THE OUTERMOST DIV*/}
 
-      <div className='home-button'>
-                    <HomeButton
-                        disabled={false}
-                        imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
-                        style={{}} //Must set size to be visible
-                    >
-                    </HomeButton>
-      </div>
+        <div className='home-button'>
+          <HomeButton
+            disabled={false}
+            imgSrc="https://i.postimg.cc/BnbJtyFJ/SignLogo.png"
+            style={{}} //Must set size to be visible
+          >
+          </HomeButton>
+        </div>
 
         <div className='progressionContainer'>
           <div className='lanePlayer1'>
@@ -329,7 +366,7 @@ export default function Page() {
 
         {finished && !showExplosion && (
           <div className='multiplayerStatsBox'>
-            <h1>Score: {Number(Number(accuracy) / 100 *(correctWords * (60/finalTime)) * 69).toFixed(0)}</h1>
+            <h1>Score: {Number(Number(accuracy) / 100 * (correctWords * (60 / finalTime)) * 69).toFixed(0)}</h1>
             <h1>WPM: {Number(correctWords * (60 / finalTime)).toFixed(0)}</h1>
             <h1>Accuracy: {Number(accuracy).toFixed(1)}%</h1>
           </div>

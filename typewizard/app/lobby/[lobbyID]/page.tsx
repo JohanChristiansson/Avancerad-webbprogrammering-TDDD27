@@ -1,3 +1,4 @@
+"use server"
 import { sql } from "@vercel/postgres";
 import MessageField from '@/components/ui/messageField';
 import Messages from '@/components/ui/messages';
@@ -6,6 +7,7 @@ import { LongButton } from '@/components/ui/tmpButton';
 import { HomeButton } from '@/components/ui/tmpButton'
 import { cookies } from 'next/headers'
 import { pusherServer } from '@/lib/pusher';
+import axios from 'axios'
 
 
 //Should these be saved in a txt file, db or somehow else?
@@ -60,14 +62,15 @@ function getRandomName(serializedPlayers: { playername: string }[]): string {
     return randomName;
 }
 
+
 interface PageProps {
     params: {
-        lobbyID: string //JUste denna kan också ha caps
+        lobbyId: string //JUste denna kan också ha caps
     }
 }
 
 const page = async ({ params }: PageProps) => {
-    const lobbyId = params.lobbyID; //ID with caps IS CORRECT IGNORE THE STUPID STUPID ERROR
+    const lobbyId = params.lobbyId; //ID with caps IS CORRECT IGNORE THE STUPID STUPID ERROR
     console.log(lobbyId, "lobbyId")
     //Get players in lobby
     var serializedPlayers: { playername: string }[]
@@ -100,6 +103,7 @@ const page = async ({ params }: PageProps) => {
         username = cookie?.value
     } else {
         username = getRandomName(serializedPlayers)
+
     }
     await pusherServer.trigger(lobbyId, 'player-joined', username + " has joined the lobby pusher");
     try {
