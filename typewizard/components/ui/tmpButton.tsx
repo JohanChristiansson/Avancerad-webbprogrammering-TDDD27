@@ -22,18 +22,21 @@ interface ButtonProps {
 
 export const LongButton: React.FC<ButtonProps> = ({ children, style, disabled, imgSrc, imgSrc2, lobbyId }) => {
 
-    if (lobbyId) {
+    
         useEffect(() => {
-            pusherClient.subscribe(lobbyId)
+            if (lobbyId) { //Flyttade denna if till innanför ty annars gav den error på npm run nuild
+                pusherClient.subscribe(lobbyId)
 
-            pusherClient.bind('start-game', (text: string) => {
-                router.push(`/multiplayer/${lobbyId}`)
-            })
-            return () => {
-                pusherClient.unsubscribe(lobbyId)
-            }
+                pusherClient.bind('start-game', (text: string) => {
+                    router.push(`/multiplayer/${lobbyId}`)
+                })
+                return () => {
+                    pusherClient.unsubscribe(lobbyId)
+                }
+            } 
         }, [lobbyId])
-    }
+    
+    
     const ButtonLeft = 16;
     const ButtonTop = 22;
 

@@ -105,6 +105,7 @@ const page = async ({ params }: PageProps) => {
         username = getRandomName(serializedPlayers)
 
     }
+    
     await pusherServer.trigger(lobbyId, 'player-joined', username + " has joined the lobby pusher");
     try {
         await sql`INSERT INTO user_in_lobby (player_name, game_id, current_words, wpm)
@@ -128,7 +129,7 @@ const page = async ({ params }: PageProps) => {
         serializedMessages = []
     }
     console.log(serializedMessages, "serialised messages")
-
+    
 
     return (
         <main>

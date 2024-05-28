@@ -14,6 +14,11 @@ interface PageProps {
   }
 }
 
+function SetXPos(nrOfCorrectWords: number, prevPos: number) {
+  
+  return prevPos + 100 / (nrOfCorrectWords + 3);
+}
+
 export default function Page({ params }: PageProps) {
   const lobbyId = params.lobbyId
   const router = useRouter();
@@ -25,6 +30,12 @@ export default function Page({ params }: PageProps) {
 
   //MULTIPLAYER-SPECIFIC VARIAFBLES
   const [characterXpos, setCharacterXpos] = useState<number>(0);
+  const [oppXPos, setOppXPos] = useState<number[]>(Array(4).fill(0));
+  //const [opp1Xpos, setOpp1Xpos] = useState<number>(0);
+  //const [opp2Xpos, setOpp2Xpos] = useState<number>(0);
+  //const [opp3Xpos, setOpp3Xpos] = useState<number>(0);
+  //const [opp4Xpos, setOpp4Xpos] = useState<number>(0);
+
   const totNrOfWords = 35;
   const [finished, setFinished] = useState<boolean>(false);
 
@@ -153,17 +164,30 @@ export default function Page({ params }: PageProps) {
       user: string,
       words: number
     }) => {
+    
       setUserWords(prevUserWords => ({
         ...prevUserWords,
-        [resp.user]: resp.words
+        [resp.user]: (prevUserWords[resp.user] || 0) + 1 // Add 1 to the current value, or initialize to 1 if not present
       }));
-      console.log(resp.user, resp.words, "sss", userWords[0], "user wsords")
     });
 
     return () => {
       pusherClient.unsubscribe(lobbyId);
     };
   }, []);
+
+  
+  useEffect(() => {
+    const newOppXPos = [...oppXPos]; // Create a copy of the current state
+    Object.keys(userWords).forEach((key, index) => {
+      newOppXPos[index] = userWords[key] * (100 / 38);
+    });
+    setOppXPos(newOppXPos); // Update the state with the new array
+  }, [userWords]);
+
+
+
+
   //THIS IS THE BIG USEEFFECT, BASICALLY CONTROLLING THE WHOLE GAME
   useEffect(() => {
 
@@ -201,14 +225,14 @@ export default function Page({ params }: PageProps) {
 
         else if (correctCharacters >= currentWord.length) { //If on the last letter, check if the word is correct
           setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
-          const updateWpm = async (lobbyId: string, correctWords: number) => {
-            console.log("correct words", correctWords)
-            await axios.post('/api/game/updateWords', { lobbyId, correctWords })
+          const updateWpm = async (lobbyId: string, totNrOfWords: number) => {
+            console.log("correct words", totNrOfWords)
+            await axios.post('/api/game/updateWords', { lobbyId, totNrOfWords })
           }
-          console.log(correctWords, "correct words")
-          updateWpm(lobbyId, correctWords)
-
-          setCharacterXpos(prevCharacterXpos => prevCharacterXpos + 100 / (totNrOfWords + 3));
+          console.log(totNrOfWords, "correct words")
+          updateWpm(lobbyId, totNrOfWords)
+          
+          //setCharacterXpos(prevCharacterXpos => SetXPos(totNrOfWords, prevCharacterXpos));
           correctCharacters = 0;
         }
         wordIndex = wordIndex + 1;
@@ -283,26 +307,26 @@ export default function Page({ params }: PageProps) {
         <div className='progressionContainer'>
           <div className='lanePlayer1'>
             <img src='https://i.postimg.cc/hj6mpxvv/fxk5t8kqsbp81-ezgif-com-reverse.gif'
-              style={{ left: (characterXpos + "%") }}
+              style={{ left: (oppXPos[0] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
           <div className='lanePlayer2'>
             <img src='https://i.postimg.cc/SxRyNPD0/1-m-UYZp-Tpdf-HXKNwc-Ozw2-Jh-A.gif'
-              style={{}}
+              style={{ left: (oppXPos[1] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
           <div className='lanePlayer3'>
             <img src='https://i.postimg.cc/YS12JWdj/9f40ba06dc0476ff84170bba2bed69a0-ezgif-com-crop.gif'
-              style={{}}
+              style={{ left: (oppXPos[2] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
           <div className='lanePlayer4'>
 
             <img src='https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif'
-              style={{}}
+              style={{ left: (oppXPos[3] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
