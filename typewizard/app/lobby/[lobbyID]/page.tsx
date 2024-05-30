@@ -143,13 +143,14 @@ const page = async ({ params }: PageProps) => {
                     >
                     </HomeButton>
                 </div>
-
+            
                 <div className="w-[40vw] h-[35vh] bg-center absolute left-[30vw] top-[22vh] bg-no-repeat"
                     style={{
                         backgroundImage: "url('https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png')",
-                        backgroundSize: "105% 100%"
+                        backgroundSize: "105% 100%",
+                        
                     }}>
-                    <div className="absolute left-[6vw] top-[6vh] max-h-[23vh] overflow-y-auto w-[90vw]">
+                    <div className="absolute left-[6vw] top-[6vh] max-h-[23vh] overflow-y-auto w-[28vw]">
                         <Messages lobbyId={lobbyId} initialMessages={serializedMessages} players={serializedPlayers} />
                     </div>
                     <div className="absolute left-[6vw] bottom-[3vh]">
@@ -157,6 +158,9 @@ const page = async ({ params }: PageProps) => {
                     </div>
                 </div>
             </div>
+                
+
+
             <div className='buttonContainer'>
 
                 <div className='multiplayerButton'>
