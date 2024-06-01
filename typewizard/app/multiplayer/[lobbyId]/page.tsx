@@ -385,7 +385,7 @@ export default function Page({ params }: PageProps) {
           </div>
           <div className='lanePlayer3'>
           {Object.keys(userWords)[2] && 
-          <div className = 'name1'>{Object.keys(userWords)[0]}</div>
+          <div className = 'name1'>{Object.keys(userWords)[2]}</div>
             }
             <img src='https://i.postimg.cc/YS12JWdj/9f40ba06dc0476ff84170bba2bed69a0-ezgif-com-crop.gif'
               style={{ left: (oppXPos[2] + "%") }}
@@ -394,7 +394,7 @@ export default function Page({ params }: PageProps) {
           </div>
           <div className='lanePlayer4'>
           {Object.keys(userWords)[3] && 
-          <div className = 'name1'>{Object.keys(userWords)[0]}</div>
+          <div className = 'name1'>{Object.keys(userWords)[3]}</div>
             }
             <img src='https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif'
               style={{ left: (oppXPos[3] + "%") }}
