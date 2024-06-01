@@ -134,6 +134,7 @@ export default function Page({ params }: PageProps) {
   const [rawWordInput, setRawWordInput] = useState<number>(0);
   const [correctWords, setCorrectWords] = useState<number>(0);
   const accuracy = ((typedLetters.filter(item => item.correct).length / rawCharInput) * 100).toFixed(2); //Calculating accuracy directly so it can be const
+  const accuracyNumber = parseFloat(accuracy);
   let correctCharacters = 0; //Used to calculate WPM
 
   useEffect(() => {
@@ -157,7 +158,16 @@ export default function Page({ params }: PageProps) {
     [user: string]: number;
   }
 
+  interface UserResult {
+    name: string;
+    score: number;
+    wpm: number;
+    accuracy: number;
+  }
+
+  const [userResults, setUserResults] = useState<UserResult[]>([]);
   const [userWords, setUserWords] = useState<UserWords>({});
+
   useEffect(() => {
     pusherClient.subscribe(lobbyId)
 
@@ -172,12 +182,51 @@ export default function Page({ params }: PageProps) {
       }));
     });
 
+    
+    pusherClient.bind('finished-game', () => {
+    
+      setFinished(true);
+
+    });
+
+    pusherClient.bind('send-result', (result: { name: string, score: number, wpm: number, accuracy: number }) => {
+      console.log("Kör send-result")
+      setUserResults(prevUserResults => [
+        ...prevUserResults,
+        {
+          name: result.name,
+          score: result.score,
+          wpm: result.wpm,
+          accuracy: result.accuracy
+        }
+      ]);
+    });
+
     return () => {
       pusherClient.unsubscribe(lobbyId);
     };
   }, []);
 
-  
+
+
+
+  useEffect(() => {
+    if(!gameTimerRunning && !timerRunning && finished) {
+      const sendResult = async (lobbyId: string, wpm: number, accuracy: number, score: number) => {
+        const response = await axios.post('/api/game/sendResult', { lobbyId, wpm, accuracy, score});
+        console.log("Statustext: ",response.statusText);
+      }
+      let tempWpm = correctWords * (60 / finalTime);
+      let tempAcc = accuracyNumber;
+      let tempScore =  (tempAcc) / 100 * (tempWpm) * 69;
+      console.log("Tempscores: ", tempWpm, tempAcc, tempScore);
+      sendResult(lobbyId, tempWpm, tempAcc, tempScore);
+    }
+
+
+  },[gameTimerRunning, timerRunning, finished])
+
+
   useEffect(() => {
     const newOppXPos = [...oppXPos]; // Create a copy of the current state
     Object.keys(userWords).forEach((key, index) => {
@@ -281,7 +330,6 @@ export default function Page({ params }: PageProps) {
   }, [words, timeLeft]);
 
   const renderExplosion = () => {
-    console.log(finalTime);
     return (
       <div className='multiplayerExplosionContainer'>
         <img
@@ -297,13 +345,15 @@ export default function Page({ params }: PageProps) {
       await axios.post('/api/game/finishedGame', {lobbyId})
     }
     finishedGame(lobbyId);
-
-    const sendResult = async (lobbyId: string, wpm: number, accuracy: number, score: number) => {
-      await axios.post('/api/game/sendResult', { lobbyId, wpm, accuracy, score})
-    }
-    sendResult(lobbyId, correctWords * (60 / finalTime), parseFloat(accuracy), (parseFloat(accuracy)) / 100 * (correctWords * (60 / finalTime)) * 69);
     setFirstPlayerFinished(false);
   }
+
+
+
+
+
+
+
 
   return (
     <main>
@@ -403,33 +453,41 @@ export default function Page({ params }: PageProps) {
         {showExplosion && renderExplosion()}
 
         {finished && !showExplosion && (
-          <div className='multiplayerStatsBox'>
-            <div className = "player1Stats">
-            <h2>Name</h2>
-            <h1>Score: {Number(Number(accuracy) / 100 * (correctWords * (60 / finalTime)) * 69).toFixed(0)}</h1>
-            <h1>WPM: {Number(correctWords * (60 / finalTime)).toFixed(0)}</h1>
-            <h1>Accuracy: {Number(accuracy).toFixed(1)}%</h1>
-            </div>
-            <div className = "player2Stats">
-            <h2>Name</h2>
-            <h1>Score: xx</h1>
-            <h1>WPM: xx</h1>
-            <h1>Accuracy: xx%</h1>
-            </div>
-            <div className = "player3Stats">
-            <h2>Name</h2>
-            <h1>Score: xx</h1>
-            <h1>WPM: xx</h1>
-            <h1>Accuracy: xx%</h1>
-            </div>
-            <div className = "player4Stats">
-            <h2>Name</h2>
-            <h1>Score: xx</h1>
-            <h1>WPM: xx</h1>
-            <h1>Accuracy: xx%</h1>
-            </div>
-          </div>
-        )}
+  <div className='multiplayerStatsBox'>
+    {userResults[0] && (
+      <div className="player1Stats">
+        <h2>{userResults[0].name}</h2>
+        <h1>Score: {Number((userResults[0].score)).toFixed(0)}</h1>
+        <h1>WPM: {Number(userResults[0].wpm).toFixed(0)}</h1>
+        <h1>Accuracy: {Number(userResults[0].accuracy).toFixed(1)}%</h1>
+      </div>
+    )}
+    {userResults[1] && (
+      <div className="player2Stats">
+        <h2>{userResults[1].name}</h2>
+        <h1>Score: {Number((userResults[1].score)).toFixed(0)}</h1>
+        <h1>WPM: {Number(userResults[1].wpm).toFixed(0)}</h1>
+        <h1>Accuracy: {Number(userResults[1].accuracy).toFixed(1)}%</h1>
+      </div>
+    )}
+    {userResults[2] && (
+      <div className="player3Stats">
+        <h2>{userResults[2].name}</h2>
+        <h1>Score: {Number((userResults[2].score)).toFixed(0)}</h1>
+        <h1>WPM: {Number(userResults[2].wpm).toFixed(0)}</h1>
+        <h1>Accuracy: {Number(userResults[2].accuracy).toFixed(1)}%</h1>
+      </div>
+    )}
+    {userResults[3] && (
+      <div className="player4Stats">
+        <h2>{userResults[3].name}</h2>
+        <h1>Score: {Number((userResults[3].score)).toFixed(0)}</h1>
+        <h1>WPM: {Number(userResults[3].wpm).toFixed(0)}</h1>
+        <h1>Accuracy: {Number(userResults[3].accuracy).toFixed(1)}%</h1>
+      </div>
+    )}
+  </div>
+)}
 
 
 

@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
         const resp = {username, score, wpm, accuracy}; // Assuming you want to send these values in the Pusher event
 
-        await pusherServer.trigger(lobbyId, 'update-words', resp);
+        await pusherServer.trigger(lobbyId, 'send-result', resp);
 
         await sql`
             UPDATE user_in_lobby
