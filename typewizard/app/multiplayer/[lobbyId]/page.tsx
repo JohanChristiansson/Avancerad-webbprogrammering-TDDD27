@@ -38,6 +38,7 @@ export default function Page({ params }: PageProps) {
 
   const totNrOfWords = 35;
   const [finished, setFinished] = useState<boolean>(false);
+  const [firstPlayerFinished, setFirstPlayerFinished] = useState<boolean>(false);
 
 
   //TIMER
@@ -239,6 +240,7 @@ export default function Page({ params }: PageProps) {
 
         if (wordIndex == totNrOfWords) {  //For multiplaer the game ends when the user has written a set ammount of words
           setFinished(true);
+          setFirstPlayerFinished(true);
         }
 
         setNrOfSpaces(prevNrOfSpaces => prevNrOfSpaces + 1);
@@ -290,7 +292,7 @@ export default function Page({ params }: PageProps) {
     );
   };
 
-  if(finished) {                                      //When the first player is finished, set finished to all other players and post stats
+  if(firstPlayerFinished) {                                      //When the first player is finished, set finished to all other players and post stats
     const finishedGame = async(lobbyId: string) => {
       await axios.post('/api/game/finishedGame', {lobbyId})
     }
@@ -300,7 +302,7 @@ export default function Page({ params }: PageProps) {
       await axios.post('/api/game/sendResult', { lobbyId, wpm, accuracy, score})
     }
     sendResult(lobbyId, correctWords * (60 / finalTime), parseFloat(accuracy), (parseFloat(accuracy)) / 100 * (correctWords * (60 / finalTime)) * 69);
-
+    setFirstPlayerFinished(false);
   }
 
   return (
