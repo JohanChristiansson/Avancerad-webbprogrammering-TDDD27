@@ -290,6 +290,18 @@ export default function Page({ params }: PageProps) {
     );
   };
 
+  if(finished) {                                      //When the first player is finished, set finished to all other players and post stats
+    const finishedGame = async(lobbyId: string) => {
+      await axios.post('/api/game/finishedGame', {lobbyId})
+    }
+    finishedGame(lobbyId);
+
+    const sendResult = async (lobbyId: string, wpm: number, accuracy: number, score: number) => {
+      await axios.post('/api/game/sendResult', { lobbyId, wpm, accuracy, score})
+    }
+    sendResult(lobbyId, correctWords * (60 / finalTime), parseFloat(accuracy), (parseFloat(accuracy)) / 100 * (correctWords * (60 / finalTime)) * 69);
+
+  }
 
   return (
     <main>
@@ -390,9 +402,30 @@ export default function Page({ params }: PageProps) {
 
         {finished && !showExplosion && (
           <div className='multiplayerStatsBox'>
+            <div className = "player1Stats">
+            <h2>Name</h2>
             <h1>Score: {Number(Number(accuracy) / 100 * (correctWords * (60 / finalTime)) * 69).toFixed(0)}</h1>
             <h1>WPM: {Number(correctWords * (60 / finalTime)).toFixed(0)}</h1>
             <h1>Accuracy: {Number(accuracy).toFixed(1)}%</h1>
+            </div>
+            <div className = "player2Stats">
+            <h2>Name</h2>
+            <h1>Score: xx</h1>
+            <h1>WPM: xx</h1>
+            <h1>Accuracy: xx%</h1>
+            </div>
+            <div className = "player3Stats">
+            <h2>Name</h2>
+            <h1>Score: xx</h1>
+            <h1>WPM: xx</h1>
+            <h1>Accuracy: xx%</h1>
+            </div>
+            <div className = "player4Stats">
+            <h2>Name</h2>
+            <h1>Score: xx</h1>
+            <h1>WPM: xx</h1>
+            <h1>Accuracy: xx%</h1>
+            </div>
           </div>
         )}
 
