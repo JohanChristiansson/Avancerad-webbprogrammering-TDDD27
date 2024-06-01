@@ -21,21 +21,22 @@ export async function POST(req: Request) {
 
         const cookieStore = cookies();
         const cookie = cookieStore.get('user');
+        console.log(cookie?.value);
 
         if (!cookie) {
             return new Response("Error retrieving user, not authenticated", { status: 401 });
         }
 
-        const username = cookie.value;
+        const name = cookie.value;
 
-        const resp = {username, score, wpm, accuracy}; // Assuming you want to send these values in the Pusher event
+        const resp = {name, score, wpm, accuracy}; // Assuming you want to send these values in the Pusher event
 
         await pusherServer.trigger(lobbyId, 'send-result', resp);
 
         await sql`
             UPDATE user_in_lobby
             SET score = ${score}, wpm = ${wpm}, accuracy = ${accuracy}
-            WHERE player_name = ${username} AND game_id = ${lobbyId}
+            WHERE player_name = ${name} AND game_id = ${lobbyId}
         `;
         
         return new Response(JSON.stringify({ success: true }), { status: 200});

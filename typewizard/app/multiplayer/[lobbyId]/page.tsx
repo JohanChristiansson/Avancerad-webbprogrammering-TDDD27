@@ -190,7 +190,6 @@ export default function Page({ params }: PageProps) {
     });
 
     pusherClient.bind('send-result', (result: { name: string, score: number, wpm: number, accuracy: number }) => {
-      console.log("Kör send-result")
       setUserResults(prevUserResults => [
         ...prevUserResults,
         {
