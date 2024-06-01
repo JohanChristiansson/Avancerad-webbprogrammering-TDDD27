@@ -105,7 +105,7 @@ const page = async ({ params }: PageProps) => {
 
     }
 
-    await pusherServer.trigger(lobbyId, 'player-joined', username + " has joined the lobby pusher");
+    await pusherServer.trigger(lobbyId, 'player-joined', username + " has joined the lobby");
     try {
         await sql`INSERT INTO user_in_lobby (player_name, game_id, score, wpm, accuracy)
                 VALUES (${username}, ${lobbyId}, ${0}, ${0}, ${0})`;
@@ -127,7 +127,7 @@ const page = async ({ params }: PageProps) => {
         console.log(error, "error retrieving serializedMessages")
         serializedMessages = []
     }
-    console.log(serializedMessages, "serialised messages")
+    console.log(username + ": " + serializedMessages, "serialised messages")
 
 
     return (
@@ -153,7 +153,7 @@ const page = async ({ params }: PageProps) => {
                         <Messages lobbyId={lobbyId} initialMessages={serializedMessages} players={serializedPlayers} />
                     </div>
                     <div className="absolute left-[6vw] bottom-[3vh]">
-                        <MessageField lobbyId={lobbyId} />
+                        <MessageField lobbyId={lobbyId} name={username} />
                     </div>
                 </div>
             </div>
