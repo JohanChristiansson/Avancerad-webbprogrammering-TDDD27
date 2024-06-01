@@ -213,12 +213,10 @@ export default function Page({ params }: PageProps) {
     if(!gameTimerRunning && !timerRunning && finished) {
       const sendResult = async (lobbyId: string, wpm: number, accuracy: number, score: number) => {
         const response = await axios.post('/api/game/sendResult', { lobbyId, wpm, accuracy, score});
-        console.log("Statustext: ",response.statusText);
       }
       let tempWpm = correctWords * (60 / finalTime);
       let tempAcc = accuracyNumber;
       let tempScore =  (tempAcc) / 100 * (tempWpm) * 69;
-      console.log("Tempscores: ", tempWpm, tempAcc, tempScore);
       sendResult(lobbyId, tempWpm, tempAcc, tempScore);
     }
 
@@ -275,10 +273,8 @@ export default function Page({ params }: PageProps) {
         else if (correctCharacters >= currentWord.length) { //If on the last letter, check if the word is correct
           setCorrectWords(prevCorrectWords => prevCorrectWords + 1);
           const updateWpm = async (lobbyId: string, totNrOfWords: number) => {
-            console.log("correct words", totNrOfWords)
             await axios.post('/api/game/updateWords', { lobbyId, totNrOfWords })
           }
-          console.log(totNrOfWords, "correct words")
           updateWpm(lobbyId, totNrOfWords)
           
           //setCharacterXpos(prevCharacterXpos => SetXPos(totNrOfWords, prevCharacterXpos));
@@ -368,26 +364,38 @@ export default function Page({ params }: PageProps) {
         </div>
 
         <div className='progressionContainer'>
+        
           <div className='lanePlayer1'>
+            {Object.keys(userWords)[0] && 
+          <div className = 'name1'>{Object.keys(userWords)[0]}</div>
+            }
             <img src='https://i.postimg.cc/hj6mpxvv/fxk5t8kqsbp81-ezgif-com-reverse.gif'
               style={{ left: (oppXPos[0] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
           <div className='lanePlayer2'>
+          {Object.keys(userWords)[1] && 
+          <div className = 'name1'>{Object.keys(userWords)[1]}</div>
+            }
             <img src='https://i.postimg.cc/SxRyNPD0/1-m-UYZp-Tpdf-HXKNwc-Ozw2-Jh-A.gif'
               style={{ left: (oppXPos[1] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
           <div className='lanePlayer3'>
+          {Object.keys(userWords)[2] && 
+          <div className = 'name1'>{Object.keys(userWords)[0]}</div>
+            }
             <img src='https://i.postimg.cc/YS12JWdj/9f40ba06dc0476ff84170bba2bed69a0-ezgif-com-crop.gif'
               style={{ left: (oppXPos[2] + "%") }}
             />
             <div className='playerGround'></div>
           </div>
           <div className='lanePlayer4'>
-
+          {Object.keys(userWords)[3] && 
+          <div className = 'name1'>{Object.keys(userWords)[0]}</div>
+            }
             <img src='https://i.postimg.cc/rz2FZzQT/output-onlinegiftools-ezgif-com-gif-maker.gif'
               style={{ left: (oppXPos[3] + "%") }}
             />
