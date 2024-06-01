@@ -7,7 +7,6 @@ import { LongButton } from '@/components/ui/tmpButton';
 import { HomeButton } from '@/components/ui/tmpButton'
 import { cookies } from 'next/headers'
 import { pusherServer } from '@/lib/pusher';
-import axios from 'axios'
 
 
 //Should these be saved in a txt file, db or somehow else?
@@ -105,11 +104,11 @@ const page = async ({ params }: PageProps) => {
         username = getRandomName(serializedPlayers)
 
     }
-    
+
     await pusherServer.trigger(lobbyId, 'player-joined', username + " has joined the lobby pusher");
     try {
-        await sql`INSERT INTO user_in_lobby (player_name, game_id, current_words, wpm)
-                VALUES (${username}, ${lobbyId}, ${0}, ${0})`;
+        await sql`INSERT INTO user_in_lobby (player_name, game_id, score, wpm, accuracy)
+                VALUES (${username}, ${lobbyId}, ${0}, ${0}, ${0})`;
         serializedPlayers.push({ playername: username })
     } catch (error) {
         console.log(error, "error adding player to the game")
@@ -129,7 +128,7 @@ const page = async ({ params }: PageProps) => {
         serializedMessages = []
     }
     console.log(serializedMessages, "serialised messages")
-    
+
 
     return (
         <main>
@@ -143,12 +142,12 @@ const page = async ({ params }: PageProps) => {
                     >
                     </HomeButton>
                 </div>
-            
+
                 <div className="w-[40vw] h-[35vh] bg-center absolute left-[30vw] top-[22vh] bg-no-repeat"
                     style={{
                         backgroundImage: "url('https://i.postimg.cc/g2ZrYDTS/najs-Papper-removebg.png')",
                         backgroundSize: "105% 100%",
-                        
+
                     }}>
                     <div className="absolute left-[6vw] top-[6vh] max-h-[23vh] overflow-y-auto w-[28vw]">
                         <Messages lobbyId={lobbyId} initialMessages={serializedMessages} players={serializedPlayers} />
@@ -158,7 +157,7 @@ const page = async ({ params }: PageProps) => {
                     </div>
                 </div>
             </div>
-                
+
 
 
             <div className='buttonContainer'>
