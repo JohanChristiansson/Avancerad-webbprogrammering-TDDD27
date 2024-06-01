@@ -5,7 +5,7 @@ import { pusherServer } from '@/lib/pusher';
 export async function POST(req: Request) {
     try {
         const { wordCount, WPM, playerId, lobbyId } = await req.json();
-        console.log(req, "req")
+        console.log(req, "Skrivs detta ut någon gång? I route multiplayer")
       
         let data = {wordCount, playerId}
         await pusherServer.trigger(lobbyId, 'update-player-words', data);

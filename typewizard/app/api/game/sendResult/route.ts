@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
         const username = cookie.value;
 
-        const resp = {username, score, wpm, accuracy}; // Assuming you want to send these values in the Pusher event
+        const resp = {username, score, wpm, accuracy};
 
         await pusherServer.trigger(lobbyId, 'send-result', resp);
 

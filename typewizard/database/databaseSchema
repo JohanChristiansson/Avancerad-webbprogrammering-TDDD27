@@ -19,7 +19,8 @@ CREATE TABLE users (
 CREATE TABLE user_in_lobby (
     player_name VARCHAR(255) REFERENCES users(name),
     game_id VARCHAR(255) REFERENCES lobby(id),
-    current_words INTEGER,
-    wpm INTEGER,
+    score FLOAT,
+    wpm FLOAT,
+    accuracy FLOAT,
     PRIMARY KEY (player_name, game_id)
 );
