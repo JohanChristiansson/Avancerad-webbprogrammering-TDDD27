@@ -1,7 +1,6 @@
 import '../globals.css';
 import './profile.css';
 import ProfileStats from '../../components/profile/stats';
-import ProfileHeader from '../../components/profile/header';
 import { HomeButton } from '../../components/ui/tmpButton';
 import { cookies } from 'next/headers'
 

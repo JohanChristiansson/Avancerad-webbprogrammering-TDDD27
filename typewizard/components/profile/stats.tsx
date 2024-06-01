@@ -16,6 +16,8 @@ export default function ProfileStats({ initialData }: ProfileStatsProps) {
     const [highestWPM, setHighestWPM] = useState(initialData.highestWPM);
     const [timesPlayed, setTimesPlayed] = useState(initialData.timesPlayed);
     const [avgAccuracy, setAvgAccuracy] = useState(initialData.avgAccuracy);
+    const [globalRanking, setGlobalRanking] = useState(initialData.avgAccuracy);
+
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -29,7 +31,8 @@ export default function ProfileStats({ initialData }: ProfileStatsProps) {
                     setAvgWPM(data.averageWPM);
                     setHighestWPM(data.highestWPM);
                     setTimesPlayed(data.gamesPlayed);
-                    setAvgAccuracy(data.averageWords);
+                    setAvgAccuracy(data.averageAccuracy);
+                    setGlobalRanking(data.globalRanking);
                 } else {
                     console.error('Failed to fetch user information');
                 }
@@ -41,21 +44,21 @@ export default function ProfileStats({ initialData }: ProfileStatsProps) {
         fetchUserInfo();
     }, []);
 
-    const avgWPMNumber = Number(avgWPM) || 0;
-    const highestWPMNumber = Number(highestWPM) || 0;
-    const avgAccuracyNumber = Number(avgAccuracy) || 0;
+    const avgWPMDisplay = Number(avgWPM) || 0;
+    const highestWPMDisplay = Number(highestWPM) || 0;
+    const avgAccuracyDisplay = Number(avgAccuracy) || 0;
+    const globalRankingDisplay = Number(globalRanking) || 0;
 
     return (
         <div>
             <div className='stats1'>
-                <h1>Average WPM: {avgWPMNumber.toFixed(1)}</h1>
-                <h1>Highest WPM: {highestWPMNumber.toFixed(1)}</h1>
-                <h1>Times played: {timesPlayed}</h1>
-                <h1>Average accuracy: {avgAccuracyNumber.toFixed(1)}</h1>
+                <h1>Average WPM: {avgWPMDisplay.toFixed(1)}</h1>
+                <h1>Highest WPM: {highestWPMDisplay.toFixed(1)}</h1>
+                <h1>Times Played: {timesPlayed}</h1>
+                <h1>Average Accuracy: {avgAccuracyDisplay.toFixed(1)}</h1>
             </div>
             <div className='stats2'>
-                <h1>Online wins: get_value</h1>
-                <h1>Global ranking: get_value</h1>
+                <h1>Global Ranking: {globalRankingDisplay}</h1>
             </div>
         </div>
     );
