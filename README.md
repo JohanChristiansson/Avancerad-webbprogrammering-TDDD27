@@ -1,6 +1,13 @@
 Deplyed website:
 https://typewizard.vercel.app/
 
+Project Screencast:
+https://www.youtube.com/watch?v=gBWQtI4ilFY&t=3s
+
+Individual Screencast:
+Gustav Jacobsson, gusja751: https://www.youtube.com/watch?v=d8MPypldgXc
+Johan Christiansson, xxx: 
+
 
 Project vision:
 A web application where the user can test and train their typing skills, as well as challenge friends to a “typing-battle”. The application is clean, responsive, and easy to use.
